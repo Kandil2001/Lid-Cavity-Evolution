@@ -1,40 +1,34 @@
 # Lid Cavity Evolution
 
-**Lid Cavity Evolution** is an ambitious, growing repository dedicated to exploring and comparing algorithms for solving the classic lid-driven cavity problem in computational fluid dynamics (CFD). This project showcases the progression of solver implementations, starting from straightforward and basic algorithms, moving through vectorized and parallel approaches, and striving toward ever more efficient and elegant solutions.
+A benchmark suite for comparing algorithms that solve the classic **lid-driven cavity** problem in Computational Fluid Dynamics (CFD). This project showcases the evolution of solver implementations from basic educational code to optimized, production-ready versions.
 
-## Goals
+## 🚀 Current Features
 
-- To serve as a benchmark suite for lid-driven cavity solvers in MATLAB and Python.
-- To provide educational insight into how algorithms evolve for speed, simplicity, and scalability.
-- To enable clear comparisons of solving time, accuracy, and code complexity across approaches.
+- **MATLAB Solvers**:
+  - `SimpleLidCavity.m` - A basic, loop-based implementation of the SIMPLE algorithm. Ideal for understanding the fundamentals.
+  - `SimpleLidCavityVector.m` - A significantly faster, vectorized version of the same solver. Demonstrates the power of MATLAB's array operations.
 
-## Features
+## 🗺️ Roadmap & Coming Soon
 
-- **MATLAB Implementations:** Includes both loop-based and vectorized SIMPLE solvers.
-- **Python Implementations:** Serial and parallel versions (coming soon).
-- **Benchmarking:** Tools and scripts for measuring and visualizing solving time and performance.
-- **Documentation:** Progressive explanations for each algorithm and its optimizations.
+- [ ] Python serial implementation (using NumPy)
+- [ ] Python parallel implementation (using Dask or Multiprocessing)
+- [ ] Automated benchmarking scripts to compare solver performance
+- [ ] Validation against canonical data from Ghia et al. (1982)
 
-## Structure
+## ⏱️ The Goal: Performance Comparison
 
-```
-matlab/
-    SimpleLidcavity.m
-    SimpleLidCavityVector.m
-python/
-    lid_cavity_serial.py         # To be added
-    lid_cavity_parallel.py       # To be added
-README.md
-```
+The ultimate aim of this repository is to provide a clear, fair comparison of solving time and accuracy across different implementations and languages.
 
-## Roadmap
+| Solver | Language | Paradigm | Avg. Time (s) | Grid Size | Re |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `SimpleLidCavity` | MATLAB | Serial (Loops) | TBD | 128x128 | 1000 |
+| `SimpleLidCavityVector` | MATLAB | Serial (Vectorized) | TBD | 128x128 | 1000 |
+| *More coming...* | | | | | |
 
-- [x] MATLAB base solvers (loop-based & vectorized)
-- [ ] Python serial implementation
-- [ ] Python parallel implementation
-- [ ] Benchmarking and performance comparison
-- [ ] Advanced CFD extensions
+## 🤝 Contributing
 
----
+Ideas, contributions, and feedback are welcome! Feel free to open an issue to discuss new solver implementations, optimizations, or ideas for comparison.
 
-**Contributions, ideas, and feedback are welcome as Lid Cavity Evolution grows!**
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
