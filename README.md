@@ -1,34 +1,40 @@
 # Lid Cavity Evolution
 
-A benchmark suite for comparing algorithms that solve the classic **lid-driven cavity** problem in Computational Fluid Dynamics (CFD). This project showcases the evolution of solver implementations from basic educational code to optimized, production-ready versions.
+A comprehensive benchmark suite tracking the evolution of a CFD solver from fundamental MATLAB code to industrial-grade applications, with a focus on performance comparison and validation.
 
-## 🚀 Current Features
+## 🗺️ Project Roadmap & Progress
 
-- **MATLAB Solvers**:
-  - `SimpleLidCavity.m` - A basic, loop-based implementation of the SIMPLE algorithm. Ideal for understanding the fundamentals.
-  - `SimpleLidCavityVector.m` - A significantly faster, vectorized version of the same solver. Demonstrates the power of MATLAB's array operations.
+### Phase 1: Foundation in MATLAB
+- [x] **1_BasicSolver**: Loop-based SIMPLE algorithm (`SimpleLidCavity.m`)
+- [x] **2_VectorizedSolver**: Optimized vectorized implementation (`SimpleLidCavityVector.m`)
+- **Performance Gain (MATLAB)**: [You will add this later, e.g., "10x speedup"]
 
-## 🗺️ Roadmap & Coming Soon
+### Phase 2: Porting & Optimizing in Python
+- [ ] **1_SerialNumPy**: Direct port of the basic solver to Python/NumPy
+- [ ] **2_VectorizedNumPy**: Leveraging NumPy's optimized array operations
+- [ ] **3_Parallel**: Implementation using parallel processing (e.g., Numba, Dask)
 
-- [ ] Python serial implementation (using NumPy)
-- [ ] Python parallel implementation (using Dask or Multiprocessing)
-- [ ] Automated benchmarking scripts to compare solver performance
-- [ ] Validation against canonical data from Ghia et al. (1982)
+### Phase 3: Industrial Solvers
+- [ ] **1_OpenFOAM**: Case setup and simulation using the open-source OpenFOAM toolkit.
+- [ ] **2_STARCCM+**: Case setup and simulation using the commercial STAR-CCM+ solver.
 
-## ⏱️ The Goal: Performance Comparison
+### Phase 4: Validation & Analysis
+- [ ] **HandCalculations**: Manual analysis for a specific setup to validate the physics.
+- [ ] **Consolidated Results**: Final comparison of solving time, accuracy, and resource usage across all methods.
 
-The ultimate aim of this repository is to provide a clear, fair comparison of solving time and accuracy across different implementations and languages.
+## ⏱️ Benchmark Results (Preliminary)
 
-| Solver | Language | Paradigm | Avg. Time (s) | Grid Size | Re |
+*Results will be updated as each phase is completed. The goal is to compare solving time for an identical problem setup (Grid, Re, Convergence).*
+
+| Solver | Language/Tool | Paradigm | Avg. Time (s) | Hardware | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `SimpleLidCavity` | MATLAB | Serial (Loops) | TBD | 128x128 | 1000 |
-| `SimpleLidCavityVector` | MATLAB | Serial (Vectorized) | TBD | 128x128 | 1000 |
-| *More coming...* | | | | | |
+| [SimpleLidCavity](1_Matlab/1_BasicSolver/) | MATLAB | Serial (Loops) | TBD | CPU | ✅ Complete |
+| [SimpleLidCavityVector](1_Matlab/2_VectorizedSolver/) | MATLAB | Serial (Vectorized) | TBD | CPU | ✅ Complete |
+| *lid_cavity_serial.py* | Python/NumPy | Serial | TBD | CPU | 🚧 In Progress |
+| ... | ... | ... | ... | ... | ... |
 
 ## 🤝 Contributing
-
-Ideas, contributions, and feedback are welcome! Feel free to open an issue to discuss new solver implementations, optimizations, or ideas for comparison.
+Ideas and feedback are welcome! Please open an issue to discuss.
 
 ## 📜 License
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
