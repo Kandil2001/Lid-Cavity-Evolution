@@ -1,6 +1,6 @@
 # Lid Cavity Evolution
 
-*A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications*
+_A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
 
 ---
 
@@ -8,18 +8,18 @@
 
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [🌟 Introduction](#introduction)
 - [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
 - [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
-- [Governing Equations](#governing-equations)
-- [SIMPLE Algorithm Steps](#simple-algorithm-steps)
-- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
-- [Project Roadmap](#project-roadmap)
-- [Benchmark Table](#benchmark-table)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [License](#license)
-- [References](#references)
+- [🧮 Governing Equations](#governing-equations)
+- [🛠 SIMPLE Algorithm Steps](#simple-algorithm-steps)
+- [🧑‍💻 Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
+- [🏁 Project Roadmap](#project-roadmap)
+- [📊 Benchmark Table](#benchmark-table)
+- [🚀 Getting Started](#getting-started)
+- [🤝 Contributing](#contributing)
+- [📜 License](#license)
+- [📚 References](#references)
 
 ---
 
@@ -111,12 +111,10 @@ The SIMPLE algorithm solves these equations with the following procedure:
 
 1. **Predictor Step:**  
    - Solve momentum equations for an intermediate velocity $\mathbf{u}^*$ using the current pressure estimate.
-
 2. **Pressure Correction:**  
    - Solve the pressure correction Poisson equation:  
      $\nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*$  
      where $p'$ is the pressure correction and $\Delta t$ is the time step.
-
 3. **Corrector Step:**  
    - Update velocities and pressure:  
      $\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'$  
@@ -157,13 +155,13 @@ The SIMPLE algorithm solves these equations with the following procedure:
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
 |-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
 | SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 2478.76          | 1x      | ✅ Complete    |
-| *SimpleLidCavityVector*                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
-| *lid_cavity_serial.py*                    | Python/NumPy | Serial                  | TBD              | TBD     | 📋 Planned     |
-| *lid_cavity_parallel.py*                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
-| *OpenFOAM Case*                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
-| *STAR-CCM+ Case*                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
+| _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
+| _lid_cavity_serial.py_                    | Python/NumPy | Serial                  | TBD              | TBD     | 📋 Planned     |
+| _lid_cavity_parallel.py_                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
+| _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
+| _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
 
-*Hardware: Intel i7-12700K, 32GB RAM*
+_Hardware: Intel i7-12700K, 32GB RAM_
 
 ---
 
@@ -186,14 +184,13 @@ The SIMPLE algorithm solves these equations with the following procedure:
 2. Open `SIMPLE2D_LidDrivenCavity.m` in MATLAB.
 3. Run the script and follow prompts (see comments for parameter adjustments).
 
-*Python, OpenFOAM, and STAR-CCM+ instructions will follow with implementation.*
+_Python, OpenFOAM, and STAR-CCM+ instructions will follow with implementation._
 
 ---
 
 ## 🤝 Contributing
 
 We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-
 - Adding new solver implementations
 - Improving code or documentation
 - Adding validation cases
@@ -212,9 +209,9 @@ See [LICENSE](LICENSE) for details.
 
 ## 📚 References
 
-1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). *High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method*. J. Comput. Phys., 48(3), 387-411.
-2. Patankar, S. V. (1980). *Numerical Heat Transfer and Fluid Flow*. Hemisphere Publishing.
-3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). *Computational Methods for Fluid Dynamics*. Springer.
+1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). _High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method_. J. Comput. Phys., 48(3), 387-411.
+2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_. Hemisphere Publishing.
+3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). _Computational Methods for Fluid Dynamics_. Springer.
 
 ---
 
