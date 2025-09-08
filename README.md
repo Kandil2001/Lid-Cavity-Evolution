@@ -180,7 +180,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/lid-cavity-evolution.git
+    git clone https://github.com/Kandil2001/lid-cavity-evolution.git
     cd lid-cavity-evolution/matlab
     ```
 2. Open `SIMPLE2D_LidDrivenCavity.m` in MATLAB.
