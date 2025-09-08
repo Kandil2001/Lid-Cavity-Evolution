@@ -8,18 +8,18 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 
 ## Table of Contents
 
-- [🌟 Introduction](#introduction)
+- [Introduction](#introduction)
 - [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
 - [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
-- [🧮 Governing Equations](#governing-equations)
-- [🛠 SIMPLE Algorithm Steps](#simple-algorithm-steps)
-- [🧑‍💻 Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
-- [🏁 Project Roadmap](#project-roadmap)
-- [📊 Benchmark Table](#benchmark-table)
-- [🚀 Getting Started](#getting-started)
-- [🤝 Contributing](#contributing)
-- [📜 License](#license)
-- [📚 References](#references)
+- [Governing Equations](#governing-equations)
+- [SIMPLE Algorithm Steps](#simple-algorithm-steps)
+- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
+- [Project Roadmap](#project-roadmap)
+- [Benchmark Table](#benchmark-table)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
+- [References](#references)
 
 ---
 
@@ -29,7 +29,7 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 
 ---
 
-## Why the Lid-Driven Cavity?
+## 💡 Why the Lid-Driven Cavity?
 
 - **Standard Test Case:** Simple geometry, well-defined boundaries, and established reference solutions make it ideal for CFD code verification.
 - **Rich Physics:** Captures vortex formation, boundary layers, and evolving flow structures.
@@ -37,7 +37,7 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 
 ---
 
-## Why the SIMPLE Algorithm?
+## ⚡ Why the SIMPLE Algorithm?
 
 Simulating incompressible flows is numerically challenging due to tight coupling of velocity and pressure. The **SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)** algorithm is widely used because it:
 
@@ -101,7 +101,7 @@ Where each term means:
   - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
   - $-\frac{\partial p}{\partial y}$: Pressure gradient in $y$
   - $\frac{1}{Re} \frac{\partial^2 v}{\partial x^2}$: Viscous diffusion in $x$
-  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y$
+  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y`
 
 ---
 
@@ -173,18 +173,6 @@ _Hardware: Intel i7-12700K, 32GB RAM_
 - **Python:** 3.8+ (NumPy, planned)
 - **OpenFOAM:** (planned)
 - **STAR-CCM+:** (planned)
-
-### Running the MATLAB Solver
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/Kandil2001/lid-cavity-evolution.git
-    cd lid-cavity-evolution/matlab
-    ```
-2. Open `SIMPLE2D_LidDrivenCavity.m` in MATLAB.
-3. Run the script and follow prompts (see comments for parameter adjustments).
-
-_Python, OpenFOAM, and STAR-CCM+ instructions will follow with implementation._
 
 ---
 
