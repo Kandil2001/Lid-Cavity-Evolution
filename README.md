@@ -4,18 +4,18 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Table of Contents
-- [🌟 Introduction](#🌟-introduction)
-- [💡 Why the Lid-Driven Cavity?](#💡-why-the-lid-driven-cavity)
-- [⚡ Why the SIMPLE Algorithm?](#⚡-why-the-simple-algorithm)
-- [🧮 Governing Equations](#🧮-governing-equations)
-- [🛠 SIMPLE Algorithm Steps](#🛠-simple-algorithm-steps)
-- [🧑‍💻 Numerical Methods & Boundary Conditions](#🧑‍💻-numerical-methods--boundary-conditions)
-- [🏁 Project Roadmap](#🏁-project-roadmap)
-- [📊 Benchmark Table](#📊-benchmark-table)
-- [🚀 Getting Started](#🚀-getting-started)
-- [🤝 Contributing](#🤝-contributing)
-- [📜 License](#📜-license)
-- [📚 References](#📚-references)
+- [🌟 Introduction](#introduction)
+- [💡 Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
+- [⚡ Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
+- [🧮 Governing Equations](#governing-equations)
+- [🛠 SIMPLE Algorithm Steps](#simple-algorithm-steps)
+- [🧑‍💻 Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
+- [🏁 Project Roadmap](#project-roadmap)
+- [📊 Benchmark Table](#benchmark-table)
+- [🚀 Getting Started](#getting-started)
+- [🤝 Contributing](#contributing)
+- [📜 License](#license)
+- [📚 References](#references)
 
 ## 🌟 Introduction
 
@@ -39,14 +39,19 @@ Simulating incompressible flows is numerically challenging due to tight coupling
 The solver models unsteady, incompressible, two-dimensional flow in a square cavity with a moving lid.
 
 ### 1. Continuity Equation (Incompressibility)
+
 $\nabla \cdot \mathbf{u} = 0$
+
 - $\mathbf{u}$: Velocity vector, $\mathbf{u} = (u, v)$
   - $u$: velocity in $x$-direction
   - $v$: velocity in $y$-direction
+
 This equation enforces conservation of mass for incompressible flow: the net flow into any control volume is zero.
 
 ### 2. Momentum Equations (Navier-Stokes, Unsteady, 2D)
+
 $\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \frac{1}{Re}\nabla^2 \mathbf{u}$
+
 Where each term means:
 - $\frac{\partial \mathbf{u}}{\partial t}$: **Unsteady term** — Time rate of change of velocity.
 - $(\mathbf{u} \cdot \nabla)\mathbf{u}$: **Convection term** — Transport of momentum by fluid motion.
@@ -58,16 +63,22 @@ Where each term means:
     - $\nu$: Kinematic viscosity
 
 #### Expanded in 2D Components
+
 - **x-Momentum:**
+
   $\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = -\frac{\partial p}{\partial x} + \frac{1}{Re} \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right )$
+
   - $\frac{\partial u}{\partial t}$: Time derivative of $u$
   - $u \frac{\partial u}{\partial x}$: Convection of $u$ in $x$
   - $v \frac{\partial u}{\partial y}$: Convection of $u$ in $y$
   - $-\frac{\partial p}{\partial x}$: Pressure gradient in $x$
   - $\frac{1}{Re} \frac{\partial^2 u}{\partial x^2}$: Viscous diffusion in $x$
   - $\frac{1}{Re} \frac{\partial^2 u}{\partial y^2}$: Viscous diffusion in $y$
+
 - **y-Momentum:**
+
   $\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} = -\frac{\partial p}{\partial y} + \frac{1}{Re} \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right )$
+
   - $\frac{\partial v}{\partial t}$: Time derivative of $v$
   - $u \frac{\partial v}{\partial x}$: Convection of $v$ in $x$
   - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
