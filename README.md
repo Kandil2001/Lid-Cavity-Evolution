@@ -1,53 +1,48 @@
-# MATLAB Lid-Driven Cavity Solvers
+# IterativeSolver.m — SIMPLE Algorithm for 2D Lid-Driven Cavity (MATLAB)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
-
-This directory contains MATLAB implementations of the 2D lid-driven cavity CFD benchmark using the SIMPLE algorithm.
+This solver implements the SIMPLE algorithm with explicit triple-nested loops to solve the classic 2D lid-driven cavity problem in MATLAB.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Why MATLAB?](#why-matlab)
-- [Available Solvers](#available-solvers)
-- [How to Run](#how-to-run)
-- [Contributing](#contributing)
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Setup and Usage](#setup-and-usage)
+- [Main Code Structure](#main-code-structure)
+- [Example Output GIFs](#example-output-gifs)
+- [Solving Time](#solving-time)
+- [Residuals and Convergence](#residuals-and-convergence)
 - [License](#license)
 
-## Introduction
+---
 
-The lid-driven cavity problem is a classical benchmark in computational fluid dynamics (CFD) for validating incompressible flow solvers. This directory provides reference MATLAB implementations using the SIMPLE algorithm, suitable for learning, rapid prototyping, and establishing baseline results.
+## Overview
 
-## Why MATLAB?
-
-MATLAB is an excellent environment for CFD solver development because:
-
-- **Rapid prototyping:** Easy matrix operations and built-in visualization.
-- **Clarity:** Clean syntax helps learning and debugging.
-- **Visualization:** Immediate feedback with built-in plotting tools.
-- **Reference foundation:** Validates algorithm correctness before porting to other languages or optimizing for performance.
-
-## Available Solvers
-
-- [IterativeSolver.m](IterativeSolver.m): Classic SIMPLE algorithm using explicit iteration.
-- [VectorizedSolver.m](VectorizedSolver.m): Vectorized MATLAB implementation for improved performance.
-
-Each solver script contains its own documentation and usage instructions in the comments.
-
-## How to Run
-
-1. Open MATLAB (R2020a or newer recommended).
-2. Open either `IterativeSolver.m` or `VectorizedSolver.m`.
-3. Run the script.
-4. Adjust simulation parameters at the top of the script as desired.
-
-## Contributing
-
-Contributions and suggestions are welcome!  
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
-
-## License
-
-This code is released under the MIT License.  
-See [LICENSE](../LICENSE) for details.
+The lid-driven cavity problem is a standard CFD benchmark for incompressible, unsteady flow. This script uses the SIMPLE algorithm (Semi-Implicit Method for Pressure-Linked Equations) on a staggered grid, with explicit iteration for educational clarity.
 
 ---
+
+## Key Features
+
+- Finite Volume discretization on staggered grid
+- Explicit (triple-nested) loops for clarity
+- Real-time animated visualization of:
+  - Velocity vectors
+  - Velocity magnitude contours
+  - Pressure contours
+  - Streamlines
+  - Residuals
+- GIF output for each visualization
+- Benchmarking: reports elapsed simulation time
+
+---
+
+## Setup and Usage
+
+1. Open MATLAB (R2020a or newer recommended).
+2. Open `IterativeSolver.m` in the `Matlab` folder.
+3. Adjust simulation parameters at the top of the script as needed:
+   ```matlab
+   Re = 100;         % Reynolds number
+   n = 151;          % Grid size (n x n)
+   dt = 0.0005;      % Time step
+   total_time = 2;   % Total simulation time (seconds)
