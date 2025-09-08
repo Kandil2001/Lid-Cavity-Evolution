@@ -30,19 +30,24 @@ Starting with MATLAB allows contributors to focus on the core algorithm and comp
 
 ## Available Solvers
 
-- [Iterative-Solver-Matlab](Iterative-Solver-Matlab/README.md): Classic SIMPLE algorithm using explicit loops for educational clarity and benchmarking.
-- [Vectorized-Solver-Matlab](Vectorized-Solver-Matlab/README.md): Vectorized MATLAB implementation for improved performance and scalability.
+- **Iterative Solver:**  
+  Main script: [`matlab/IterativeSolver.m`](IterativeSolver.m)  
+  README: [`matlab/IterativeSolver_README.md`](IterativeSolver_README.md) (if you create this, link here)
 
-> **Each solver directory contains its own README with usage details, features, and simulation parameters.**  
-> *Please ensure you use the exact folder names as shown above (case-sensitive).*
+- **Vectorized Solver:**  
+  Main script: [`matlab/VectorizedSolver.m`](VectorizedSolver.m)  
+  README: [`matlab/VectorizedSolver_README.md`](VectorizedSolver_README.md) (if you create this, link here)
+
+> Each solver has its own script and (optionally) its own README describing usage, features, and simulation parameters.
 
 ## How to Run
 
 1. Open MATLAB (R2020a or newer recommended).
-2. Navigate to the solver directory (`Iterative-Solver-Matlab` or `Vectorized-Solver-Matlab`).
-3. Open the main `.m` file and run it (press `F5` or type the script name in the command window).
-4. Adjust simulation parameters at the top of the script if desired.
-5. Refer to the solver's README for details on outputs and visualization.
+2. Navigate to the `matlab/` directory.
+3. Open either `IterativeSolver.m` or `VectorizedSolver.m`.
+4. Run the script (`F5` or type the script name in the command window).
+5. Adjust simulation parameters at the top of the script if desired.
+6. For details, check the comments inside each script or the corresponding README.
 
 ## Contributing
 
@@ -55,3 +60,5 @@ This code is released under the MIT License.
 See the [LICENSE](../LICENSE) for details.
 
 ---
+
+**For solver-specific guidance, see each solver's README or script comments.**
