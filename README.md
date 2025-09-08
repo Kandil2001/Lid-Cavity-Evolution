@@ -49,57 +49,28 @@ Simulating incompressible flows is numerically challenging due to tight coupling
 
 ## 🧮 Governing Equations
 
-**The solver addresses the unsteady, incompressible, 2D Navier-Stokes equations for a square cavity with a moving lid.**
+The solver addresses the unsteady, incompressible, 2D Navier-Stokes equations for a square cavity with a moving lid.
 
 ### 1. Continuity (Incompressibility)
 
-$$
-\nabla \cdot \mathbf{u} = 0
-$$
+$\nabla \cdot \mathbf{u} = 0$
 
 where $\mathbf{u} = (u, v)$ is the velocity vector.
 
----
-
 ### 2. Momentum (Unsteady, Incompressible, Vector Form)
 
-$$
-\frac{\partial \mathbf{u}}{\partial t}
-+ (\mathbf{u} \cdot \nabla)\mathbf{u}
-= -\nabla p
-+ \frac{1}{Re}\nabla^2 \mathbf{u}
-$$
+$\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \frac{1}{Re}\nabla^2 \mathbf{u}$
 
-- $Re = \frac{UL}{\nu}$ (Reynolds number).  
-  $U$: lid velocity, $L$: cavity length, $\nu$: kinematic viscosity.
-
----
+- $Re = \frac{UL}{\nu}$ (Reynolds number)  
+  $U$: lid velocity, $L$: cavity length, $\nu$: kinematic viscosity
 
 ### 3. Expanded 2D Component Form
 
-**x-Momentum:**
-$$
-\frac{\partial u}{\partial t}
-+ u \frac{\partial u}{\partial x}
-+ v \frac{\partial u}{\partial y}
-= -\frac{\partial p}{\partial x}
-+ \frac{1}{Re} \left(
-\frac{\partial^2 u}{\partial x^2}
-+ \frac{\partial^2 u}{\partial y^2}
-\right)
-$$
+- x-Momentum:  
+  $\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = -\frac{\partial p}{\partial x} + \frac{1}{Re} \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right )$
 
-**y-Momentum:**
-$$
-\frac{\partial v}{\partial t}
-+ u \frac{\partial v}{\partial x}
-+ v \frac{\partial v}{\partial y}
-= -\frac{\partial p}{\partial y}
-+ \frac{1}{Re} \left(
-\frac{\partial^2 v}{\partial x^2}
-+ \frac{\partial^2 v}{\partial y^2}
-\right)
-$$
+- y-Momentum:  
+  $\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} = -\frac{\partial p}{\partial y} + \frac{1}{Re} \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right )$
 
 ---
 
@@ -112,19 +83,16 @@ The SIMPLE algorithm iteratively solves the equations above for incompressible f
 
 2. **Pressure Correction:**  
    Solve the Poisson equation for pressure correction $p'$:
-   $$
-   \nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*
-   $$
+
+   $\nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*$
 
 3. **Corrector Step:**  
    Update velocities and pressure:
-   $$
-   \mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'
-   $$
-   $$
-   p^{n+1} = p^{n} + \alpha p'
-   $$
-   - $\alpha$: Pressure under-relaxation factor ($0 < \alpha \leq 1$)
+
+   - $\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'$
+   - $p^{n+1} = p^{n} + \alpha p'$
+
+   where $\alpha$ is the pressure under-relaxation factor ($0 < \alpha \leq 1$)
 
 ---
 
