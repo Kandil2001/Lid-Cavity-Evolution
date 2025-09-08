@@ -40,16 +40,13 @@ The solver models unsteady, incompressible, two-dimensional flow in a square cav
 
 ### 1. Continuity Equation (Incompressibility)
 $\nabla \cdot \mathbf{u} = 0$
-
 - $\mathbf{u}$: Velocity vector, $\mathbf{u} = (u, v)$
   - $u$: velocity in $x$-direction
   - $v$: velocity in $y$-direction
-
 This equation enforces conservation of mass for incompressible flow: the net flow into any control volume is zero.
 
 ### 2. Momentum Equations (Navier-Stokes, Unsteady, 2D)
 $\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \frac{1}{Re}\nabla^2 \mathbf{u}$
-
 Where each term means:
 - $\frac{\partial \mathbf{u}}{\partial t}$: **Unsteady term** — Time rate of change of velocity.
 - $(\mathbf{u} \cdot \nabla)\mathbf{u}$: **Convection term** — Transport of momentum by fluid motion.
@@ -61,22 +58,16 @@ Where each term means:
     - $\nu$: Kinematic viscosity
 
 #### Expanded in 2D Components
-
 - **x-Momentum:**
-
   $\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = -\frac{\partial p}{\partial x} + \frac{1}{Re} \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right )$
-
   - $\frac{\partial u}{\partial t}$: Time derivative of $u$
   - $u \frac{\partial u}{\partial x}$: Convection of $u$ in $x$
   - $v \frac{\partial u}{\partial y}$: Convection of $u$ in $y$
   - $-\frac{\partial p}{\partial x}$: Pressure gradient in $x$
   - $\frac{1}{Re} \frac{\partial^2 u}{\partial x^2}$: Viscous diffusion in $x$
   - $\frac{1}{Re} \frac{\partial^2 u}{\partial y^2}$: Viscous diffusion in $y$
-
 - **y-Momentum:**
-
   $\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} = -\frac{\partial p}{\partial y} + \frac{1}{Re} \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right )$
-
   - $\frac{\partial v}{\partial t}$: Time derivative of $v$
   - $u \frac{\partial v}{\partial x}$: Convection of $v$ in $x$
   - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
@@ -87,7 +78,6 @@ Where each term means:
 ## 🛠 SIMPLE Algorithm Steps
 
 The SIMPLE algorithm solves these equations with the following procedure:
-
 1. **Predictor Step:**  
    - Solve momentum equations for an intermediate velocity $\mathbf{u}^*$ using the current pressure estimate.
 2. **Pressure Correction:**  
@@ -133,7 +123,6 @@ The SIMPLE algorithm solves these equations with the following procedure:
 | _lid_cavity_parallel.py_                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
 | _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
 | _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
-
 _Hardware: Intel i7-12700K, 32GB RAM_
 
 ## 🚀 Getting Started
@@ -151,7 +140,6 @@ We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for 
 - Improving code or documentation
 - Adding validation cases
 - Reporting issues or suggesting enhancements
-
 Feel free to open an issue or submit a pull request!
 
 ## 📜 License
