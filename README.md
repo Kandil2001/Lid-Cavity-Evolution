@@ -49,50 +49,79 @@ Simulating incompressible flows is numerically challenging due to tight coupling
 
 ## 🧮 Governing Equations
 
-The solver addresses the unsteady, incompressible, 2D Navier-Stokes equations for a square cavity with a moving lid.
+The solver models unsteady, incompressible, two-dimensional flow in a square cavity with a moving lid.
 
-### 1. Continuity (Incompressibility)
+### 1. Continuity Equation (Incompressibility)
 
 $\nabla \cdot \mathbf{u} = 0$
 
-where $\mathbf{u} = (u, v)$ is the velocity vector.
+- $\mathbf{u}$: Velocity vector, $\mathbf{u} = (u, v)$
+  - $u$: velocity in $x$-direction
+  - $v$: velocity in $y$-direction
 
-### 2. Momentum (Unsteady, Incompressible, Vector Form)
+This equation enforces conservation of mass for incompressible flow: the net flow into any control volume is zero.
+
+---
+
+### 2. Momentum Equations (Navier-Stokes, Unsteady, 2D)
 
 $\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \frac{1}{Re}\nabla^2 \mathbf{u}$
 
-- $Re = \frac{UL}{\nu}$ (Reynolds number)  
-  $U$: lid velocity, $L$: cavity length, $\nu$: kinematic viscosity
+Where each term means:
+- $\frac{\partial \mathbf{u}}{\partial t}$: **Unsteady term** — Time rate of change of velocity.
+- $(\mathbf{u} \cdot \nabla)\mathbf{u}$: **Convection term** — Transport of momentum by fluid motion.
+- $- \nabla p$: **Pressure gradient term** — Acceleration caused by pressure differences.
+- $\frac{1}{Re}\nabla^2 \mathbf{u}$: **Diffusion term** — Viscous spreading of momentum.
+- $Re = \frac{UL}{\nu}$: **Reynolds number**  
+    - $U$: Lid velocity  
+    - $L$: Cavity length  
+    - $\nu$: Kinematic viscosity
 
-### 3. Expanded 2D Component Form
+---
 
-- x-Momentum:  
+#### Expanded in 2D Components
+
+- **x-Momentum:**
+
   $\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = -\frac{\partial p}{\partial x} + \frac{1}{Re} \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right )$
 
-- y-Momentum:  
+  - $\frac{\partial u}{\partial t}$: Time derivative of $u$
+  - $u \frac{\partial u}{\partial x}$: Convection of $u$ in $x$
+  - $v \frac{\partial u}{\partial y}$: Convection of $u$ in $y$
+  - $-\frac{\partial p}{\partial x}$: Pressure gradient in $x$
+  - $\frac{1}{Re} \frac{\partial^2 u}{\partial x^2}$: Viscous diffusion in $x$
+  - $\frac{1}{Re} \frac{\partial^2 u}{\partial y^2}$: Viscous diffusion in $y$
+
+- **y-Momentum:**
+
   $\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} = -\frac{\partial p}{\partial y} + \frac{1}{Re} \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right )$
+
+  - $\frac{\partial v}{\partial t}$: Time derivative of $v$
+  - $u \frac{\partial v}{\partial x}$: Convection of $v$ in $x$
+  - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
+  - $-\frac{\partial p}{\partial y}$: Pressure gradient in $y$
+  - $\frac{1}{Re} \frac{\partial^2 v}{\partial x^2}$: Viscous diffusion in $x$
+  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y$
 
 ---
 
 ## 🛠 SIMPLE Algorithm Steps
 
-The SIMPLE algorithm iteratively solves the equations above for incompressible flow.
+The SIMPLE algorithm solves these equations with the following procedure:
 
 1. **Predictor Step:**  
-   Solve momentum equations for an intermediate velocity $\mathbf{u}^*$, using the current pressure.
+   - Solve momentum equations for an intermediate velocity $\mathbf{u}^*$ using the current pressure estimate.
 
 2. **Pressure Correction:**  
-   Solve the Poisson equation for pressure correction $p'$:
-
-   $\nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*$
+   - Solve the pressure correction Poisson equation:  
+     $\nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*$  
+     where $p'$ is the pressure correction and $\Delta t$ is the time step.
 
 3. **Corrector Step:**  
-   Update velocities and pressure:
-
-   - $\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'$
-   - $p^{n+1} = p^{n} + \alpha p'$
-
-   where $\alpha$ is the pressure under-relaxation factor ($0 < \alpha \leq 1$)
+   - Update velocities and pressure:  
+     $\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'$  
+     $p^{n+1} = p^{n} + \alpha p'$  
+     where $\alpha$ is the under-relaxation factor ($0 < \alpha \leq 1$).
 
 ---
 
