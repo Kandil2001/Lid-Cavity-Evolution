@@ -4,37 +4,37 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Table of Contents
-- [🌟 Introduction](#introduction)
-- [💡 Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
-- [⚡ Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
-- [🧮 Governing Equations](#governing-equations)
-- [🛠 SIMPLE Algorithm Steps](#simple-algorithm-steps)
-- [🧑‍💻 Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
-- [🏁 Project Roadmap](#project-roadmap)
-- [📊 Benchmark Table](#benchmark-table)
-- [🚀 Getting Started](#getting-started)
-- [🤝 Contributing](#contributing)
-- [📜 License](#license)
-- [📚 References](#references)
+- [Introduction](#introduction)
+- [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
+- [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
+- [Governing Equations](#governing-equations)
+- [SIMPLE Algorithm Steps](#simple-algorithm-steps)
+- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
+- [Project Roadmap](#project-roadmap)
+- [Benchmark Table](#benchmark-table)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
+- [References](#references)
 
-## 🌟 Introduction
+## Introduction
 
 **Lid Cavity Evolution** is an open-source benchmark suite that chronicles the development of the classic lid-driven cavity CFD problem—from foundational MATLAB scripts to industrial-grade solvers. The project emphasizes accuracy, performance, and reproducibility for unsteady incompressible flow simulation.
 
-## 💡 Why the Lid-Driven Cavity?
+## Why the Lid-Driven Cavity?
 
 - **Standard Test Case:** Simple geometry, well-defined boundaries, and established reference solutions make it ideal for CFD code verification.
 - **Rich Physics:** Captures vortex formation, boundary layers, and evolving flow structures.
 - **Unsteady Simulation:** Tracks time evolution of flow fields, including transient and nonlinear phenomena.
 
-## ⚡ Why the SIMPLE Algorithm?
+## Why the SIMPLE Algorithm?
 
 Simulating incompressible flows is numerically challenging due to tight coupling of velocity and pressure. The **SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)** algorithm is widely used because it:
 - Decouples momentum and continuity equations for robust convergence.
 - Uses a staggered grid to prevent checkerboard pressure artifacts.
 - Applies under-relaxation for improved stability and efficiency.
 
-## 🧮 Governing Equations
+## Governing Equations
 
 The solver models unsteady, incompressible, two-dimensional flow in a square cavity with a moving lid.
 
@@ -86,7 +86,7 @@ Where each term means:
   - $\frac{1}{Re} \frac{\partial^2 v}{\partial x^2}$: Viscous diffusion in $x$
   - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y`
 
-## 🛠 SIMPLE Algorithm Steps
+## SIMPLE Algorithm Steps
 
 The SIMPLE algorithm solves these equations with the following procedure:
 1. **Predictor Step:**  
@@ -101,7 +101,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
      $p^{n+1} = p^{n} + \alpha p'$  
      where $\alpha$ is the under-relaxation factor ($0 < \alpha \leq 1$).
 
-## 🧑‍💻 Numerical Methods & Boundary Conditions
+## Numerical Methods & Boundary Conditions
 
 - **Spatial Discretization:** Second-order central differencing
 - **Time Discretization:** First-order implicit Euler
@@ -111,7 +111,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
     - **Other walls:** $u = v = 0$ (no-slip)
     - **Pressure:** Neumann ($\frac{\partial p}{\partial n} = 0$) at boundaries
 
-## 🏁 Project Roadmap
+## Project Roadmap
 
 | Phase | Description | Status |
 |-------|-------------|--------|
@@ -124,7 +124,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
 |             | STAR-CCM+ case setup              | 📋 Planned |
 | **Phase 4** | Validation & analysis             | 📋 Planned |
 
-## 📊 Benchmark Table
+## Benchmark Table
 
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
 |-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
@@ -136,7 +136,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
 | _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
 _Hardware: Intel i7-12700K, 32GB RAM_
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **MATLAB:** R2020a or later (for initial implementations)
@@ -144,7 +144,7 @@ _Hardware: Intel i7-12700K, 32GB RAM_
 - **OpenFOAM:** (planned)
 - **STAR-CCM+:** (planned)
 
-## 🤝 Contributing
+## Contributing
 
 We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 - Adding new solver implementations
@@ -153,12 +153,12 @@ We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for 
 - Reporting issues or suggesting enhancements
 Feel free to open an issue or submit a pull request!
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License.  
 See [LICENSE](LICENSE) for details.
 
-## 📚 References
+## References
 
 1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). _High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method_. J. Comput. Phys., 48(3), 387-411.
 2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_. Hemisphere Publishing.
