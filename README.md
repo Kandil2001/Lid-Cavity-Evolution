@@ -4,18 +4,18 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Table of Contents
-- [Introduction](#introduction)
-- [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
-- [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
-- [Governing Equations](#governing-equations)
-- [SIMPLE Algorithm Steps](#simple-algorithm-steps)
-- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
-- [Project Roadmap](#project-roadmap)
-- [Benchmark Table](#benchmark-table)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [License](#license)
-- [References](#references)
+- [🌟 Introduction](#🌟-introduction)
+- [💡 Why the Lid-Driven Cavity?](#💡-why-the-lid-driven-cavity)
+- [⚡ Why the SIMPLE Algorithm?](#⚡-why-the-simple-algorithm)
+- [🧮 Governing Equations](#🧮-governing-equations)
+- [🛠 SIMPLE Algorithm Steps](#🛠-simple-algorithm-steps)
+- [🧑‍💻 Numerical Methods & Boundary Conditions](#🧑‍💻-numerical-methods--boundary-conditions)
+- [🏁 Project Roadmap](#🏁-project-roadmap)
+- [📊 Benchmark Table](#📊-benchmark-table)
+- [🚀 Getting Started](#🚀-getting-started)
+- [🤝 Contributing](#🤝-contributing)
+- [📜 License](#📜-license)
+- [📚 References](#📚-references)
 
 ## 🌟 Introduction
 
