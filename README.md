@@ -1,6 +1,6 @@
 # SIMPLE2D_LidDrivenCavity_Vectorized.m — Vectorized SIMPLE Solver
 
-[View the MATLAB source code: SIMPLE2D_LidDrivenCavity_Vectorized.m](Vectorized-Solver.m)
+[View the MATLAB source code: Vectorized-Solver.m](Vectorized-Solver.m)
 
 This script implements the SIMPLE algorithm for unsteady 2D lid-driven cavity flow on a staggered grid, using a fully vectorized approach for maximum MATLAB performance. Structure, boundary conditions, and outputs match the iterative version for direct comparison. Real-time visualization and GIF output are included.
 
