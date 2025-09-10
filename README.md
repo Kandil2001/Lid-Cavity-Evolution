@@ -128,13 +128,14 @@ The SIMPLE algorithm solves these equations with the following procedure:
 
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
 |-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
-| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 2478.76          | 1x      | ✅ Complete    |
+| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | TBD              | 1x      | ✅ Complete    |
 | _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
-| _lid_cavity_serial.py_                    | Python/NumPy | Serial                  | TBD              | TBD     | 📋 Planned     |
+| _lid_cavity_serial.py_                    | Python/NumPy | Serial (Loops)          | TBD              | TBD     | 📋 Planned     |
+| _lid_cavity_vectorized.py_                | Python/NumPy | Serial (Vectorized)     | TBD              | TBD     | 📋 Planned     |
 | _lid_cavity_parallel.py_                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
 | _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
 | _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
-_Hardware: Intel i7-12700K, 32GB RAM_
+_Hardware: 
 
 ## Getting Started
 
