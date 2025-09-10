@@ -72,7 +72,6 @@ while time < total_time
         [u, v, p] = corrector_step_fast(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
         % Check convergence
     end
-    % Visualization & GIF saving
     time = time + dt;
 end
 ```
