@@ -123,7 +123,7 @@ Final residuals: u = ___, v = ___, p = ___
 ## License
 
 This code is released under the MIT License.  
-See [LICENSE](../LICENSE) for details.
+See [LICENSE](LICENSE) for details.
 
 
 *For questions, feedback, or contributions, see the main project repository.*
