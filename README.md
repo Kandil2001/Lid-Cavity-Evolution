@@ -1,5 +1,7 @@
 # SIMPLE2D_LidDrivenCavity_Optimized.m â€” Optimized Iterative SIMPLE Solver
 
+[View the MATLAB source code: IterativeSolver.m](IterativeSolver.m)
+
 This script implements the SIMPLE algorithm for unsteady 2D lid-driven cavity flow on a staggered grid, using an optimized, pure loop-based approach for clarity and performance. Real-time visualization and GIF output are included.
 
 ## Table of Contents
@@ -38,8 +40,6 @@ This solver is crafted for maximum efficiency within the constraints of MATLABâ€
 This approach is ideal for benchmarking, teaching, and as a reference point before moving to vectorized or compiled solvers.
 
 ## How to Use
-
-- [IterativeSolver.m](IterativeSolver.m): Main MATLAB script for this solver.
 
 1. Open MATLAB (R2020a or newer recommended).
 2. Open `SIMPLE2D_LidDrivenCavity_Optimized.m` in the `Matlab` folder.
