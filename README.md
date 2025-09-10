@@ -35,7 +35,6 @@ This solver is crafted for maximum efficiency within the constraints of MATLABâ€
 - **Precomputing constants** (e.g., $1/dx$, $dt \cdot \alpha$) outside inner loops to avoid redundant calculations.
 - **Minimal memory overhead:** All arrays are preallocated and expanded only if necessary.
 - **Tight triple-nested loops:** Loops are structured for clarity and cache efficiency, with no unnecessary function calls or dynamic allocation inside the core.
-- **No vectorization:** While MATLAB is fastest with vectorized code, this is the fastest possible pure-loop versionâ€”a direct performance baseline for educational use and comparison with more advanced approaches.
 
 This approach is ideal for benchmarking, teaching, and as a reference point before moving to vectorized or compiled solvers.
 
