@@ -135,6 +135,7 @@ The SIMPLE algorithm solves these equations with the following procedure:
 | _lid_cavity_parallel.py_                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
 | _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
 | _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
+
 _Hardware: 
 
 ## Getting Started
