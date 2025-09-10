@@ -39,6 +39,8 @@ This approach is ideal for benchmarking, teaching, and as a reference point befo
 
 ## How to Use
 
+- [IterativeSolver.m](IterativeSolver.m): Main MATLAB script for this solver.
+
 1. Open MATLAB (R2020a or newer recommended).
 2. Open `SIMPLE2D_LidDrivenCavity_Optimized.m` in the `Matlab` folder.
 3. Adjust simulation parameters at the top as needed:
