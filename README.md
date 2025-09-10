@@ -43,11 +43,11 @@ Each solver script contains its own documentation and usage instructions in the 
 ## Contributing
 
 Contributions and suggestions are welcome!  
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
 This code is released under the MIT License.  
-See [LICENSE](../LICENSE) for details.
+See [LICENSE](LICENSE) for details.
 
 ---
