@@ -13,6 +13,7 @@ This script implements the SIMPLE algorithm for unsteady 2D lid-driven cavity fl
 - [Simulation Output](#simulation-output)
 - [Performance and Running Time](#performance-and-running-time)
 - [Residuals and Convergence](#residuals-and-convergence)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
@@ -120,6 +121,10 @@ Average time per step: ___ seconds
 
 Final residuals: u = ___, v = ___, p = ___
 
+## Contributing
+
+Contributions, suggestions, and improvements are welcome!  
+If you’d like to propose changes or edits, please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to participate.
 
 ## License
 
