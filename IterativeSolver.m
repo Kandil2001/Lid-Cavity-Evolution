@@ -1,4 +1,4 @@
-function SIMPLE2D_LidDrivenCavity()
+function IterativeSolver()
 %% SIMPLE2D_LidDrivenCavity
 % Solves the 2D Lid-Driven Cavity problem using the SIMPLE algorithm.
 % This implementation uses triple-nested loops for educational clarity,
@@ -562,4 +562,5 @@ function vort = curl(X, Y, u, v)
 [dudy, dudx] = gradient(u, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
 [dvdy, dvdx] = gradient(v, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
 vort = dvdx - dudy;
+
 end
