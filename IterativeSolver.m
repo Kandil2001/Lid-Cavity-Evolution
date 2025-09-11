@@ -31,13 +31,13 @@ L = 1.0;                % Cavity length
 n = 151;                % Grid size (n x n) - 151x151 provides good resolution
 dx = L/(n-1); 
 dy = dx;                % Square cells
-dt = 0.0005;            % Time step - stability constraint for explicit methods
+dt = 0.001;            % Time step - stability constraint for explicit methods
 nu = 1/Re;              % Kinematic viscosity
 alpha_u = 0.5;          % Under-relaxation for velocity (0 < alpha_u <= 1)
 alpha_p = 0.2;          % Under-relaxation for pressure (0 < alpha_p <= 1)
 tol = 1e-5;             % SIMPLE convergence tolerance
 max_iter = 500;         % Max SIMPLE iterations per time step
-total_time = 2;         % Total simulation time
+total_time = 0.5;         % Total simulation time
 
 % GIF recording parameters
 record_gif = true;      % Set to true to record GIFs
@@ -564,3 +564,4 @@ function vort = curl(X, Y, u, v)
 vort = dvdx - dudy;
 
 end
+
