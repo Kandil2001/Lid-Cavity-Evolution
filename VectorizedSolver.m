@@ -1,4 +1,4 @@
-function SIMPLE2D_LidDrivenCavity_Vectorized()
+function VectorizedSolver()
 %% SIMPLE2D_LidDrivenCavity_Vectorized
 % 2D Lid-Driven Cavity using SIMPLE algorithm (Vectorized Version)
 % Structure and outputs are matched to the iterative implementation for fair comparison.
@@ -12,13 +12,13 @@ Re = 100;                  % Reynolds number
 L = 1.0;                   % Cavity size
 n = 151;                   % Grid size (n x n)
 dx = L/(n-1); dy = dx;
-dt = 0.0005;               % Time step
+dt = 0.001;               % Time step
 nu = 1/Re;                 % Kinematic viscosity
 alpha_u = 0.5;             % Under-relaxation for velocity
 alpha_p = 0.2;             % Under-relaxation for pressure
 tol = 1e-5;                % SIMPLE convergence tolerance
 max_iter = 500;            % Max SIMPLE iterations per time step
-total_time = 2;            % Total simulation time
+total_time = 0.5;            % Total simulation time
 
 record_gif = true; gif_frame_interval = 5;
 
@@ -245,3 +245,4 @@ function vort = vorticity_field(X, Y, u, v)
 [dvdy, dvdx] = gradient(v, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
 vort = dvdx - dudy;
 end
+
