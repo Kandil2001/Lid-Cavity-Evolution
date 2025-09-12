@@ -6,7 +6,7 @@
     <img src="logos/python.png" width="70"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="logos/openfoam.png" width="70"/>
+    <img src="logos/openfoam_white.png" width="70"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
     <img src="logos/starccm.png" width="70"/>
@@ -17,17 +17,34 @@
 <p align="center"><i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
-  <img src="https://img.shields.io/badge/Version-0.1.0-green.svg" alt="Version"/>
-  <img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"/>
-  <img src="https://img.shields.io/badge/MATLAB-R2020a+-blue.svg" alt="MATLAB"/>
-  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python"/>
-  <img src="https://img.shields.io/badge/OpenFOAM-Supported-lightgrey.svg" alt="OpenFOAM"/>
-  <img src="https://img.shields.io/badge/STAR--CCM+-Supported-lightgrey.svg" alt="STAR-CCM+"/>
-  <img src="https://img.shields.io/badge/MPI-Planned-green.svg" alt="MPI"/>
-  <img src="https://img.shields.io/badge/OpenMP-Planned-green.svg" alt="OpenMP"/>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/releases">
+    <img src="https://img.shields.io/badge/Version-0.1.0-green.svg" alt="Version"/>
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"/>
+  </a>
+  <a href="https://www.mathworks.com/products/matlab.html">
+    <img src="https://img.shields.io/badge/MATLAB-R2020a+-blue.svg" alt="MATLAB"/>
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python"/>
+  </a>
+  <a href="https://www.openfoam.com/">
+    <img src="https://img.shields.io/badge/OpenFOAM-Supported-lightgrey.svg" alt="OpenFOAM"/>
+  </a>
+  <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
+    <img src="https://img.shields.io/badge/STAR--CCM+-Supported-lightgrey.svg" alt="STAR-CCM+"/>
+  </a>
+  <a href="https://mpi-forum.org/">
+    <img src="https://img.shields.io/badge/MPI-Planned-green.svg" alt="MPI"/>
+  </a>
+  <a href="https://www.openmp.org/">
+    <img src="https://img.shields.io/badge/OpenMP-Planned-green.svg" alt="OpenMP"/>
+  </a>
 </p>
-
 
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
