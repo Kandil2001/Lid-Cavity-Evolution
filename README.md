@@ -3,9 +3,30 @@
 
 <table>
   <tr>
-    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/><br><sub><b>MATLAB</b></sub></td>
-    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/><br><sub><b>Python</b></sub></td>
-    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/><br><sub><b>OpenFOAM</b></sub></td>
+    <td align="center">
+      <a href="https://www.mathworks.com/products/matlab.html">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/>
+        <br><sub><b>MATLAB</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.python.org/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/>
+        <br><sub><b>Python</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.openfoam.com/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/>
+        <br><sub><b>OpenFOAM</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Siemens_logo.svg/512px-Siemens_logo.svg.png" width="60"/>
+        <br><sub><b>STAR-CCM+</b></sub>
+      </a>
+    </td>
   </tr>
 </table>
 
@@ -18,6 +39,7 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 [![Made by Ahmed Kandil](https://img.shields.io/badge/Made%20by-Ahmed%20Kandil-blue.svg)](https://github.com/Kandil2001)
 
 </div>
+
 
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
