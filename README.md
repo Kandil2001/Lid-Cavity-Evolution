@@ -6,30 +6,26 @@
     <img src="logos/python.png" width="70"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="logos/openfoam.png" width="70"/>
+    <img src="logos/openfoam_white.png" width="70"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
     <img src="logos/starccm.png" width="70"/>
   </a>
 </p>
 
-
 <h1 align="center">🌀 Lid Cavity Evolution</h1>
 <p align="center"><i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i></p>
 
 <p align="center">
-  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License">
-  </a>
-  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/stargazers">
-    <img src="https://img.shields.io/github/stars/Kandil2001/Lid-Cavity-Evolution?style=social" alt="GitHub Stars">
-  </a>
-  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/network/members">
-    <img src="https://img.shields.io/github/forks/Kandil2001/Lid-Cavity-Evolution?style=social" alt="GitHub Forks">
-  </a>
-  <a href="https://github.com/Kandil2001">
-    <img src="https://img.shields.io/badge/Made%20by-Ahmed%20Kandil-blue.svg" alt="Author Badge">
-  </a>
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
+  <img src="https://img.shields.io/badge/Version-0.1.0-green.svg" alt="Version"/>
+  <img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"/>
+  <img src="https://img.shields.io/badge/MATLAB-R2020a+-blue.svg" alt="MATLAB"/>
+  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python"/>
+  <img src="https://img.shields.io/badge/OpenFOAM-Supported-lightgrey.svg" alt="OpenFOAM"/>
+  <img src="https://img.shields.io/badge/STAR--CCM+-Supported-lightgrey.svg" alt="STAR-CCM+"/>
+  <img src="https://img.shields.io/badge/MPI-Planned-green.svg" alt="MPI"/>
+  <img src="https://img.shields.io/badge/OpenMP-Planned-green.svg" alt="OpenMP"/>
 </p>
 
 
