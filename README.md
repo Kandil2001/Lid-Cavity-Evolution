@@ -1,45 +1,40 @@
 <!-- PROJECT HEADER -->
 <div align="center">
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://www.mathworks.com/products/matlab.html">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/>
-        <br><sub><b>MATLAB</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://www.python.org/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/>
-        <br><sub><b>Python</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://www.openfoam.com/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/>
-        <br><sub><b>OpenFOAM</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Siemens_logo.svg/512px-Siemens_logo.svg.png" width="60"/>
-        <br><sub><b>STAR-CCM+</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
+<p>
+  <a href="https://www.mathworks.com/products/matlab.html">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/>
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/>
+  </a>
+  <a href="https://www.openfoam.com/">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/>
+  </a>
+  <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Siemens_logo.svg/512px-Siemens_logo.svg.png" width="60"/>
+  </a>
+</p>
 
-# 🌀 Lid Cavity Evolution  
-_A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
+<h1>🌀 Lid Cavity Evolution</h1>
+<i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/Kandil2001/Lid-Cavity-Evolution?style=social)](https://github.com/Kandil2001/Lid-Cavity-Evolution/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/Kandil2001/Lid-Cavity-Evolution?style=social)](https://github.com/Kandil2001/Lid-Cavity-Evolution/network/members)
-[![Made by Ahmed Kandil](https://img.shields.io/badge/Made%20by-Ahmed%20Kandil-blue.svg)](https://github.com/Kandil2001)
+<p>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License">
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/stargazers">
+    <img src="https://img.shields.io/github/stars/Kandil2001/Lid-Cavity-Evolution?style=social" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/network/members">
+    <img src="https://img.shields.io/github/forks/Kandil2001/Lid-Cavity-Evolution?style=social" alt="GitHub Forks">
+  </a>
+  <a href="https://github.com/Kandil2001">
+    <img src="https://img.shields.io/badge/Made%20by-Ahmed%20Kandil-blue.svg" alt="Author Badge">
+  </a>
+</p>
 
 </div>
-
 
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
