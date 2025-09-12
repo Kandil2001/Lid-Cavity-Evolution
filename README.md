@@ -40,6 +40,7 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Features](#features)
 - [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
 - [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
 - [Governing Equations](#governing-equations)
@@ -51,6 +52,9 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 - [Contributing](#contributing)
 - [License](#license)
 - [References](#references)
+- [Citation](#citation)
+- [Contact](#contact)
+
 
 ## Introduction
 
@@ -200,5 +204,13 @@ See [LICENSE](LICENSE) for details.
 1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). _High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method_. J. Comput. Phys., 48(3), 387-411.
 2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_. Hemisphere Publishing.
 3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). _Computational Methods for Fluid Dynamics_. Springer.
+
+## Contact
+
+For questions, suggestions, or collaboration inquiries, feel free to:
+
+- Open an issue on [GitHub](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
+- Reach out via email: **kandil.ahmed.amr@gmail.com**
+- Connect on [LinkedIn](https://www.linkedin.com/in/ahmed-kandil-dev) *(optional — add if you want)*
 
 > **Note:** This project is under active development. Check back for updates and new solver releases!
