@@ -1,25 +1,22 @@
-<!-- PROJECT HEADER -->
-<div align="center">
-
-<p>
+<p align="center">
   <a href="https://www.mathworks.com/products/matlab.html">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png" width="60"/>
   </a>
   <a href="https://www.python.org/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.png" width="60"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/>
+    <img src="https://raw.githubusercontent.com/OpenFOAM/OpenFOAM-9/master/doc/images/openfoam.png" width="60"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Siemens_logo.svg/512px-Siemens_logo.svg.png" width="60"/>
+    <img src="https://plm.sw.siemens.com/themes/custom/siemens_theme/logo.svg" width="60"/>
   </a>
 </p>
 
-<h1>🌀 Lid Cavity Evolution</h1>
-<i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i>
+<h1 align="center">🌀 Lid Cavity Evolution</h1>
+<p align="center"><i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i></p>
 
-<p>
+<p align="center">
   <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License">
   </a>
@@ -34,7 +31,6 @@
   </a>
 </p>
 
-</div>
 
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
