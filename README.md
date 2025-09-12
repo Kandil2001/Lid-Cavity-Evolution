@@ -1,3 +1,20 @@
+<!-- PROJECT HEADER -->
+<div align="center">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/CFD_logo.svg/512px-CFD_logo.svg.png" alt="CFD Logo" width="100"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" alt="MATLAB Logo" width="90"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" alt="Python Logo" width="90"/>
+
+# 🌀 Lid Cavity Evolution  
+_A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Kandil2001/Lid-Cavity-Evolution?style=social)](https://github.com/Kandil2001/Lid-Cavity-Evolution/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Kandil2001/Lid-Cavity-Evolution?style=social)](https://github.com/Kandil2001/Lid-Cavity-Evolution/network/members)
+[![Made by Ahmed Kandil](https://img.shields.io/badge/Made%20by-Ahmed%20Kandil-blue.svg)](https://github.com/Kandil2001)
+
+</div>
+
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
 
