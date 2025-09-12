@@ -1,9 +1,13 @@
 <!-- PROJECT HEADER -->
 <div align="center">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/CFD_logo.svg/512px-CFD_logo.svg.png" alt="CFD Logo" width="100"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" alt="MATLAB Logo" width="90"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" alt="Python Logo" width="90"/>
+<table>
+  <tr>
+    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Matlab_Logo.png/512px-Matlab_Logo.png" width="60"/><br><sub><b>MATLAB</b></sub></td>
+    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/512px-Python.svg.png" width="60"/><br><sub><b>Python</b></sub></td>
+    <td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/OpenFOAM_logo.svg/512px-OpenFOAM_logo.svg.png" width="60"/><br><sub><b>OpenFOAM</b></sub></td>
+  </tr>
+</table>
 
 # 🌀 Lid Cavity Evolution  
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
