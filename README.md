@@ -1,15 +1,15 @@
 <p align="center">
   <a href="https://www.mathworks.com/products/matlab.html">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png" width="60"/>
+    <img src="logos/matlab.png" width="60"/>
   </a>
   <a href="https://www.python.org/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.png" width="60"/>
+    <img src="logos/python.png" width="60"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="https://raw.githubusercontent.com/OpenFOAM/OpenFOAM-9/master/doc/images/openfoam.png" width="60"/>
+    <img src="logos/openfoam.png" width="60"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
-    <img src="https://plm.sw.siemens.com/themes/custom/siemens_theme/logo.svg" width="60"/>
+    <img src="logos/starccm.png" width="60"/>
   </a>
 </p>
 
