@@ -1,17 +1,18 @@
 <p align="center">
   <a href="https://www.mathworks.com/products/matlab.html">
-    <img src="logos/matlab.png" width="70" style="margin: 0 15px"/><br><sub><b>MATLAB</b></sub>
+    <img src="logos/matlab.png" width="70"/>
   </a>
   <a href="https://www.python.org/">
-    <img src="logos/python.png" width="70" style="margin: 0 15px"/><br><sub><b>Python</b></sub>
+    <img src="logos/python.png" width="70"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="logos/openfoam.png" width="70" style="background:white; padding:6px; border-radius:6px"/><br><sub><b>OpenFOAM</b></sub>
+    <img src="logos/openfoam.png" width="70"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
-    <img src="logos/starccm.png" width="70" style="margin: 0 15px"/><br><sub><b>STAR-CCM+</b></sub>
+    <img src="logos/starccm.png" width="70"/>
   </a>
 </p>
+
 
 <h1 align="center">🌀 Lid Cavity Evolution</h1>
 <p align="center"><i>A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications</i></p>
