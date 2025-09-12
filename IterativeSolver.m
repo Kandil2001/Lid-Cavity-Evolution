@@ -43,6 +43,25 @@ total_time = 0.5;         % Total simulation time
 record_gif = true;      % Set to true to record GIFs
 gif_frame_interval = 5; % Save every Nth frame to GIF
 
+%% Optimized Calculations and Pre-allocation 🚀
+% Pre-calculate constant terms for efficiency
+inv_4dx = 1/(4*dx);
+inv_4dy = 1/(4*dy);
+inv_dx_sq = 1/dx^2;
+inv_dy_sq = 1/dy^2;
+inv_dt_dx_dy = 1/(dt * dx * dy);
+inv_dt_dx = 1/(dt*dx);
+inv_dt_dy = 1/(dt*dy);
+alpha_dt = alpha_u * dt;
+alpha_dt_dx = alpha_u * dt / dx;
+alpha_dt_dy = alpha_u * dt / dy;
+
+% Pre-allocate arrays to their final size to avoid re-allocation inside loops
+max_steps = ceil(total_time/dt);
+res_u_arr = zeros(1, max_steps); 
+res_v_arr = zeros(1, max_steps); 
+res_p_arr = zeros(1, max_steps);
+
 %% Grid generation and variable initialization
 [X, Y] = meshgrid(0:dx:L, 0:dy:L);
 u = zeros(n);           % x-velocity component
@@ -55,12 +74,6 @@ u(end,:) = 1;           % Lid moves to the right with unit velocity
 % Initialize time tracking and residuals storage
 time = 0; 
 step = 0;
-max_steps = ceil(total_time/dt);
-
-% Pre-allocate arrays for residual history with reasonable initial size
-res_u_arr = zeros(1000,1); 
-res_v_arr = zeros(1000,1); 
-res_p_arr = zeros(1000,1);
 
 % Initialize GIF structures if recording
 if record_gif
@@ -107,7 +120,6 @@ subplot(2,3,3);
 if max(p(:)) - min(p(:)) > eps
     [~, h_contour_p] = contourf(X, Y, p, 20, 'LineColor','none');
 else
-    % If data is constant, create a uniform plot
     imagesc(p);
     set(gca, 'YDir', 'normal');
 end
@@ -161,15 +173,6 @@ tic;  % Start measuring real time
 %% Time stepping loop
 while time < total_time
     step = step + 1;
-    
-    % Check if we need to expand residual storage
-    if step > length(res_u_arr)
-        % Double the storage to avoid growing arrays every step
-        new_size = 2 * length(res_u_arr);
-        res_u_arr(new_size) = 0;
-        res_v_arr(new_size) = 0;
-        res_p_arr(new_size) = 0;
-    end
     
     % Store previous time step values
     u_old = u; 
@@ -359,23 +362,30 @@ n = size(u,1);
 u_star = u; 
 v_star = v;
 
+% Pre-calculate constant terms for efficiency
+inv_4dx = 1/(4*dx);
+inv_4dy = 1/(4*dy);
+inv_dx_sq = 1/dx^2;
+inv_dy_sq = 1/dy^2;
+alpha_dt = alpha * dt;
+
 % Calculate intermediate u-velocity
 for j = 2:n-1
     for i = 2:n-1
         % Convective terms (using divergence form)
-        du2dx = ((u(j,i)+u(j,i+1))^2 - (u(j,i-1)+u(j,i))^2)/(4*dx);
+        du2dx = ((u(j,i)+u(j,i+1))^2 - (u(j,i-1)+u(j,i))^2) * inv_4dx;
         duvdy = ((v(j,i)+v(j,i+1))*(u(j,i)+u(j+1,i)) - ...
-                 (v(j-1,i)+v(j-1,i+1))*(u(j-1,i)+u(j,i)))/(4*dy);
+                 (v(j-1,i)+v(j-1,i+1))*(u(j-1,i)+u(j,i))) * inv_4dy;
         
         % Diffusion terms
-        d2udx2 = (u(j,i+1)-2*u(j,i)+u(j,i-1))/dx^2;
-        d2udy2 = (u(j+1,i)-2*u(j,i)+u(j-1,i))/dy^2;
+        d2udx2 = (u(j,i+1)-2*u(j,i)+u(j,i-1)) * inv_dx_sq;
+        d2udy2 = (u(j+1,i)-2*u(j,i)+u(j-1,i)) * inv_dy_sq;
         
         % Pressure gradient
-        dpdx = (p(j,i+1) - p(j,i))/dx;
+        dpdx = (p(j,i+1) - p(j,i)) / dx;
         
         % Update u_star with under-relaxation
-        u_star(j,i) = u(j,i) + alpha * dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
+        u_star(j,i) = u(j,i) + alpha_dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
     end
 end
 
@@ -383,19 +393,19 @@ end
 for j = 2:n-1
     for i = 2:n-1
         % Convective terms (using divergence form)
-        dv2dy = ((v(j,i)+v(j+1,i))^2 - (v(j-1,i)+v(j,i))^2)/(4*dy);
+        dv2dy = ((v(j,i)+v(j+1,i))^2 - (v(j-1,i)+v(j,i))^2) * inv_4dy;
         duvdx = ((u(j+1,i)+u(j,i))*(v(j,i+1)+v(j,i)) - ...
-                 (u(j+1,i-1)+u(j,i-1))*(v(j,i)+v(j,i-1)))/(4*dx);
+                 (u(j+1,i-1)+u(j,i-1))*(v(j,i)+v(j,i-1))) * inv_4dx;
         
         % Diffusion terms
-        d2vdx2 = (v(j,i+1)-2*v(j,i)+v(j,i-1))/dx^2;
-        d2vdy2 = (v(j+1,i)-2*v(j,i)+v(j-1,i))/dy^2;
+        d2vdx2 = (v(j,i+1)-2*v(j,i)+v(j,i-1)) * inv_dx_sq;
+        d2vdy2 = (v(j+1,i)-2*v(j,i)+v(j-1,i)) * inv_dy_sq;
         
         % Pressure gradient
-        dpdy = (p(j+1,i) - p(j,i))/dy;
+        dpdy = (p(j+1,i) - p(j,i)) / dy;
         
         % Update v_star with under-relaxation
-        v_star(j,i) = v(j,i) + alpha * dt * (-duvdx - dv2dy - dpdy + nu*(d2vdx2 + d2vdy2));
+        v_star(j,i) = v(j,i) + alpha_dt * (-duvdx - dv2dy - dpdy + nu*(d2vdx2 + d2vdy2));
     end
 end
 end
@@ -405,6 +415,12 @@ function p_prime = solve_pressure_poisson(u_star, v_star, dx, dy, dt, tol, max_i
 n = size(u_star,1);
 p_prime = zeros(n);
 
+% Pre-calculate constant terms for efficiency
+inv_dx = 1/dx;
+inv_dy = 1/dy;
+dt_rhs_factor = 1/(dt);
+laplacian_factor = 0.25;
+
 for iter = 1:max_iter
     p_old = p_prime;
     
@@ -412,10 +428,10 @@ for iter = 1:max_iter
     for j = 2:n-1
         for i = 2:n-1
             % Source term (divergence of intermediate velocity field)
-            rhs = ((u_star(j,i) - u_star(j,i-1))/dx + (v_star(j,i) - v_star(j-1,i))/dy)/dt;
+            rhs = ( (u_star(j,i) - u_star(j,i-1))*inv_dx + (v_star(j,i) - v_star(j-1,i))*inv_dy ) * dt_rhs_factor;
             
             % Jacobi iteration for pressure correction
-            p_prime(j,i) = 0.25 * (p_prime(j,i+1) + p_prime(j,i-1) + ...
+            p_prime(j,i) = laplacian_factor * (p_prime(j,i+1) + p_prime(j,i-1) + ...
                                    p_prime(j+1,i) + p_prime(j-1,i) - dx^2 * rhs);
         end
     end
@@ -439,11 +455,15 @@ n = size(p,1);
 u = u_star; 
 v = v_star;
 
+% Pre-calculate constant terms for efficiency
+alpha_dt_dx = alpha * dt / dx;
+alpha_dt_dy = alpha * dt / dy;
+
 % Velocity correction
 for j = 2:n-1
     for i = 2:n-1
-        u(j,i) = u_star(j,i) - alpha * dt * (p_prime(j,i+1) - p_prime(j,i)) / dx;
-        v(j,i) = v_star(j,i) - alpha * dt * (p_prime(j+1,i) - p_prime(j,i)) / dy;
+        u(j,i) = u_star(j,i) - alpha_dt_dx * (p_prime(j,i+1) - p_prime(j,i));
+        v(j,i) = v_star(j,i) - alpha_dt_dy * (p_prime(j+1,i) - p_prime(j,i));
     end
 end
 
@@ -562,6 +582,4 @@ function vort = curl(X, Y, u, v)
 [dudy, dudx] = gradient(u, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
 [dvdy, dvdx] = gradient(v, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
 vort = dvdx - dudy;
-
 end
-
