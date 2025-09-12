@@ -36,8 +36,6 @@
 # Lid Cavity Evolution
 _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications_
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
