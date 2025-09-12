@@ -6,7 +6,7 @@
     <img src="logos/python.png" width="70"/>
   </a>
   <a href="https://www.openfoam.com/">
-    <img src="logos/openfoam_white.png" width="70"/>
+    <img src="logos/openfoam.png" width="70"/>
   </a>
   <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/">
     <img src="logos/starccm.png" width="70"/>
