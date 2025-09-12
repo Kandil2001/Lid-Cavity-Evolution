@@ -58,6 +58,7 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 - [SIMPLE Algorithm Steps](#simple-algorithm-steps)
 - [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
 - [Project Roadmap](#project-roadmap)
+- [Project Structure](#project-structure)
 - [Benchmark Table](#benchmark-table)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
@@ -174,6 +175,36 @@ The SIMPLE algorithm solves these equations with the following procedure:
 |             | STAR-CCM+ case setup              | 📋 Planned |
 | **Phase 4** | Validation & analysis             | 📋 Planned |
 
+## Project Structure
+```
+Lid-Cavity-Evolution/
+├── MATLAB/                     # MATLAB SIMPLE solvers  
+│   ├── SimpleLidcavity.m       # Loop-based implementation  
+│   ├── SimpleLidCavityVector.m # Vectorized implementation  
+│   └── README.md               # MATLAB-specific documentation  
+│
+├── Python/                     # Python solvers (planned)  
+│   ├── lid_cavity_serial.py    # Serial solver  
+│   ├── lid_cavity_parallel.py # Parallel solver (MPI/OpenMP)  
+│   └── README.md               # Python-specific documentation  
+│
+├── benchmarks/                 # Performance comparisons  
+│   ├── matlab_vs_python.md  
+│   └── parallel_scaling.md  
+│
+├── logos/                      # Technology logos  
+│   ├── matlab.png  
+│   ├── python.png  
+│   ├── openfoam_white.png  
+│   └── starccm.png  
+│
+├── assets/                     # Simulation plots  
+│   └── matlab_velocity_field.png  
+│
+├── LICENSE                     # MIT License  
+├── CONTRIBUTING.md             # Contribution guidelines  
+└── README.md                   # Main documentation  
+```
 ## Benchmark Table
 
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
