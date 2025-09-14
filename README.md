@@ -105,11 +105,11 @@ To display your GIFs, upload them to the same folder as this README.*
 
 - **Total elapsed real time:**  
 
-Elapsed real time: ___ seconds (___ minutes)
+Elapsed real time: 19922.08 seconds (332.03 minutes)
 
 - **Average time per time step:**  
 
-Average time per step: ___ seconds
+Average time per step: 39.8442 seconds
 
 ## Residuals and Convergence
 
@@ -118,7 +118,7 @@ Average time per step: ___ seconds
 
 - **Final residual values:**  
 
-Final residuals: u = ___, v = ___, p = ___
+Final residuals: u = 1.11e-16, v = 5.55e-17, p = 1.80e-02
 
 ## Contributing
 
