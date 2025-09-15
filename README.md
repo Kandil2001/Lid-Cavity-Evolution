@@ -186,33 +186,40 @@ The SIMPLE algorithm solves these equations with the following procedure:
 
 ## Project Structure
 ```
-Lid-Cavity-Evolution/
-├── MATLAB/                     # MATLAB SIMPLE solvers  
-│   ├── SimpleLidcavity.m       # Loop-based implementation  
-│   ├── SimpleLidCavityVector.m # Vectorized implementation  
-│   └── README.md               # MATLAB-specific documentation  
-│
-├── Python/                     # Python solvers (planned)  
-│   ├── lid_cavity_serial.py    # Serial solver  
-│   ├── lid_cavity_parallel.py # Parallel solver (MPI/OpenMP)  
-│   └── README.md               # Python-specific documentation  
-│
-├── benchmarks/                 # Performance comparisons  
-│   ├── matlab_vs_python.md  
-│   └── parallel_scaling.md  
-│
-├── logos/                      # Technology logos  
-│   ├── matlab.png  
-│   ├── python.png  
-│   ├── openfoam_white.png  
-│   └── starccm.png  
-│
-├── assets/                     # Simulation plots  
-│   └── matlab_velocity_field.png  
-│
-├── LICENSE                     # MIT License  
-├── CONTRIBUTING.md             # Contribution guidelines  
-└── README.md                   # Main documentation  
+main/
+├── matlab/
+│ ├── iterative-solver/
+│ │ ├── IterativeSolver.m
+│ │ └── README.md
+│ ├── vectorized-solver/
+│ │ ├── SIMPLE2D_LidDrivenCavity_Vectorized.m
+│ │ └── README.md
+│ └── README.md # MATLAB-specific overview
+├── python/
+│ ├── serial/
+│ │ ├── iterative/
+│ │ │ ├── lid_cavity_iterative.py
+│ │ │ └── README.md
+│ │ ├── vectorized/
+│ │ │ ├── lid_cavity_vectorized.py
+│ │ │ └── README.md
+│ │ └── README.md # Serial solvers overview
+│ ├── parallel/
+│ │ ├── mpi/
+│ │ │ ├── lid_cavity_mpi.py
+│ │ │ └── README.md
+│ │ ├── openmp/
+│ │ │ ├── lid_cavity_openmp.py
+│ │ │ └── README.md
+│ │ └── README.md # Parallel solvers overview
+│ └── README.md # Python-specific overview
+├── logos/ # Technology logos
+├── .github/ISSUE_TEMPLATE/ # GitHub issue templates
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── SECURITY.md
+└── README.md # Main project documentation
 ```
 ## Benchmark Table
 
