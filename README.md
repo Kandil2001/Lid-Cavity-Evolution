@@ -44,6 +44,12 @@
   <a href="https://www.openmp.org/">
     <img src="https://img.shields.io/badge/OpenMP-Planned-green.svg" alt="OpenMP"/>
   </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/CODE_OF_CONDUCT.md">
+  <img src="https://img.shields.io/badge/Code%20of%20Conduct-Active-blueviolet" alt="Code of Conduct"/>
+</a>
+<a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/SECURITY.md">
+  <img src="https://img.shields.io/badge/Security-Policy-informational" alt="Security Policy"/>
+</a>
 </p>
 
 # Lid Cavity Evolution
@@ -62,6 +68,9 @@ _A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to 
 - [Benchmark Table](#benchmark-table)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
+- [Code of Conduct](#code-of-conduct)
+- [Security](#security)
+- [Support & Discussion](#support--discussion)
 - [License](#license)
 - [References](#references)
 - [Citation](#citation)
@@ -235,6 +244,19 @@ We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for 
 - Adding validation cases
 - Reporting issues or suggesting enhancements
 Feel free to open an issue or submit a pull request!
+
+## Code of Conduct
+
+Please note that this project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## Security
+
+If you discover a vulnerability, please see our [SECURITY.md](SECURITY.md) for instructions on reporting it.
+
+## Support & Discussion
+
+- For bug reports or feature requests, please use our [issue tracker](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues).
+- For general questions, open an issue or reach out via [email](mailto:kandil.ahmed.amr@gmail.com).
 
 ## License
 
