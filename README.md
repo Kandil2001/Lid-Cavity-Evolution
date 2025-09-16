@@ -1,134 +1,188 @@
-# SIMPLE2D_LidDrivenCavity_Optimized.m — Optimized Iterative SIMPLE Solver
+# SIMPLE2D_LidDrivenCavity_Optimized.m — MATLAB Iterative SIMPLE Solver
 
-[View the MATLAB source code: IterativeSolver.m](IterativeSolver.m)
+**Branch of the Lid Cavity Evolution Benchmark Suite**  
+_Educational, loop-based, and benchmark implementation of the SIMPLE algorithm for unsteady 2D incompressible flow in a square cavity._
 
-This script implements the SIMPLE algorithm for unsteady 2D lid-driven cavity flow on a staggered grid, using an optimized, pure loop-based approach for clarity and performance. Real-time visualization and GIF output are included.
+---
 
 ## Table of Contents
-- [Overview](#overview)
+
+- [About This Solver](#about-this-solver)
 - [Key Features](#key-features)
-- [Why Is This Implementation Optimized?](#why-is-this-implementation-optimized)
-- [How to Use](#how-to-use)
-- [Key Code Snippets](#key-code-snippets)
-- [Simulation Output](#simulation-output)
-- [Performance and Running Time](#performance-and-running-time)
-- [Residuals and Convergence](#residuals-and-convergence)
+- [Algorithm Summary](#algorithm-summary)
+- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
+- [Usage Instructions](#usage-instructions)
+- [Simulation Outputs](#simulation-outputs)
+- [Performance & Convergence](#performance--convergence)
+- [Directory Placement](#directory-placement)
 - [Contributing](#contributing)
 - [License](#license)
+- [References](#references)
+- [Contact](#contact)
 
-## Overview
+---
 
-This solver is a performance-optimized, non-vectorized implementation of the SIMPLE algorithm for the canonical lid-driven cavity CFD benchmark. It is designed for benchmarking and for transparent understanding of each algorithmic step.
+## About This Solver
+
+This branch contains a **modular, loop-based MATLAB implementation** of the SIMPLE algorithm for the classic lid-driven cavity problem.  
+It serves as the **educational and benchmarking baseline** for more advanced solvers in the [Lid Cavity Evolution](../../README.md) project.
+
+- **File:** `IterativeSolver.m`
+- **Location:** `main/matlab/iterative-solver/`
+- **Focus:** Algorithm clarity, modularity, and benchmark performance.
+
+---
 
 ## Key Features
 
-- Finite Volume discretization on a staggered grid
-- Optimized triple-nested loops (no vectorization)
-- Minimal memory overhead and precomputed constants
-- Real-time animated visualization (velocity, pressure, streamlines, residuals)
-- Optional GIF export for all scenes
-- Elapsed time and per-step performance reporting
+| Feature                                   | Description                                                    |
+|--------------------------------------------|----------------------------------------------------------------|
+| Finite Volume, Staggered Grid              | Pressure at cell centers, velocities at faces                  |
+| Modular Functions                          | Predictor, corrector, and pressure Poisson steps               |
+| Triple-nested loops (no vectorization)     | Transparent, easy to follow algorithm structure                |
+| Precomputed constants & preallocated arrays| Efficient memory and calculation management                    |
+| Animated visualization & GIF export        | Each variable/scene gets its own GIF; titles include step info |
+| Performance reporting                      | Elapsed time and per-step diagnostics                          |
+| Strict convergence criteria                | Residual tracking and early stopping                           |
+| Final summary plots                        | Velocity, pressure, vorticity, centerline profiles, residuals  |
 
-## Why Is This Implementation Optimized?
+---
 
-This solver is crafted for maximum efficiency within the constraints of MATLAB’s loop-based coding. Optimizations include:
+## Algorithm Summary
 
-- **Precomputing constants** (e.g., $1/dx$, $dt \cdot \alpha$) outside inner loops to avoid redundant calculations.
-- **Minimal memory overhead:** All arrays are preallocated and expanded only if necessary.
-- **Tight triple-nested loops:** Loops are structured for clarity and cache efficiency, with no unnecessary function calls or dynamic allocation inside the core.
+- **Predictor Step:** Intermediate velocities solved using current pressure.
+- **Pressure Correction:** Pressure Poisson equation solved iteratively.
+- **Corrector Step:** Velocity and pressure updated.
+- **Residual Monitoring:** $u$, $v$, and $p$ residuals checked for convergence.
+- **Boundary conditions:** Set after each field update.
+- **Each scene is captured in its own figure for GIF creation.**
 
-This approach is ideal for benchmarking, teaching, and as a reference point before moving to vectorized or compiled solvers.
+---
 
-## How to Use
+## Numerical Methods & Boundary Conditions
 
-1. Open MATLAB (R2020a or newer recommended).
-2. Open `SIMPLE2D_LidDrivenCavity_Optimized.m` in the `Matlab` folder.
-3. Adjust simulation parameters at the top as needed:
-    ```matlab
-    Re = 100;           % Reynolds number
-    n = 151;            % Grid size
-    dt = 0.001;         % Time step
-    total_time = 2;     % Total simulation time (seconds)
-    record_gif = true;  % Set to true to record GIFs
+| Aspect                 | Approach / Value                                    |
+|------------------------|----------------------------------------------------|
+| Spatial Discretization | Second-order central differencing                  |
+| Temporal Discretization| First-order implicit Euler                         |
+| Grid                   | Staggered, square ($n \times n$)                   |
+| Lid (top wall)         | $u=1$, $v=0$ (moving lid)                          |
+| Other walls            | $u=v=0$ (no-slip)                                  |
+| Pressure BCs           | Homogeneous Neumann ($\partial p/\partial n = 0$)  |
+
+---
+
+## Usage Instructions
+
+1. **Requirements:** MATLAB R2020a or newer.
+2. **Setup:**  
+   - Place `IterativeSolver.m` in `main/matlab/iterative-solver/`.
+   - (Optional) Asset folder for GIF/image outputs.
+3. **Configure Parameters:**  
+   At the top of the file:
+   ```matlab
+   Re = 100;           % Reynolds number (try 100, 400, 1000)
+   L = 1.0;            % Cavity length
+   n = 51;             % Grid size (n x n, e.g., 31/51/101)
+   dt = 0.002;         % Time step
+   total_time = 1.0;   % Simulated time (seconds)
+   alpha_u = 0.7;      % Under-relaxation for velocity (0.5 - 0.8 typical)
+   alpha_p = 0.3;      % Under-relaxation for pressure (0.2 - 0.5 typical)
+   tol = 1e-6;         % SIMPLE inner iteration tolerance
+   max_iter = 300;     % Max SIMPLE inner iterations per time step
+   record_gif = true;  % Record GIFs for each scene
     ```
-4. Run the script.
-5. Check figures and terminal output for convergence and performance.
+4. **Run the Script:**  
+   - In MATLAB, enter `IterativeSolver()` in the Command Window or run the script file.
+   - The simulation will begin, displaying progress and performance metrics in the terminal.
+   - Animated figures and GIFs for each scene (velocity vectors, magnitude, pressure, streamlines, residuals) are generated automatically.
 
-## Key Code Snippets
+5. **Check Results:**  
+   - After completion, find GIFs (e.g., `iterative_velocity_vectors.gif`, `iterative_pressure_contour.gif`, etc.) and a summary plot (`final_results.png`) in your working directory.
+   - The summary plot includes velocity vectors, streamlines, velocity magnitude, pressure field, vorticity, centerline velocity profiles, and convergence history.
 
-**Initialization:**
-```matlab
-Re = 100; L = 1.0; n = 151;
-dx = L/(n-1); dt = 0.001;
-u = zeros(n); v = zeros(n); p = zeros(n);
-u(end,:) = 1; % Lid boundary condition
+---
+
+## Simulation Outputs
+
+| Output Type           | Description                | Example Filename                   |
+|-----------------------|---------------------------|------------------------------------|
+| Velocity Vectors GIF  | Flow field animation      | `iterative_velocity_vectors.gif`   |
+| Velocity Magnitude GIF| Speed contours            | `iterative_velocity_contour.gif`   |
+| Pressure GIF          | Pressure distribution     | `iterative_pressure_contour.gif`   |
+| Streamlines GIF       | Flow paths                | `iterative_streamlines.gif`        |
+| Residuals GIF         | Convergence history       | `iterative_residuals.gif`          |
+| Final Results Figure  | Comprehensive summary     | `final_results.png`                |
+
+*GIF/image files are saved in the script directory. Filenames are customizable in the code.*
+
+---
+
+## Performance & Convergence
+
+| Metric                | Typical Value                  |
+|-----------------------|-------------------------------|
+| Elapsed Time          | ~36,435 seconds (~607 minutes)|
+| Avg. Time per Step    | ~72.87 seconds                |
+| Final $u$ Residual    | $1.11 \times 10^{-16}$        |
+| Final $v$ Residual    | $5.55 \times 10^{-17}$        |
+| Final $p$ Residual    | $1.06 \times 10^{-1}$         |
+
+Residuals and convergence are visualized and logged at each time step.
+
+---
+
+## Directory Placement
+
+This solver is part of the MATLAB branch:
 ```
-**Main Time-Stepping and SIMPLE Loop:**
-```matlab
-while time < total_time
-    for iter = 1:max_iter
-        [u_star, v_star] = predictor_step_fast(u, v, p, dx, dy, dt, nu, alpha_u);
-        p_prime = solve_pressure_poisson_fast(u_star, v_star, dx, dy, dt, tol, max_iter);
-        [u, v, p] = corrector_step_fast(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
-        % Check convergence
-    end
-    time = time + dt;
-end
+main/
+├── matlab/
+│ ├── iterative-solver/
+│ │ ├── IterativeSolver.m
+│ │ └── README.md
+│ ├── vectorized-solver/
+│ │ ├── VectorizedSolver.m
+│ │ └── README.md
+│ └── README.md
+├── python/
+│ ├── ...
+├── assets/
+└── ...
 ```
-**GIF Creation:**
-```matlab
-if record_gif && mod(step, gif_frame_interval) == 0
-    subplot(2,3,1); gif_scenes.velocity_vectors.frames = [gif_scenes.velocity_vectors.frames, getframe(gcf)];
-    subplot(2,3,2); gif_scenes.velocity_contour.frames = [gif_scenes.velocity_contour.frames, getframe(gcf)];
-    % ...repeat for other scenes...
-end
-```
+See [main README](../../README.md) for project-wide context.
 
-## Simulation Output
-
-**Velocity Vectors Animation:**  
-![Velocity Vectors](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/vectoriter.gif)
-
-**Velocity Magnitude Contour:**  
-![Velocity Magnitude](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif)
-
-**Pressure Contour:**  
-![Pressure Field](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/pressureiter.gif)
-
-**Stream Lines:**  
-![Stream Lines](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/streamlineiter.gif)
-
-*Replace the filenames above with your actual GIF/image filenames if different.  
-To display your GIFs, upload them to the same folder as this README.*
-
-## Performance and Running Time
-
-- **Total elapsed real time:**  
-
-Elapsed real time: 36435 seconds (607.27 minutes)
-
-- **Average time per time step:**  
-
-Average time per step: 72.8718 seconds
-
-## Residuals and Convergence
-
-- **Residual history plot:**  
-![Residuals](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/residualiter.gif)
-
-- **Final residual values:**  
-
-Final residuals: u = 1.11e-16, v = 5.55e-17, p = 1.06e-01
+---
 
 ## Contributing
 
-Contributions, suggestions, and improvements are welcome!  
-If you’d like to propose changes or edits, please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to participate.
+Contributions, suggestions, and improvements are encouraged!  
+Refer to [CONTRIBUTING.md](../../CONTRIBUTING.md).
+
+---
 
 ## License
 
-This code is released under the MIT License.  
-See [LICENSE](LICENSE) for details.
+Released under the MIT License.  
+See [LICENSE](../../LICENSE).
 
+---
 
-*For questions, feedback, or contributions, see the main project repository.*
+## References
+
+1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). J. Comput. Phys., 48(3), 387-411.
+2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_.
+3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). _Computational Methods for Fluid Dynamics_.
+
+---
+
+## Contact
+
+- [GitHub Issues](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
+- Email: **kandil.ahmed.amr@gmail.com**
+- [LinkedIn](https://www.linkedin.com/in/ahmed-kandil01)
+
+---
+
+**This branch provides the baseline for MATLAB implementations in the Lid Cavity Evolution suite.  
+For advanced solvers, validations, and industrial CFD, see the main project documentation.**
