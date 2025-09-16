@@ -225,7 +225,7 @@ main/
 
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
 |-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
-| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | TBD              | 1x      | ✅ Complete    |
+| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 36435            | 1x      | ✅ Complete    |
 | _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
 | _lid_cavity_serial.py_                    | Python/NumPy | Serial (Loops)          | TBD              | TBD     | 📋 Planned     |
 | _lid_cavity_vectorized.py_                | Python/NumPy | Serial (Vectorized)     | TBD              | TBD     | 📋 Planned     |
