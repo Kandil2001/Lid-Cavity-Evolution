@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.mathworks.com/products/matlab.html">
-    <img src="/logos/matlab.png" width="70"/>
+    <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/logos/matlab.png" width="70"/>
   </a>
 </p>
 
