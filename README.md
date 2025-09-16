@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.mathworks.com/products/matlab.html">
-    <img src="https://www.mathworks.com/matlabcentral/images/matlab-logo.svg" width="70"/>
+    <img src="./logos/matlab.png" width="70"/>
   </a>
 </p>
 
