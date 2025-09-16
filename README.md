@@ -87,16 +87,16 @@ end
 ## Simulation Output
 
 **Velocity Vectors Animation:**  
-![Velocity Vectors](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif)
+![Velocity Vectors](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/vectoriter.gif)
 
 **Velocity Magnitude Contour:**  
-![Velocity Magnitude](velocity_contour.gif)
+![Velocity Magnitude](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif)
 
 **Pressure Contour:**  
-![Pressure Field](pressure_contour.gif)
+![Pressure Field](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/pressureiter.gif)
 
-**Residuals Convergence:**  
-![Residuals](residuals.gif)
+**Stream Lines:**  
+![Stream Lines](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/streamlineiter.gif)
 
 *Replace the filenames above with your actual GIF/image filenames if different.  
 To display your GIFs, upload them to the same folder as this README.*
@@ -114,7 +114,7 @@ Average time per step: 72.8718 seconds
 ## Residuals and Convergence
 
 - **Residual history plot:**  
-![Residuals Convergence](residuals.gif)
+![Residuals](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/residualiter.gif)
 
 - **Final residual values:**  
 
