@@ -175,9 +175,9 @@ The SIMPLE algorithm solves these equations with the following procedure:
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| **Phase 1** | MATLAB loop-based SIMPLE solver | ✅ Complete |
-|             | Vectorized MATLAB implementation | 🚧 In Progress |
-| **Phase 2** | Python/NumPy serial port          | 📋 Planned |
+| **Phase 1** | MATLAB loop-based SIMPLE solver   | ✅ Complete |
+|             | Vectorized MATLAB implementation  | ✅ Complete |
+| **Phase 2** | Python/NumPy serial port          | 🚧 In Progress |
 |             | Vectorized NumPy solver           | 📋 Planned |
 |             | Parallel Python (Numba/Dask)      | 📋 Planned |
 | **Phase 3** | OpenFOAM case setup               | 📋 Planned |
@@ -214,6 +214,7 @@ main/
 │ │ └── README.md # Parallel solvers overview
 │ └── README.md # Python-specific overview
 ├── logos/ # Technology logos
+├── assets/
 ├── .github/ISSUE_TEMPLATE/ # GitHub issue templates
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
