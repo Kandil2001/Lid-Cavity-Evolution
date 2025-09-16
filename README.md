@@ -87,7 +87,7 @@ end
 ## Simulation Output
 
 **Velocity Vectors Animation:**  
-![Velocity Vectors](velocity_vectors.gif)
+![Velocity Vectors](https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif)
 
 **Velocity Magnitude Contour:**  
 ![Velocity Magnitude](velocity_contour.gif)
