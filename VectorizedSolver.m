@@ -1,16 +1,25 @@
 % VectorizedSolver.m
 %
-% SIMPLE 2D Lid-Driven Cavity Solver (Finite Volume, Staggered Grid)
-% Vectorized version for enhanced MATLAB performance.
+% SIMPLE 2D Lid-Driven Cavity Solver (Finite Volume, Staggered Grid, Vectorized)
 %
-% Author: Ahmed Kandil (kandil.ahmed.amr@gmail.com)
-% License: MIT
+% Author: Your Name (your.email@domain.com)
+% License: MIT (see LICENSE file in repository)
 %
 % Usage:
 %   - Open in MATLAB
 %   - Run VectorizedSolver()
-%   - Adjust parameters at the top as needed
+%   - Adjust parameters at the top of the file as needed
 %   - GIFs and summary plots are generated in the working directory
+%
+% Features:
+%   - Fully vectorized, modular implementation for MATLAB performance
+%   - GIF recording: each variable/scene gets its own GIF, titles include time step and SIMPLE iteration
+%   - Final summary plot with velocity, pressure, vorticity, centerline profiles, residuals
+%   - Residual tracking and performance reporting
+%   - Precomputed constants and preallocated arrays for speed
+%   - Structure and interface match iterative version for direct benchmarking
+%
+% -------------------------------------------------------------------------
 
 function VectorizedSolver()
 %% USER-ADJUSTABLE PARAMETERS
@@ -29,18 +38,19 @@ record_gif = true;       % Record GIFs? true/false
 clearvars -except Re L n dt total_time alpha_u alpha_p tol max_iter record_gif;
 clc; close all;
 
-nu = 1/Re;
-dx = L/(n-1); dy = dx;
+nu = 1/Re;               % Kinematic viscosity
+dx = L/(n-1); dy = dx;   % Square cells
 
 max_steps = ceil(total_time/dt);
-res_u_arr = zeros(1, max_steps);
+res_u_arr = zeros(1, max_steps);  % Residuals for plotting
 res_v_arr = zeros(1, max_steps);
 res_p_arr = zeros(1, max_steps);
 
-[X, Y] = meshgrid(0:dx:L, 0:dy:L);
-u = zeros(n); v = zeros(n); p = zeros(n);
-u(end,:) = 1; % Lid moves right
+[X, Y] = meshgrid(0:dx:L, 0:dy:L);       % Grid
+u = zeros(n); v = zeros(n); p = zeros(n);% Solution variables
+u(end,:) = 1;                            % Lid moves right
 
+% GIF recording structure: each scene is a separate figure
 if record_gif
     gif_scenes.velocity_vectors = struct('frames', [], 'filename', 'vectorized_velocity_vectors.gif');
     gif_scenes.velocity_contour = struct('frames', [], 'filename', 'vectorized_velocity_contour.gif');
@@ -63,13 +73,13 @@ while time < total_time
     % SIMPLE Inner Iterations (vectorized)
     for iter = 1:max_iter
         u_prev = u; v_prev = v; p_prev = p;
-        [u_star, v_star] = predictor_step_vec(u, v, p, dx, dy, dt, nu, alpha_u);
-        p_prime = solve_pressure_poisson_vec(u_star, v_star, dx, dy, dt, tol, max_iter);
-        [u, v, p] = corrector_step_vec(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
+        [u_star, v_star] = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha_u);
+        p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter);
+        [u, v, p] = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
 
-        % Boundary conditions
-        u(:,1) = 0; u(:,end) = 0; u(1,:) = 0; u(end,:) = 1;
-        v(:,1) = 0; v(:,end) = 0; v(1,:) = 0; v(end,:) = 0;
+        % Boundary conditions (set after field update)
+        u(:,1) = 0; u(:,end) = 0; u(1,:) = 0; u(end,:) = 1; % Lid
+        v(:,1) = 0; v(:,end) = 0; v(1,:) = 0; v(end,:) = 0; % No-slip
         p(1,:) = p(2,:);   p(end,:) = p(end-1,:);
         p(:,1) = p(:,2);   p(:,end) = p(:,end-1);
 
@@ -84,7 +94,7 @@ while time < total_time
 
     res_u_arr(step) = res_u; res_v_arr(step) = res_v; res_p_arr(step) = res_p;
 
-    % GIF CAPTURE (same as before, just change filenames)
+    % GIF CAPTURE: Each scene is a separate figure with iteration info
     if record_gif
         h1 = figure('Visible','off');
         quiver(X(1:4:end,1:4:end), Y(1:4:end,1:4:end), u(1:4:end,1:4:end), v(1:4:end,1:4:end), 2, 'k');
@@ -129,6 +139,7 @@ while time < total_time
         close(h5);
     end
 
+    % Advance time
     time = time + dt;
 end
 
@@ -170,17 +181,16 @@ function create_gifs(gif_scenes)
     end
 end
 
-function [u_star, v_star] = predictor_step_vec(u, v, p, dx, dy, dt, nu, alpha)
+function [u_star, v_star] = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha)
 n = size(u,1);
 inv_4dx = 1/(4*dx); inv_4dy = 1/(4*dy);
 inv_dx_sq = 1/dx^2; inv_dy_sq = 1/dy^2;
 alpha_dt = alpha * dt;
 u_star = u; v_star = v;
 
-% Interior indices
 ii = 2:n-1; jj = 2:n-1;
 
-% For u
+% Vectorized interior update for u
 du2dx = ((u(jj,ii) + u(jj,ii+1)).^2 - (u(jj,ii-1) + u(jj,ii)).^2) * inv_4dx;
 duvdy = ((v(jj,ii) + v(jj,ii+1)) .* (u(jj,ii) + u(jj+1,ii)) ...
         - (v(jj-1,ii) + v(jj-1,ii+1)) .* (u(jj-1,ii) + u(jj,ii))) * inv_4dy;
@@ -189,7 +199,7 @@ d2udy2 = (u(jj+1,ii) - 2*u(jj,ii) + u(jj-1,ii)) * inv_dy_sq;
 dpdx = (p(jj,ii+1) - p(jj,ii)) / dx;
 u_star(jj,ii) = u(jj,ii) + alpha_dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
 
-% For v
+% Vectorized interior update for v
 dv2dy = ((v(jj,ii) + v(jj+1,ii)).^2 - (v(jj-1,ii) + v(jj,ii)).^2) * inv_4dy;
 duvdx = ((u(jj+1,ii) + u(jj,ii)) .* (v(jj,ii+1) + v(jj,ii)) ...
         - (u(jj+1,ii-1) + u(jj,ii-1)) .* (v(jj,ii) + v(jj,ii-1))) * inv_4dx;
@@ -199,7 +209,7 @@ dpdy = (p(jj+1,ii) - p(jj,ii)) / dy;
 v_star(jj,ii) = v(jj,ii) + alpha_dt * (-duvdx - dv2dy - dpdy + nu*(d2vdx2 + d2vdy2));
 end
 
-function p_prime = solve_pressure_poisson_vec(u_star, v_star, dx, dy, dt, tol, max_iter)
+function p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter)
 n = size(u_star,1);
 p_prime = zeros(n);
 inv_dx = 1/dx; inv_dy = 1/dy;
@@ -209,10 +219,9 @@ ii = 2:n-1; jj = 2:n-1;
 for iter = 1:max_iter
     p_old = p_prime;
     rhs = ((u_star(jj,ii) - u_star(jj,ii-1))*inv_dx + (v_star(jj,ii) - v_star(jj-1,ii))*inv_dy) * dt_rhs_factor;
-    % Jacobi update (vectorized)
     p_prime(jj,ii) = laplacian_factor * (p_prime(jj,ii+1) + p_prime(jj,ii-1) + ...
                                          p_prime(jj+1,ii) + p_prime(jj-1,ii) - dx^2 * rhs);
-    % Homogeneous Neumann BCs
+
     p_prime(1,:) = p_prime(2,:);
     p_prime(end,:) = p_prime(end-1,:);
     p_prime(:,1) = p_prime(:,2);
@@ -224,7 +233,7 @@ for iter = 1:max_iter
 end
 end
 
-function [u, v, p] = corrector_step_vec(u_star, v_star, p, p_prime, dx, dy, dt, alpha)
+function [u, v, p] = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha)
 n = size(p,1);
 alpha_dt_dx = alpha * dt / dx; alpha_dt_dy = alpha * dt / dy;
 ii = 2:n-1; jj = 2:n-1;
