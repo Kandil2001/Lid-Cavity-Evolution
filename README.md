@@ -82,7 +82,7 @@ Each solver script includes inline documentation and usage instructions.
 ## 🖼️ Results Preview
 
 <p align="center">
-  <img src="../assets/matlab_velocity_field.png" width="500"/>
+  <img src="./assets/matlab_velocity_field.png" width="500"/>
 </p>
 <p align="center"><i>Velocity field from MATLAB SIMPLE solver at Re = 100</i></p>
 
@@ -91,11 +91,11 @@ Each solver script includes inline documentation and usage instructions.
 ## 🤝 Contributing
 
 Contributions and suggestions are welcome!  
-See [CONTRIBUTING.md](/CONTRIBUTING.md) for guidelines.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ---
 
 ## 📄 License
 
 This code is released under the MIT License.  
-See [LICENSE](/LICENSE) for details.
+See [LICENSE](./LICENSE) for details.
