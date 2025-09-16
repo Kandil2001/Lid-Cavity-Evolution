@@ -192,24 +192,24 @@ main/
 │ │ ├── IterativeSolver.m
 │ │ └── README.md
 │ ├── vectorized-solver/
-│ │ ├── SIMPLE2D_LidDrivenCavity_Vectorized.m
+│ │ ├── VectorizedSolver.m
 │ │ └── README.md
 │ └── README.md # MATLAB-specific overview
 ├── python/
 │ ├── serial/
 │ │ ├── iterative/
-│ │ │ ├── lid_cavity_iterative.py
+│ │ │ ├── IterativeSolver.py
 │ │ │ └── README.md
 │ │ ├── vectorized/
-│ │ │ ├── lid_cavity_vectorized.py
+│ │ │ ├── VectorizedSolver.py
 │ │ │ └── README.md
 │ │ └── README.md # Serial solvers overview
 │ ├── parallel/
 │ │ ├── mpi/
-│ │ │ ├── lid_cavity_mpi.py
+│ │ │ ├── MPISOlver.py
 │ │ │ └── README.md
 │ │ ├── openmp/
-│ │ │ ├── lid_cavity_openmp.py
+│ │ │ ├── OpenMPSolver.py
 │ │ │ └── README.md
 │ │ └── README.md # Parallel solvers overview
 │ └── README.md # Python-specific overview
