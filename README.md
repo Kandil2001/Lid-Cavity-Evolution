@@ -282,6 +282,6 @@ For questions, suggestions, or collaboration inquiries, feel free to:
 
 - Open an issue on [GitHub](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
 - Reach out via email: **kandil.ahmed.amr@gmail.com**
-- Connect on [LinkedIn](https://www.linkedin.com/in/ahmed-kandil-dev)
+- Connect on [LinkedIn](https://www.linkedin.com/in/ahmed-kandil01)
 
 > **Note:** This project is under active development. Check back for updates and new solver releases!
