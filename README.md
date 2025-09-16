@@ -82,7 +82,7 @@ Each solver script includes inline documentation and usage instructions.
 ## 🖼️ Results Preview
 
 <p align="center">
-  <img src="./assets/velocityiter.gif" width="500"/>
+  <img src="./Assets/velocityiter.gif" width="500"/>
 </p>
 <p align="center"><i>Velocity field from MATLAB SIMPLE solver at Re = 100</i></p>
 
