@@ -3,10 +3,8 @@
     <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/logos/matlab.png" width="70"/>
   </a>
 </p>
-
 <h1 align="center">🧮 MATLAB Lid-Driven Cavity Solvers</h1>
 <p align="center"><i>Reference implementations of the SIMPLE algorithm for incompressible flow</i></p>
-
 <p align="center">
   <a href="../LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
@@ -22,13 +20,13 @@
 ---
 
 ## Table of Contents
-
 - [Introduction](#introduction)
 - [Why MATLAB?](#why-matlab)
 - [Features](#features)
 - [Available Solvers](#available-solvers)
 - [How to Run](#how-to-run)
 - [Results Preview](#results-preview)
+- [Benchmark Note](#benchmark-note)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -43,7 +41,6 @@ The lid-driven cavity problem is a classical benchmark in computational fluid dy
 ## Why MATLAB?
 
 MATLAB is a powerful environment for CFD solver development due to:
-
 - **Rapid prototyping** — Matrix operations and built-in visualization tools
 - **Clarity** — Clean syntax for learning and debugging
 - **Visualization** — Immediate feedback with plotting capabilities
@@ -62,8 +59,10 @@ MATLAB is a powerful environment for CFD solver development due to:
 
 ## Available Solvers
 
-- [`IterativeSolver.m`](IterativeSolver.m) — Classic SIMPLE algorithm using explicit iteration  
-- [`VectorizedSolver.m`](VectorizedSolver.m) — Vectorized MATLAB implementation for improved performance
+| File                                         | Description                                     |
+|-----------------------------------------------|-------------------------------------------------|
+| [IterativeSolver.m](IterativeSolver.m)        | Classic SIMPLE algorithm (explicit iteration)    |
+| [VectorizedSolver.m](VectorizedSolver.m)      | Fully vectorized MATLAB implementation for speed |
 
 Each solver script includes inline documentation and usage instructions.
 
@@ -84,18 +83,25 @@ Each solver script includes inline documentation and usage instructions.
 <p align="center">
   <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif" width="500"/>
 </p>
-<p align="center"><i>Velocity field from MATLAB SIMPLE solver at Re = 100</i></p>
+<p align="center"><i>Velocity field from MATLAB SIMPLE solver at Re = 100 (produced by the iterative solver; vectorized output is visually identical)</i></p>
+
+---
+
+## Benchmark Note
+
+- **Performance:** The vectorized solver is typically **10x faster** than the loop-based version on larger grids, thanks to MATLAB’s optimized matrix operations.
+- Both solvers produce identical results, allowing direct speed and accuracy comparisons.
 
 ---
 
 ## Contributing
 
 Contributions and suggestions are welcome!  
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 
 ---
 
 ## License
 
 This code is released under the MIT License.  
-See [LICENSE](./LICENSE) for details.
+See [LICENSE](../LICENSE) for details.
