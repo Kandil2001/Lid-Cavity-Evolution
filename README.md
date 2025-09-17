@@ -34,13 +34,13 @@
 
 ---
 
-## 🧠 Introduction
+## Introduction
 
 The lid-driven cavity problem is a classical benchmark in computational fluid dynamics (CFD) for validating incompressible flow solvers. This directory provides reference MATLAB implementations using the SIMPLE algorithm, ideal for learning, rapid prototyping, and establishing baseline results.
 
 ---
 
-## 💡 Why MATLAB?
+## Why MATLAB?
 
 MATLAB is a powerful environment for CFD solver development due to:
 
@@ -51,7 +51,7 @@ MATLAB is a powerful environment for CFD solver development due to:
 
 ---
 
-## ✨ Features
+## Features
 
 - ✅ Loop-based and vectorized SIMPLE solvers
 - 📊 Built-in visualization of velocity and pressure fields
@@ -60,7 +60,7 @@ MATLAB is a powerful environment for CFD solver development due to:
 
 ---
 
-## 🧮 Available Solvers
+## Available Solvers
 
 - [`IterativeSolver.m`](IterativeSolver.m) — Classic SIMPLE algorithm using explicit iteration  
 - [`VectorizedSolver.m`](VectorizedSolver.m) — Vectorized MATLAB implementation for improved performance
@@ -69,7 +69,7 @@ Each solver script includes inline documentation and usage instructions.
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 1. Open MATLAB (R2020a or newer recommended)
 2. Open either `IterativeSolver.m` or `VectorizedSolver.m`
@@ -79,7 +79,7 @@ Each solver script includes inline documentation and usage instructions.
 
 ---
 
-## 🖼️ Results Preview
+## Results Preview
 
 <p align="center">
   <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif" width="500"/>
@@ -88,14 +88,14 @@ Each solver script includes inline documentation and usage instructions.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions and suggestions are welcome!  
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 📄 License
+## License
 
 This code is released under the MIT License.  
 See [LICENSE](./LICENSE) for details.
