@@ -144,7 +144,7 @@ Where each term means:
   - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
   - $-\frac{\partial p}{\partial y}$: Pressure gradient in $y$
   - $\frac{1}{Re} \frac{\partial^2 v}{\partial x^2}$: Viscous diffusion in $x$
-  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y`
+  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y$
 
 ## SIMPLE Algorithm Steps
 
