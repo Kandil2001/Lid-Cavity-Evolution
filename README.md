@@ -21,7 +21,7 @@
 
 ---
 
-## 📘 Table of Contents
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Why MATLAB?](#why-matlab)
