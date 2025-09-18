@@ -206,7 +206,7 @@ main/
 │ │ └── README.md # Serial solvers overview
 │ ├── parallel/
 │ │ ├── mpi/
-│ │ │ ├── MPISOlver.py
+│ │ │ ├── MPISolver.py
 │ │ │ └── README.md
 │ │ ├── openmp/
 │ │ │ ├── OpenMPSolver.py
