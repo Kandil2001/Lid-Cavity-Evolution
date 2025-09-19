@@ -205,42 +205,42 @@ for i = 1:length(scenes)
 end
 end
 ```
+---
 
 ## Simulation Outputs
 
-🌀 Velocity Vectors — Flow Field Animation
+### 🌀 Velocity Vectors — Flow Field Animation
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vector.gif" alt="Velocity Vectors GIF"/>
 </p>
 
-⚡Velocity Magnitude — Speed Contours
+### ⚡ Velocity Magnitude — Speed Contours
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_contour.gif" alt="Velocity Magnitude GIF"/>
 </p>
 
-🌊 Streamlines — Flow Paths
+### 🌊 Streamlines — Flow Paths
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_streamlines.gif" alt="Streamlines GIF"/>
 </p>
 
-📊 Pressure Distribution
+### 📊 Pressure Distribution
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_pressure_contour.gif" alt="Pressure GIF"/>
 </p>
 
-*GIF/image files are saved in the script directory. Filenames are customizable in the code.*
+_GIF/image files are saved in the script directory. Filenames are customizable in the code._
 
 ---
 
 ## Performance and Convergence
 
 | Metric                | Typical Value                  |
-|-----------------------|-------------------------------|
-| Elapsed Time          | ~1126,03 seconds (~18,77 minutes)|
+|-----------------------|--------------------------------|
+| Elapsed Time          | ~1126,03 seconds (~18,77 minutes) |
 | Avg. Time per Step    | ~2,2521 seconds                |
 
-
-📉 Residuals — Convergence History
+### 📉 Residuals — Convergence History
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_residuals.gif" alt="Residuals GIF"/>
 </p>
