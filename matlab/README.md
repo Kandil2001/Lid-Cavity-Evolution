@@ -83,7 +83,7 @@ Each solver contains a README and is fully documented.
 ## Results Preview
 
 <p align="center">
-  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/velocityiter.gif" width="500"/>
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_contour.gif" width="500"/>
 </p>
 <p align="center"><i>Velocity field from MATLAB SIMPLE iterative solver at Re = 100 (vectorized output is visually identical)</i></p>
 
