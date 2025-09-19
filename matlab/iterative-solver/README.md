@@ -210,7 +210,7 @@ end
 
 | Output Type           | Description                | Example Filename                   |
 |-----------------------|---------------------------|------------------------------------|
-| Velocity Vectors GIF  | Flow field animation      | `iterative_velocity_vectors.gif`   |
+| Velocity Vectors GIF  | Flow field animation      | ![Velocity Vectors GIF](assets/matlab/iterative_velocity_vector.gif) |
 | Velocity Magnitude GIF| Speed contours            | `iterative_velocity_contour.gif`   |
 | Streamlines GIF       | Flow paths                | `iterative_streamlines.gif`        |
 | Pressure GIF          | Pressure distribution     | `iterative_pressure_contour.gif`   |
