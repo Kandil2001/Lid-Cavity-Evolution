@@ -228,28 +228,31 @@ function create_gifs(gif_scenes)
 end
 ```
 
+---
+
 ## Simulation Outputs
 
 ### 🌀 Velocity Vectors — Flow Field Animation
-![Velocity Vectors GIF](https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/efb371647516be5995487e8319755c7db985d059/assets/matlab/vectorized_velocity_vectors.gif)
-
----
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_vector.gif" alt="Velocity Vectors GIF"/>
+</p>
 
 ### ⚡ Velocity Magnitude — Speed Contours
-![Velocity Magnitude GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_contour.gif)
-
----
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_contour.gif" alt="Velocity Magnitude GIF"/>
+</p>
 
 ### 🌊 Streamlines — Flow Paths
-![Streamlines GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_streamlines.gif)
-
----
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_streamlines.gif" alt="Streamlines GIF"/>
+</p>
 
 ### 📊 Pressure Distribution
-![Pressure GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_pressure_contour.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_pressure_contour.gif" alt="Pressure GIF"/>
+</p>
 
-
-*GIF/image files are saved in the script directory. Filenames are customizable in the code.*
+_GIF/image files are saved in the script directory. Filenames are customizable in the code._
 
 ---
 
@@ -262,8 +265,9 @@ end
 
 
 ### 📉 Residuals — Convergence History
-![Residuals GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_residuals.gif)
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorizd_residuals.gif" alt="Residuals GIF"/>
+</p>
 ---
 
 ## Directory Placement
