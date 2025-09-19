@@ -209,22 +209,22 @@ end
 ## Simulation Outputs
 
 ### 🌀 Velocity Vectors — Flow Field Animation
-![Velocity Vectors GIF](assets/matlab/iterative_velocity_vector.gif)
+![Velocity Vectors GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vector.gif)
 
 ---
 
 ### ⚡ Velocity Magnitude — Speed Contours
-![Velocity Magnitude GIF](assets/matlab/iterative_velocity_contour.gif)
+![Velocity Magnitude GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_contour.gif)
 
 ---
 
 ### 🌊 Streamlines — Flow Paths
-![Streamlines GIF](assets/matlab/iterative_streamlines.gif)
+![Streamlines GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_streamlines.gif)
 
 ---
 
 ### 📊 Pressure Distribution
-![Pressure GIF](assets/matlab/iterative_pressure_contour.gif)
+![Pressure GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_pressure_contour.gif)
 
 
 *GIF/image files are saved in the script directory. Filenames are customizable in the code.*
@@ -240,7 +240,7 @@ end
 
 
 ### 📉 Residuals — Convergence History
-![Residuals GIF](assets/matlab/iterative_residuals.gif)
+![Residuals GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_residuals.gif)
 
 ---
 
