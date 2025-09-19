@@ -208,12 +208,12 @@ end
 
 ## Simulation Outputs
 
-| Output Type           | Description                | Example Filename                   |
-|-----------------------|---------------------------|------------------------------------|
-| Velocity Vectors GIF  | Flow field animation      | ![Velocity Vectors GIF](assets/matlab/iterative_velocity_vector.gif) |
-| Velocity Magnitude GIF| Speed contours            | `iterative_velocity_contour.gif`   |
-| Streamlines GIF       | Flow paths                | `iterative_streamlines.gif`        |
-| Pressure GIF          | Pressure distribution     | `iterative_pressure_contour.gif`   |
+| Output Type           | Description            | Example Filename |
+|-----------------------|------------------------|------------------|
+| Velocity Vectors GIF  | Flow field animation   | ![Velocity Vectors GIF](assets/matlab/iterative_velocity_vector.gif) |
+| Velocity Magnitude GIF| Speed contours         | ![Velocity Magnitude GIF](assets/matlab/iterative_velocity_contour.gif) |
+| Streamlines GIF       | Flow paths             | ![Streamlines GIF](assets/matlab/iterative_streamlines.gif) |
+| Pressure GIF          | Pressure distribution  | ![Pressure GIF](assets/matlab/iterative_pressure_contour.gif) |
 
 *GIF/image files are saved in the script directory. Filenames are customizable in the code.*
 
