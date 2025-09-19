@@ -209,7 +209,7 @@ end
 ## Simulation Outputs
 
 ### 🌀 Velocity Vectors — Flow Field Animation
-![Velocity Vectors GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vector.gif)
+![Velocity Vectors GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vectors.gif)
 
 ---
 
