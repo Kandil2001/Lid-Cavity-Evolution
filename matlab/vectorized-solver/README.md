@@ -230,30 +230,39 @@ end
 
 ## Simulation Outputs
 
-| Output Type           | Description               | Example Filename                   |
-|-----------------------|---------------------------|------------------------------------|
-| Velocity Vectors GIF  | Flow field animation      | `vectorized_velocity_vectors.gif`  |
-| Velocity Magnitude GIF| Speed contours            | `vectorized_velocity_contour.gif`  |
-| Pressure GIF          | Pressure distribution     | `vectorized_pressure_contour.gif`  |
-| Streamlines GIF       | Flow paths                | `vectorized_streamlines.gif`       |
-| Residuals GIF         | Convergence history       | `vectorized_residuals.gif`         |
-| Final Results Figure  | Comprehensive summary     | `final_results.png`                |
+### 🌀 Velocity Vectors — Flow Field Animation
+![Velocity Vectors GIF](https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/efb371647516be5995487e8319755c7db985d059/assets/matlab/vectorized_velocity_vectors.gif)
+
+---
+
+### ⚡ Velocity Magnitude — Speed Contours
+![Velocity Magnitude GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_contour.gif)
+
+---
+
+### 🌊 Streamlines — Flow Paths
+![Streamlines GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_streamlines.gif)
+
+---
+
+### 📊 Pressure Distribution
+![Pressure GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_pressure_contour.gif)
+
 
 *GIF/image files are saved in the script directory. Filenames are customizable in the code.*
 
 ---
 
-## Performance & Convergence
+## Performance and Convergence
 
-| Metric                | Typical Value                 |
+| Metric                | Typical Value                  |
 |-----------------------|-------------------------------|
-| Elapsed Time          | ~36,435 seconds (~607 minutes)|
-| Avg. Time per Step    | ~72.87 seconds                |
-| Final $u$ Residual    | $1.11 \times 10^{-16}$        |
-| Final $v$ Residual    | $5.55 \times 10^{-17}$        |
-| Final $p$ Residual    | $1.06 \times 10^{-1}$         |
+| Elapsed Time          | ~1266,38 seconds (~21,11 minutes)|
+| Avg. Time per Step    | ~2,5328 seconds                |
 
-Residuals and convergence are visualized and logged at each time step.
+
+### 📉 Residuals — Convergence History
+![Residuals GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_residuals.gif)
 
 ---
 
