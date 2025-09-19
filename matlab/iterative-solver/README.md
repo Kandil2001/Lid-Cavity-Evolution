@@ -208,24 +208,25 @@ end
 
 ## Simulation Outputs
 
-### 🌀 Velocity Vectors — Flow Field Animation
-![Velocity Vectors GIF](https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/efb371647516be5995487e8319755c7db985d059/assets/matlab/iterative_velocity_vectors.gif)
+###🌀 Velocity Vectors — Flow Field Animation
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vector.gif" alt="Velocity Vectors GIF"/>
+</p>
 
----
+###⚡Velocity Magnitude — Speed Contours
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_contour.gif" alt="Velocity Magnitude GIF"/>
+</p>
 
-### ⚡ Velocity Magnitude — Speed Contours
-![Velocity Magnitude GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_contour.gif)
+###🌊 Streamlines — Flow Paths
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_streamlines.gif" alt="Streamlines GIF"/>
+</p>
 
----
-
-### 🌊 Streamlines — Flow Paths
-![Streamlines GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_streamlines.gif)
-
----
-
-### 📊 Pressure Distribution
-![Pressure GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_pressure_contour.gif)
-
+###📊 Pressure Distribution
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_pressure_contour.gif" alt="Pressure GIF"/>
+</p>
 
 *GIF/image files are saved in the script directory. Filenames are customizable in the code.*
 
@@ -239,8 +240,10 @@ end
 | Avg. Time per Step    | ~2,2521 seconds                |
 
 
-### 📉 Residuals — Convergence History
-![Residuals GIF](https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_residuals.gif)
+###📉 Residuals — Convergence History
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_residuals.gif" alt="Residuals GIF"/>
+</p>
 
 ---
 
