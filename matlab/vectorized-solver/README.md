@@ -268,6 +268,7 @@ _GIF/image files are saved in the script directory. Filenames are customizable i
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorizd_residuals.gif" alt="Residuals GIF"/>
 </p>
+
 ---
 
 ## Directory Placement
