@@ -266,7 +266,7 @@ _GIF/image files are saved in the script directory. Filenames are customizable i
 
 ### 📉 Residuals — Convergence History
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorizd_residuals.gif" alt="Residuals GIF"/>
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_residuals.gif" alt="Vectorized Residuals GIF"/>
 </p>
 
 ---
