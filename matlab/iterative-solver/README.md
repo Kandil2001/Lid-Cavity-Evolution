@@ -212,24 +212,21 @@ end
 |-----------------------|---------------------------|------------------------------------|
 | Velocity Vectors GIF  | Flow field animation      | `iterative_velocity_vectors.gif`   |
 | Velocity Magnitude GIF| Speed contours            | `iterative_velocity_contour.gif`   |
-| Pressure GIF          | Pressure distribution     | `iterative_pressure_contour.gif`   |
 | Streamlines GIF       | Flow paths                | `iterative_streamlines.gif`        |
-| Residuals GIF         | Convergence history       | `iterative_residuals.gif`          |
-| Final Results Figure  | Comprehensive summary     | `final_results.png`                |
+| Pressure GIF          | Pressure distribution     | `iterative_pressure_contour.gif`   |
 
 *GIF/image files are saved in the script directory. Filenames are customizable in the code.*
 
 ---
 
-## Performance & Convergence
+## Performance and Convergence
 
 | Metric                | Typical Value                  |
 |-----------------------|-------------------------------|
-| Elapsed Time          | ~36,435 seconds (~607 minutes)|
-| Avg. Time per Step    | ~72.87 seconds                |
-| Final $u$ Residual    | $1.11 \times 10^{-16}$        |
-| Final $v$ Residual    | $5.55 \times 10^{-17}$        |
-| Final $p$ Residual    | $1.06 \times 10^{-1}$         |
+| Elapsed Time          | ~1126,03 seconds (~18,77 minutes)|
+| Avg. Time per Step    | ~2,2521 seconds                |
+
+| Residuals GIF         | Convergence history       | `iterative_residuals.gif`          |
 
 Residuals and convergence are visualized and logged at each time step.
 
