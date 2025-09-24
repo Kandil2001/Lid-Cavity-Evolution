@@ -112,7 +112,7 @@ If `record_gif = True`:
 
 ## Benchmark Note
 
-- ⚡ The vectorized solver is typically **5–20× faster** than the loop-based version on large grids.
+- ⚡ The vectorized solver is typically **23× faster** than the loop-based version.
 - Both solvers produce identical results — the vectorized version simply runs faster by leveraging optimized NumPy array operations.
 - Use the iterative solver if you want to understand the algorithm step-by-step, or the vectorized solver for larger simulations and faster runtimes.
 
