@@ -235,7 +235,7 @@ end
 
 ### 🌀 Velocity Vectors — Flow Field Animation
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vector.gif" alt="Velocity Vectors GIF"/>
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/iterative_velocity_vectors.gif" alt="Velocity Vectors GIF"/>
 </p>
 
 ### ⚡ Velocity Magnitude — Speed Contours
