@@ -4,7 +4,7 @@
   </a>
 </p>
 <h1 align="center">🌀 SIMPLE2D Lid-Driven Cavity — MATLAB Iterative Solver Branch</h1>
-<p align="center"><i>Loop-based SIMPLE algorithm for unsteady incompressible CFD</i></p>
+<p align="center"><i>Educational loop-based SIMPLE algorithm for unsteady incompressible CFD</i></p>
 <p align="center">
   <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
@@ -21,11 +21,12 @@
 </p>
 
 ---
+
 ## Table of Contents
 
 - [About This Solver](#about-this-solver)
 - [Key Features](#key-features)
-- [Why Vectorized?](#why-vectorized)
+- [Why Iterative?](#why-iterative)
 - [Usage Instructions](#usage-instructions)
 - [Key Code Snippets](#key-code-snippets)
 - [Simulation Outputs](#simulation-outputs)
@@ -35,29 +36,36 @@
 - [License](#license)
 - [References](#references)
 - [Contact](#contact)
-
 ---
 
 ## About This Solver
 
-This branch contains the **modular, loop-based MATLAB implementation** of the SIMPLE algorithm for the classic lid-driven cavity problem.  
-It is the educational and benchmarking baseline for more advanced solvers in the [Lid Cavity Evolution](../../README.md) suite.
+This branch contains an **iterative (loop-based) MATLAB implementation** of the SIMPLE algorithm for the lid-driven cavity problem.  
+It is designed for educational clarity and direct benchmarking against the vectorized version, using **identical structure, boundary conditions, and outputs** for fair comparison and algorithm understanding.
 
 - **File:** `IterativeSolver.m`
 - **Location:** `main/matlab/iterative-solver/`
-- **Focus:** Algorithm clarity, modularity, and benchmark performance.
+- **Focus:** Educational clarity, algorithm transparency, and performance benchmarking
 
 ---
 
-## Features
+## Key Features
 
 - Finite volume discretization on a staggered grid
-- Modular functions for predictor, corrector, and pressure Poisson steps
-- Triple-nested loops for educational clarity (no vectorization)
-- Precomputed constants & preallocated arrays for efficiency
-- Animated visualization and GIF export
-- Detailed residual/convergence monitoring
-- Comprehensive summary plot (velocity, pressure, vorticity, centerlines, residuals)
+- **Triple-nested loop implementation** for maximum educational clarity
+- Modular function structure for maintainability and understanding
+- Real-time visualization and optional GIF export
+- Residual tracking, convergence monitoring, and performance reporting
+
+---
+
+## Why Iterative?
+
+- **Educational clarity:** Explicit loops make the algorithm steps transparent and easy to follow
+- **Debugging friendly:** Step-by-step execution allows for easy inspection of intermediate values
+- **Baseline performance:** Provides reference timing for vectorized optimization comparisons
+- **Algorithm understanding:** Helps students and researchers understand the fundamental SIMPLE steps
+- **Foundation for learning:** Serves as a starting point for understanding CFD algorithm implementation
 
 ---
 
