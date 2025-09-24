@@ -1,221 +1,369 @@
-# Lid Cavity Evolution
-
-*A benchmark suite for unsteady incompressible CFD: From MATLAB fundamentals to industrial applications*
+<p align="center">
+  <a href="https://www.python.org/">
+    <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/logos/python.png" width="70"/>
+  </a>
+</p>
+<h1 align="center">🌀 VectorizedSolver.py — Python Vectorized SIMPLE Solver</h1>
+<p align="center"><i>High-performance vectorized SIMPLE algorithm for unsteady incompressible CFD</i></p>
+<p align="center">
+  <a href="../../../../LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/releases">
+    <img src="https://img.shields.io/badge/Version-0.1.0-green.svg" alt="Version"/>
+  </a>
+  <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"/>
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python"/>
+  </a>
+</p>
 
 ---
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Why the Lid-Driven Cavity?](#why-the-lid-driven-cavity)
-- [Why the SIMPLE Algorithm?](#why-the-simple-algorithm)
-- [Governing Equations](#governing-equations)
-- [SIMPLE Algorithm Steps](#simple-algorithm-steps)
-- [Numerical Methods & Boundary Conditions](#numerical-methods--boundary-conditions)
-- [Project Roadmap](#project-roadmap)
-- [Benchmark Table](#benchmark-table)
-- [Getting Started](#getting-started)
+- [About This Solver](#about-this-solver)
+- [Key Features](#key-features)
+- [Why Vectorized?](#why-vectorized)
+- [Usage Instructions](#usage-instructions)
+- [Key Code Snippets](#key-code-snippets)
+- [Simulation Outputs](#simulation-outputs)
+- [Performance & Convergence](#performance--convergence)
+- [Directory Placement](#directory-placement)
 - [Contributing](#contributing)
 - [License](#license)
 - [References](#references)
+- [Contact](#contact)
 
 ---
 
-## 🌟 Introduction
+## About This Solver
 
-**Lid Cavity Evolution** is an open-source benchmark suite that chronicles the development of the classic lid-driven cavity CFD problem—from foundational MATLAB scripts to industrial-grade solvers. The project emphasizes accuracy, performance, and reproducibility for unsteady incompressible flow simulation.
+This implementation contains a **fully vectorized Python/NumPy version** of the SIMPLE algorithm for the lid-driven cavity problem.  
+It is designed for direct benchmarking against both the Python iterative version and MATLAB implementations, using **identical structure, boundary conditions, and outputs** for fair comparison and maximum performance.
 
----
-
-## Why the Lid-Driven Cavity?
-
-- **Standard Test Case:** Simple geometry, well-defined boundaries, and established reference solutions make it ideal for CFD code verification.
-- **Rich Physics:** Captures vortex formation, boundary layers, and evolving flow structures.
-- **Unsteady Simulation:** Tracks time evolution of flow fields, including transient and nonlinear phenomena.
+- **File:** `VectorizedSolver.py`
+- **Location:** `main/python/serial/vectorized/`
+- **Focus:** Vectorized speed, educational clarity, and cross-language benchmarking
 
 ---
 
-## Why the SIMPLE Algorithm?
+## Key Features
 
-Simulating incompressible flows is numerically challenging due to tight coupling of velocity and pressure. The **SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)** algorithm is widely used because it:
-
-- Decouples momentum and continuity equations for robust convergence.
-- Uses a staggered grid to prevent checkerboard pressure artifacts.
-- Applies under-relaxation for improved stability and efficiency.
-
----
-
-## 🧮 Governing Equations
-
-The solver models unsteady, incompressible, two-dimensional flow in a square cavity with a moving lid.
-
-### 1. Continuity Equation (Incompressibility)
-
-$\nabla \cdot \mathbf{u} = 0$
-
-- $\mathbf{u}$: Velocity vector, $\mathbf{u} = (u, v)$
-  - $u$: velocity in $x$-direction
-  - $v$: velocity in $y$-direction
-
-This equation enforces conservation of mass for incompressible flow: the net flow into any control volume is zero.
+- Finite volume discretization on a staggered grid
+- **Fully vectorized NumPy operations** for superior Python performance
+- Modular function structure for maintainability and clarity
+- Real-time visualization and optional GIF export
+- Residual tracking, convergence monitoring, and performance reporting
+- Identical interface and outputs to iterative solver for direct benchmarking
 
 ---
 
-### 2. Momentum Equations (Navier-Stokes, Unsteady, 2D)
+## Why Vectorized?
 
-$\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \frac{1}{Re}\nabla^2 \mathbf{u}$
-
-Where each term means:
-- $\frac{\partial \mathbf{u}}{\partial t}$: **Unsteady term** — Time rate of change of velocity.
-- $(\mathbf{u} \cdot \nabla)\mathbf{u}$: **Convection term** — Transport of momentum by fluid motion.
-- $- \nabla p$: **Pressure gradient term** — Acceleration caused by pressure differences.
-- $\frac{1}{Re}\nabla^2 \mathbf{u}$: **Diffusion term** — Viscous spreading of momentum.
-- $Re = \frac{UL}{\nu}$: **Reynolds number**  
-    - $U$: Lid velocity  
-    - $L$: Cavity length  
-    - $\nu$: Kinematic viscosity
+- **Maximum speed in Python:** Exploits NumPy's optimization for array operations, drastically reducing runtime for large grids
+- **Direct benchmarking:** Uses the same interface and output as the loop version for accurate speed comparison
+- **Educational value:** Demonstrates how to efficiently map CFD algorithms to Python's scientific computing ecosystem
+- **Foundation for optimization:** Serves as baseline for further optimizations (Numba, Cython, etc.)
 
 ---
 
-#### Expanded in 2D Components
+## Usage Instructions
 
-- **x-Momentum:**
-
-  $\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = -\frac{\partial p}{\partial x} + \frac{1}{Re} \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right )$
-
-  - $\frac{\partial u}{\partial t}$: Time derivative of $u$
-  - $u \frac{\partial u}{\partial x}$: Convection of $u$ in $x$
-  - $v \frac{\partial u}{\partial y}$: Convection of $u$ in $y$
-  - $-\frac{\partial p}{\partial x}$: Pressure gradient in $x$
-  - $\frac{1}{Re} \frac{\partial^2 u}{\partial x^2}$: Viscous diffusion in $x$
-  - $\frac{1}{Re} \frac{\partial^2 u}{\partial y^2}$: Viscous diffusion in $y$
-
-- **y-Momentum:**
-
-  $\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} = -\frac{\partial p}{\partial y} + \frac{1}{Re} \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right )$
-
-  - $\frac{\partial v}{\partial t}$: Time derivative of $v$
-  - $u \frac{\partial v}{\partial x}$: Convection of $v$ in $x$
-  - $v \frac{\partial v}{\partial y}$: Convection of $v$ in $y$
-  - $-\frac{\partial p}{\partial y}$: Pressure gradient in $y$
-  - $\frac{1}{Re} \frac{\partial^2 v}{\partial x^2}$: Viscous diffusion in $x$
-  - $\frac{1}{Re} \frac{\partial^2 v}{\partial y^2}$: Viscous diffusion in $y$
-
----
-
-## 🛠 SIMPLE Algorithm Steps
-
-The SIMPLE algorithm solves these equations with the following procedure:
-
-1. **Predictor Step:**  
-   - Solve momentum equations for an intermediate velocity $\mathbf{u}^*$ using the current pressure estimate.
-
-2. **Pressure Correction:**  
-   - Solve the pressure correction Poisson equation:  
-     $\nabla^2 p' = \frac{1}{\Delta t} \nabla \cdot \mathbf{u}^*$  
-     where $p'$ is the pressure correction and $\Delta t$ is the time step.
-
-3. **Corrector Step:**  
-   - Update velocities and pressure:  
-     $\mathbf{u}^{n+1} = \mathbf{u}^* - \Delta t \nabla p'$  
-     $p^{n+1} = p^{n} + \alpha p'$  
-     where $\alpha$ is the under-relaxation factor ($0 < \alpha \leq 1$).
+1. **Requirements:** Python 3.8+ with NumPy, Matplotlib, and imageio
+2. **Setup:**  
+   Place `VectorizedSolver.py` in `main/python/serial/vectorized/`
+3. **Configure Parameters:**  
+   At the top of the file:
+   ```python
+   Re = 100         # Reynolds number
+   n = 51           # Grid size
+   dt = 0.002       # Time step
+   total_time = 1.0 # Simulation time (s)
+   alpha_u = 0.7    # Under-relaxation for velocity
+   alpha_p = 0.3    # Under-relaxation for pressure
+   tol = 1e-6       # SIMPLE inner iteration tolerance
+   max_iter = 300   # Max SIMPLE iterations per time step
+   record_gif = True # Enable GIF recording
+   ```
+4. **Run the Script:**  
+   - In terminal: `python VectorizedSolver.py`
+   - The simulation will begin, displaying progress and performance metrics
+   - Animated figures and GIFs for each scene are generated automatically
+5. **Check Results:**  
+   - After completion, find GIFs and a summary plot in your working directory
+   - The summary plot includes velocity vectors, streamlines, velocity magnitude, pressure field, vorticity, centerline profiles, and convergence history
 
 ---
 
-## 🧑‍💻 Numerical Methods & Boundary Conditions
+## Key Code Snippets
 
-- **Spatial Discretization:** Second-order central differencing
-- **Time Discretization:** First-order implicit Euler
-- **Grid:** Staggered (pressure at cell centers, velocities at faces)
-- **Boundary Conditions:**
-    - **Top lid:** $u = 1$, $v = 0$ (moving wall)
-    - **Other walls:** $u = v = 0$ (no-slip)
-    - **Pressure:** Neumann ($\frac{\partial p}{\partial n} = 0$) at boundaries
+Below are essential excerpts from `VectorizedSolver.py`, demonstrating the modular and transparent structure of this solver.
+
+### 1. User-Adjustable Simulation Parameters
+
+```python
+# Set physical and numerical parameters
+Re = 100         # Reynolds number
+n = 51           # Grid size
+dt = 0.002       # Time step
+total_time = 1.0 # Simulation time
+alpha_u = 0.7    # Under-relaxation (velocity)
+alpha_p = 0.3    # Under-relaxation (pressure)
+tol = 1e-6       # Convergence tolerance
+max_iter = 300   # Max SIMPLE iterations per time step
+record_gif = True # Enable GIF creation
+```
+
+### 2. Main Time-Stepping and SIMPLE Iteration Loop
+
+```python
+while sim_time < total_time:
+    step += 1
+    for iter_ in range(1, max_iter + 1):
+        u_prev = u.copy()
+        v_prev = v.copy()
+        p_prev = p.copy()
+        
+        # SIMPLE algorithm steps
+        u_star, v_star = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha_u)
+        p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter)
+        u, v, p = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p)
+        
+        # Boundary conditions
+        u[:, 0] = 0; u[:, -1] = 0; u[0, :] = 0; u[-1, :] = 1
+        v[:, 0] = 0; v[:, -1] = 0; v[0, :] = 0; v[-1, :] = 0
+        p[0, :] = p[1, :]; p[-1, :] = p[-2, :]
+        p[:, 0] = p[:, 1]; p[:, -1] = p[:, -2]
+        
+        # Residuals/convergence
+        res_u = np.max(np.abs(u - u_prev))
+        res_v = np.max(np.abs(v - v_prev))
+        res_p = np.max(np.abs(p - p_prev))
+        if max(res_u, res_v, res_p) < tol:
+            break
+
+    # Visualization, GIF capture, etc.
+    sim_time += dt
+```
+
+### 3. Vectorized Predictor Step
+
+```python
+def predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha):
+    n = u.shape[0]
+    u_star = u.copy()
+    v_star = v.copy()
+    inv_4dx = 1 / (4 * dx)
+    inv_4dy = 1 / (4 * dy)
+    inv_dx_sq = 1 / dx ** 2
+    inv_dy_sq = 1 / dy ** 2
+    alpha_dt = alpha * dt
+
+    jj, ii = np.meshgrid(np.arange(1, n-1), np.arange(1, n-1), indexing='ij')
+
+    # u-momentum vectorized
+    du2dx = ((u[jj, ii] + u[jj, ii+1]) ** 2 - (u[jj, ii-1] + u[jj, ii]) ** 2) * inv_4dx
+    duvdy = ((v[jj, ii] + v[jj, ii+1]) * (u[jj, ii] + u[jj+1, ii])
+           - (v[jj-1, ii] + v[jj-1, ii+1]) * (u[jj-1, ii] + u[jj, ii])) * inv_4dy
+    d2udx2 = (u[jj, ii+1] - 2 * u[jj, ii] + u[jj, ii-1]) * inv_dx_sq
+    d2udy2 = (u[jj+1, ii] - 2 * u[jj, ii] + u[jj-1, ii]) * inv_dy_sq
+    dpdx = (p[jj, ii+1] - p[jj, ii]) / dx
+    u_star[jj, ii] = u[jj, ii] + alpha_dt * (-du2dx - duvdy - dpdx + nu * (d2udx2 + d2udy2))
+
+    # v-momentum vectorized
+    dv2dy = ((v[jj, ii] + v[jj+1, ii]) ** 2 - (v[jj-1, ii] + v[jj, ii]) ** 2) * inv_4dy
+    duvdx = ((u[jj+1, ii] + u[jj, ii]) * (v[jj, ii+1] + v[jj, ii])
+           - (u[jj+1, ii-1] + u[jj, ii-1]) * (v[jj, ii] + v[jj, ii-1])) * inv_4dx
+    d2vdx2 = (v[jj, ii+1] - 2 * v[jj, ii] + v[jj, ii-1]) * inv_dx_sq
+    d2vdy2 = (v[jj+1, ii] - 2 * v[jj, ii] + v[jj-1, ii]) * inv_dy_sq
+    dpdy = (p[jj+1, ii] - p[jj, ii]) / dy
+    v_star[jj, ii] = v[jj, ii] + alpha_dt * (-duvdx - dv2dy - dpdy + nu * (d2vdx2 + d2vdy2))
+
+    return u_star, v_star
+```
+
+### 4. Vectorized Pressure Poisson Solver
+
+```python
+def solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter):
+    n = u_star.shape[0]
+    p_prime = np.zeros((n, n))
+    
+    jj, ii = np.meshgrid(np.arange(1, n-1), np.arange(1, n-1), indexing='ij')
+    
+    for _ in range(max_iter):
+        p_old = p_prime.copy()
+        
+        rhs = ((u_star[jj, ii] - u_star[jj, ii-1]) / dx + 
+               (v_star[jj, ii] - v_star[jj-1, ii]) / dy) / dt
+        
+        p_prime[jj, ii] = 0.25 * (p_prime[jj, ii+1] + p_prime[jj, ii-1] +
+                                 p_prime[jj+1, ii] + p_prime[jj-1, ii] - dx**2 * rhs)
+        
+        # Neumann BCs
+        p_prime[0, :] = p_prime[1, :]
+        p_prime[-1, :] = p_prime[-2, :]
+        p_prime[:, 0] = p_prime[:, 1]
+        p_prime[:, -1] = p_prime[:, -2]
+        
+        if np.max(np.abs(p_prime - p_old)) < tol:
+            break
+            
+    return p_prime
+```
+
+### 5. GIF Creation and Post-Processing
+
+```python
+def fig_to_image(fig):
+    """Convert a Matplotlib figure to a numpy RGB image."""
+    fig.canvas.draw()
+    w, h = fig.canvas.get_width_height()
+    img = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8).reshape(h, w, 3)
+    return img
+
+# GIF recording structure
+if record_gif:
+    gif_scenes = {
+        "velocity_vectors": [],
+        "velocity_contour": [],
+        "pressure_contour": [],
+        "residuals": [],
+        "streamlines": []
+    }
+    gif_filenames = {
+        "velocity_vectors": "vectorized_velocity_vectors.gif",
+        "velocity_contour": "vectorized_velocity_contour.gif",
+        "pressure_contour": "vectorized_pressure_contour.gif",
+        "residuals": "vectorized_residuals.gif",
+        "streamlines": "vectorized_streamlines.gif"
+    }
+
+# Create GIFs from frames
+if record_gif:
+    print('Creating GIF files...')
+    for key, frames in gif_scenes.items():
+        filename = gif_filenames[key]
+        imageio.mimsave(filename, frames, duration=0.1)
+        print(f'Saved: {filename}')
+```
+
+### 6. Vectorized Corrector Step
+
+```python
+def corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha):
+    n = p.shape[0]
+    alpha_dt_dx = alpha * dt / dx
+    alpha_dt_dy = alpha * dt / dy
+    u = u_star.copy()
+    v = v_star.copy()
+    jj, ii = np.meshgrid(np.arange(1, n-1), np.arange(1, n-1), indexing='ij')
+    u[jj, ii] = u_star[jj, ii] - alpha_dt_dx * (p_prime[jj, ii+1] - p_prime[jj, ii])
+    v[jj, ii] = v_star[jj, ii] - alpha_dt_dy * (p_prime[jj+1, ii] - p_prime[jj, ii])
+    p = p + alpha * p_prime
+    return u, v, p
+```
 
 ---
 
-## 🏁 Project Roadmap
+## Simulation Outputs
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| **Phase 1** | MATLAB loop-based SIMPLE solver | ✅ Complete |
-|             | Vectorized MATLAB implementation | 🚧 In Progress |
-| **Phase 2** | Python/NumPy serial port          | 📋 Planned |
-|             | Vectorized NumPy solver           | 📋 Planned |
-|             | Parallel Python (Numba/Dask)      | 📋 Planned |
-| **Phase 3** | OpenFOAM case setup               | 📋 Planned |
-|             | STAR-CCM+ case setup              | 📋 Planned |
-| **Phase 4** | Validation & analysis             | 📋 Planned |
+### 🌀 Velocity Vectors — Flow Field Animation
+<p align="center">
+  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/python/vectorized_velocity_vectors.gif" alt="Velocity Vectors GIF"/>
+</p>
 
----
+### ⚡ Velocity Magnitude — Speed Contours
+<p align="center">
+  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/python/vectorized_velocity_contour.gif" alt="Velocity Magnitude GIF"/>
+</p>
 
-## 📊 Benchmark Table
+### 🌊 Streamlines — Flow Paths
+<p align="center">
+  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/python/vectorized_streamlines.gif" alt="Streamlines GIF"/>
+</p>
 
-| Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
-|-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
-| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 2478.76          | 1x      | ✅ Complete    |
-| *SimpleLidCavityVector*                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
-| *lid_cavity_serial.py*                    | Python/NumPy | Serial                  | TBD              | TBD     | 📋 Planned     |
-| *lid_cavity_parallel.py*                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
-| *OpenFOAM Case*                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
-| *STAR-CCM+ Case*                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
+### 📊 Pressure Distribution
+<p align="center">
+  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/python/vectorized_pressure_contour.gif" alt="Pressure GIF"/>
+</p>
 
-*Hardware: Intel i7-12700K, 32GB RAM*
+_GIF files are saved in the working directory with descriptive names_
 
 ---
 
-## 🚀 Getting Started
+## Performance and Convergence
 
-### Prerequisites
+| Metric                | Typical Value                  |
+|-----------------------|-------------------------------|
+| Elapsed Time          | ~250-500 seconds (~4-8 minutes)|
+| Avg. Time per Step    | ~0.5-1.0 seconds              |
+| Speedup vs Iterative  | 5-20x faster                  |
 
-- **MATLAB:** R2020a or later (for initial implementations)
-- **Python:** 3.8+ (NumPy, planned)
-- **OpenFOAM:** (planned)
-- **STAR-CCM+:** (planned)
-
-### Running the MATLAB Solver
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/lid-cavity-evolution.git
-    cd lid-cavity-evolution/matlab
-    ```
-2. Open `SIMPLE2D_LidDrivenCavity.m` in MATLAB.
-3. Run the script and follow prompts (see comments for parameter adjustments).
-
-*Python, OpenFOAM, and STAR-CCM+ instructions will follow with implementation.*
+### 📉 Residuals — Convergence History
+<p align="center">
+  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/assets/python/vectorized_residuals.gif" alt="Vectorized Residuals GIF"/>
+</p>
 
 ---
 
-## 🤝 Contributing
+## Directory Placement
 
-We welcome all contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-
-- Adding new solver implementations
-- Improving code or documentation
-- Adding validation cases
-- Reporting issues or suggesting enhancements
-
-Feel free to open an issue or submit a pull request!
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.  
-See [LICENSE](LICENSE) for details.
-
----
-
-## 📚 References
-
-1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). *High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method*. J. Comput. Phys., 48(3), 387-411.
-2. Patankar, S. V. (1980). *Numerical Heat Transfer and Fluid Flow*. Hemisphere Publishing.
-3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). *Computational Methods for Fluid Dynamics*. Springer.
+This solver is part of the Python serial implementations:
+```
+main/
+├── python/
+│ ├── serial/
+│ │ ├── iterative-solver/
+│ │ │ ├── IterativeSolver.py
+│ │ │ └── README.md
+│ │ ├── vectorized-solver/
+│ │ │ ├── VectorizedSolver.py
+│ │ │ └── README.md
+│ │ └── README.md
+│ ├── parallel/
+│ └── README.md
+├── matlab/
+│ ├── ...
+└── assets/
+└── ...
+```
+See [main README](../../../../README.md) for project-wide context
 
 ---
 
-> **Note:** This project is under active development. Check back for updates and new solver releases!
+## Contributing
+
+Contributions, suggestions, and improvements are encouraged!  
+Refer to [CONTRIBUTING.md](../../../../CONTRIBUTING.md)
+
+---
+
+## License
+
+Released under the MIT License.  
+See [LICENSE](../../../../LICENSE)
+
+---
+
+## References
+
+1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). J. Comput. Phys., 48(3), 387-411
+2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_
+3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). _Computational Methods for Fluid Dynamics_
+
+---
+
+## Contact
+
+- [GitHub Issues](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
+- Email: **kandil.ahmed.amr@gmail.com**
+- [LinkedIn](https://www.linkedin.com/in/ahmed-kandil01)
+
+---
+
+**This implementation provides the Python vectorized baseline for the Lid Cavity Evolution suite.  
+For iterative Python versions, MATLAB implementations, and parallel solvers, see the main project documentation.**
