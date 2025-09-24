@@ -299,9 +299,8 @@ _GIF files are saved in the working directory with descriptive names_
 
 | Metric                | Typical Value                  |
 |-----------------------|-------------------------------|
-| Elapsed Time          | ~250-500 seconds (~4-8 minutes)|
-| Avg. Time per Step    | ~0.5-1.0 seconds              |
-| Speedup vs Iterative  | 5-20x faster                  |
+| Elapsed Time          | ~3732.37 seconds (~62.21 minutes)|
+| Avg. Time per Step    | ~7.4647 seconds              |
 
 ### 📉 Residuals — Convergence History
 <p align="center">
