@@ -278,7 +278,7 @@ if record_gif:
 
 
 # Simulation Outputs Section
-```markdown
+
 ## Simulation Outputs
 
 ### 🌀 Velocity Vectors — Flow Field Animation
