@@ -177,9 +177,9 @@ The SIMPLE algorithm solves these equations with the following procedure:
 |-------|-------------|--------|
 | **Phase 1** | MATLAB loop-based SIMPLE solver   | ✅ Complete |
 |             | Vectorized MATLAB implementation  | ✅ Complete |
-| **Phase 2** | Python/NumPy serial port          | 🚧 In Progress |
-|             | Vectorized NumPy solver           | 📋 Planned |
-|             | Parallel Python (Numba/Dask)      | 📋 Planned |
+| **Phase 2** | Python/NumPy serial port          | ✅ Complete |
+|             | Vectorized NumPy solver           | ✅ Complete |
+|             | Parallel Python (Numba/Dask)      | 🚧 In Progress |
 | **Phase 3** | OpenFOAM case setup               | 📋 Planned |
 |             | STAR-CCM+ case setup              | 📋 Planned |
 | **Phase 4** | Validation & analysis             | 📋 Planned |
@@ -224,13 +224,29 @@ main/
 ```
 ## Benchmark Table
 
+**Note:** This is for a 50x50 Grid
+
 | Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
 |-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
-| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 36435            | 1x      | ✅ Complete    |
-| _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | TBD              | TBD     | 🚧 In Progress |
-| _lid_cavity_serial.py_                    | Python/NumPy | Serial (Loops)          | TBD              | TBD     | 📋 Planned     |
-| _lid_cavity_vectorized.py_                | Python/NumPy | Serial (Vectorized)     | TBD              | TBD     | 📋 Planned     |
-| _lid_cavity_parallel.py_                  | Python       | Parallel                | TBD              | TBD     | 📋 Planned     |
+| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | 1126,03          | 1x      | ✅ Complete    |
+| _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | 1266,38          | 1.125x  | ✅ Complete    |
+| _lid_cavity_serial.py_                    | Python/NumPy | Serial (Loops)          | 85703.92         | 76x     | ✅ Complete    |
+| _lid_cavity_vectorized.py_                | Python/NumPy | Serial (Vectorized)     | 3732.37          | 3.3x    | ✅ Complete    |
+| _lid_cavity_parallel.py_mpi               | Python       | Parallel                | TBD              | TBD     | 🚧 In Progress |
+| _lid_cavity_parallel.py_openmp            | Python       | Parallel                | TBD              | TBD     | 🚧 In Progress |
+| _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
+| _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
+
+**Note:** This is for a 150x150 Grid
+
+| Solver                                   | Language      | Paradigm                | Elapsed Time (s) | Speedup | Status         |
+|-------------------------------------------|--------------|-------------------------|------------------|---------|---------------|
+| SIMPLE2D_LidDrivenCavity                  | MATLAB       | Serial (Loops)          | TDB              | TBD     | 🚧 In Progress |
+| _SimpleLidCavityVector_                   | MATLAB       | Serial (Vectorized)     | TDB              | TBD     | 🚧 In Progress |
+| _lid_cavity_serial.py_                    | Python/NumPy | Serial (Loops)          | TDB              | TBD     | 🚧 In Progress |
+| _lid_cavity_vectorized.py_                | Python/NumPy | Serial (Vectorized)     | TDB              | TBD     | 🚧 In Progress |
+| _lid_cavity_parallel.py_mpi               | Python       | Parallel                | TBD              | TBD     | 🚧 In Progress |
+| _lid_cavity_parallel.py_openmp            | Python       | Parallel                | TBD              | TBD     | 🚧 In Progress |
 | _OpenFOAM Case_                           | OpenFOAM     | Industrial CFD          | TBD              | TBD     | 📋 Planned     |
 | _STAR-CCM+ Case_                          | STAR-CCM+    | Commercial CFD          | TBD              | TBD     | 📋 Planned     |
 
