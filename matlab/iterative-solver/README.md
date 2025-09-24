@@ -21,8 +21,24 @@
 </p>
 
 ---
+## Table of Contents
 
-## About This Branch
+- [About This Solver](#about-this-solver)
+- [Key Features](#key-features)
+- [Why Vectorized?](#why-vectorized)
+- [Usage Instructions](#usage-instructions)
+- [Key Code Snippets](#key-code-snippets)
+- [Simulation Outputs](#simulation-outputs)
+- [Performance & Convergence](#performance--convergence)
+- [Directory Placement](#directory-placement)
+- [Contributing](#contributing)
+- [License](#license)
+- [References](#references)
+- [Contact](#contact)
+
+---
+
+## About This Solver
 
 This branch contains the **modular, loop-based MATLAB implementation** of the SIMPLE algorithm for the classic lid-driven cavity problem.  
 It is the educational and benchmarking baseline for more advanced solvers in the [Lid Cavity Evolution](../../README.md) suite.
