@@ -91,8 +91,18 @@ Each solver contains a README and is fully documented.
 
 ## Benchmark Note
 
-- ⚡ **Performance:** The vectorized solver is typically **10x faster** than the loop-based version on larger grids, thanks to MATLAB’s optimized matrix operations.
-- Both solvers produce identical results, allowing direct speed and accuracy comparisons.
+### Vectorized vs. Iterative Performance Analysis
+
+Based on measured performance, the vectorized solver is currently **significantly slower** than the iterative solver, especially on larger grids, which contradicts the expected benefits of MATLAB vectorization.
+
+| Grid Size | Iterative Elapsed Time | Vectorized Elapsed Time | Performance Change |
+| :---: | :---: | :---: | :---: |
+| **$51 \times 51$** | $\approx 1126$ s ($\approx 18.8$ min) | $\approx 1266$ s ($\approx 21.1$ min) | **$+12.5\%$ Increase (Slower)** |
+| **$151 \times 151$** | $\approx 395$ s ($\approx 6.6$ min) | $\approx 3732$ s ($\approx 62.2$ min) | **$+844\%$ Increase (Much Slower)** |
+
+The performance for the **$151 \times 151$** grid shows a major regression ($\mathbf{844\%}$ slower). A thorough review and profiling of the `vectorized-solver` is required to identify and correct the inefficiency before it can be considered a high-performance implementation.
+
+---
 
 ---
 
