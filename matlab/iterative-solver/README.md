@@ -259,10 +259,17 @@ _GIF/image files are saved in the script directory. Filenames are customizable i
 
 ## Performance and Convergence
 
+**This is for 51x51 grid size**
 | Metric                | Typical Value                  |
 |-----------------------|--------------------------------|
 | Elapsed Time          | ~1126,03 seconds (~18,77 minutes) |
 | Avg. Time per Step    | ~2,2521 seconds                |
+
+**This is for 151x151 grid size**
+| Metric                | Typical Value                  |
+|-----------------------|--------------------------------|
+| Elapsed Time          | ~395,43 seconds (~6,59 minutes) |
+| Avg. Time per Step    | ~0,7909 seconds                |
 
 ### 📉 Residuals — Convergence History
 <p align="center">
