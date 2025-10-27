@@ -5,7 +5,6 @@ import time
 
 # ---------------------------------------
 # SIMPLE 2D Lid Driven Cavity Solver (Finite Volume, Staggered Grid)
-# Python translation of Ahmed Kandil's MATLAB code
 # ---------------------------------------
 
 def IterativeSolver():
@@ -25,9 +24,7 @@ def IterativeSolver():
     nu = 1.0 / Re
     dx = L / (n - 1)
     dy = dx
-
     X, Y = np.meshgrid(np.linspace(0, L, n), np.linspace(0, L, n))
-
     u = np.zeros((n, n))
     v = np.zeros((n, n))
     p = np.zeros((n, n))
@@ -52,6 +49,7 @@ def IterativeSolver():
 
     print(f"Starting SIMPLE Lid Driven Cavity Simulation...\nGrid size: {n}x{n}, Re: {Re}")
     start_time = time.time()
+
     step = 0
     t = 0.0
 
@@ -72,10 +70,8 @@ def IterativeSolver():
             u[:, 0] = u[:, -1] = 0
             u[0, :] = 0
             u[-1, :] = 1
-
             v[:, 0] = v[:, -1] = 0
             v[0, :] = v[-1, :] = 0
-
             p[0, :] = p[1, :]
             p[-1, :] = p[-2, :]
             p[:, 0] = p[:, 1]
@@ -88,9 +84,9 @@ def IterativeSolver():
             if max(res_u, res_v, res_p) < tol:
                 break
 
-        res_u_arr[step-1] = res_u
-        res_v_arr[step-1] = res_v
-        res_p_arr[step-1] = res_p
+        res_u_arr[step - 1] = res_u
+        res_v_arr[step - 1] = res_v
+        res_p_arr[step - 1] = res_p
 
         # GIF capture
         if record_gif:
@@ -114,7 +110,6 @@ def predictor_step(u, v, p, dx, dy, dt, nu, alpha):
     n = u.shape[0]
     u_star = u.copy()
     v_star = v.copy()
-
     inv_4dx = 1.0 / (4 * dx)
     inv_4dy = 1.0 / (4 * dy)
     inv_dx_sq = 1.0 / dx**2
@@ -122,8 +117,8 @@ def predictor_step(u, v, p, dx, dy, dt, nu, alpha):
     alpha_dt = alpha * dt
 
     # u-momentum
-    for j in range(1, n-1):
-        for i in range(1, n-1):
+    for j in range(1, n - 1):
+        for i in range(1, n - 1):
             du2dx = ((u[j,i] + u[j,i+1])**2 - (u[j,i-1] + u[j,i])**2) * inv_4dx
             duvdy = ((v[j,i] + v[j,i+1]) * (u[j,i] + u[j+1,i]) -
                      (v[j-1,i] + v[j-1,i+1]) * (u[j-1,i] + u[j,i])) * inv_4dy
@@ -133,8 +128,8 @@ def predictor_step(u, v, p, dx, dy, dt, nu, alpha):
             u_star[j,i] = u[j,i] + alpha_dt * (-du2dx - duvdy - dpdx + nu * (d2udx2 + d2udy2))
 
     # v-momentum
-    for j in range(1, n-1):
-        for i in range(1, n-1):
+    for j in range(1, n - 1):
+        for i in range(1, n - 1):
             dv2dy = ((v[j,i] + v[j+1,i])**2 - (v[j-1,i] + v[j,i])**2) * inv_4dy
             duvdx = ((u[j+1,i] + u[j,i]) * (v[j,i+1] + v[j,i]) -
                      (u[j+1,i-1] + u[j,i-1]) * (v[j,i] + v[j,i-1])) * inv_4dx
@@ -156,8 +151,8 @@ def solve_pressure_poisson(u_star, v_star, dx, dy, dt, tol, max_iter):
 
     for _ in range(max_iter):
         p_old = p_prime.copy()
-        for j in range(1, n-1):
-            for i in range(1, n-1):
+        for j in range(1, n - 1):
+            for i in range(1, n - 1):
                 rhs = ((u_star[j,i] - u_star[j,i-1]) * inv_dx +
                        (v_star[j,i] - v_star[j-1,i]) * inv_dy) * dt_rhs_factor
                 p_prime[j,i] = laplacian_factor * (p_prime[j,i+1] + p_prime[j,i-1] +
@@ -167,7 +162,7 @@ def solve_pressure_poisson(u_star, v_star, dx, dy, dt, tol, max_iter):
         p_prime[0,:] = p_prime[1,:]
         p_prime[-1,:] = p_prime[-2,:]
         p_prime[:,0] = p_prime[:,1]
-        p_prime[:,-1] = p_prime[:,-2]
+        p_prime[:,-1] = p_prime[:, -2]
 
         if np.max(np.abs(p_prime - p_old)) < tol:
             break
@@ -182,8 +177,8 @@ def corrector_step(u_star, v_star, p, p_prime, dx, dy, dt, alpha):
     alpha_dt_dx = alpha * dt / dx
     alpha_dt_dy = alpha * dt / dy
 
-    for j in range(1, n-1):
-        for i in range(1, n-1):
+    for j in range(1, n - 1):
+        for i in range(1, n - 1):
             u[j,i] = u_star[j,i] - alpha_dt_dx * (p_prime[j,i+1] - p_prime[j,i])
             v[j,i] = v_star[j,i] - alpha_dt_dy * (p_prime[j+1,i] - p_prime[j,i])
 
@@ -253,6 +248,7 @@ def create_gifs(gif_scenes):
 
 
 def plot_final_results(X, Y, u, v, p, res_u, res_v, res_p):
+    n = u.shape[0]
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
     axs[0,0].quiver(X[::3,::3], Y[::3,::3], u[::3,::3], v[::3,::3])
