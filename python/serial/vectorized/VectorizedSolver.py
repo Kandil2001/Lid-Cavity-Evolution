@@ -46,19 +46,25 @@ def VectorizedSolver():
 
     print(f"Starting Vectorized SIMPLE Lid Driven Cavity Simulation...\nGrid size: {n}x{n}, Re: {Re}")
     start_time = time.time()
+
     step = 0
     sim_time = 0.0
-
     while sim_time < total_time:
         step += 1
+
         u_old, v_old, p_old = u.copy(), v.copy(), p.copy()
 
-        # SIMPLE inner iterations (vectorized)
+        # SIMPLE inner iterations
         for iter in range(1, max_iter + 1):
             u_prev, v_prev, p_prev = u.copy(), v.copy(), p.copy()
 
+            # Predictor
             u_star, v_star = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha_u)
+
+            # Pressure Poisson
             p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter)
+
+            # Corrector
             u, v, p = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p)
 
             # Boundary conditions
@@ -86,7 +92,11 @@ def VectorizedSolver():
         res_p_arr[step-1] = res_p
 
         if record_gif:
-            capture_frames(gif_scenes, X, Y, u, v, p, res_u_arr[:step], res_v_arr[:step], res_p_arr[:step], step, iter, sim_time)
+            capture_frames(
+                gif_scenes, X, Y, u, v, p,
+                res_u_arr[:step], res_v_arr[:step], res_p_arr[:step],
+                step, iter, sim_time
+            )
 
         sim_time += dt
 
@@ -115,21 +125,23 @@ def predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha):
     ii = slice(1, n-1)
     jj = slice(1, n-1)
 
-    du2dx = ((u[ii, ii] + u[ii, ii+1])**2 - (u[ii, ii-1] + u[ii, ii])**2) * inv_4dx
-    duvdy = ((v[ii, ii] + v[ii, ii+1]) * (u[ii, ii] + u[ii+1, ii]) -
-             (v[ii-1, ii] + v[ii-1, ii+1]) * (u[ii-1, ii] + u[ii, ii])) * inv_4dy
-    d2udx2 = (u[ii, ii+1] - 2*u[ii, ii] + u[ii, ii-1]) * inv_dx_sq
-    d2udy2 = (u[ii+1, ii] - 2*u[ii, ii] + u[ii-1, ii]) * inv_dy_sq
-    dpdx = (p[ii, ii+1] - p[ii, ii]) / dx
-    u_star[ii, ii] = u[ii, ii] + alpha_dt * (-du2dx - duvdy - dpdx + nu * (d2udx2 + d2udy2))
+    du2dx = ((u[ii, jj] + u[ii, jj+1])**2 - (u[ii, jj-1] + u[ii, jj])**2) * inv_4dx
+    duvdy = ((v[ii, jj] + v[ii, jj+1]) * (u[ii, jj] + u[ii+1, jj]) -
+             (v[ii-1, jj] + v[ii-1, jj+1]) * (u[ii-1, jj] + u[ii, jj])) * inv_4dy
+    d2udx2 = (u[ii, jj+1] - 2*u[ii, jj] + u[ii, jj-1]) * inv_dx_sq
+    d2udy2 = (u[ii+1, jj] - 2*u[ii, jj] + u[ii-1, jj]) * inv_dy_sq
+    dpdx = (p[ii, jj+1] - p[ii, jj]) / dx
 
-    dv2dy = ((v[ii, ii] + v[ii+1, ii])**2 - (v[ii-1, ii] + v[ii, ii])**2) * inv_4dy
-    duvdx = ((u[ii+1, ii] + u[ii, ii]) * (v[ii, ii+1] + v[ii, ii]) -
-             (u[ii+1, ii-1] + u[ii, ii-1]) * (v[ii, ii] + v[ii, ii-1])) * inv_4dx
-    d2vdx2 = (v[ii, ii+1] - 2*v[ii, ii] + v[ii, ii-1]) * inv_dx_sq
-    d2vdy2 = (v[ii+1, ii] - 2*v[ii, ii] + v[ii-1, ii]) * inv_dy_sq
-    dpdy = (p[ii+1, ii] - p[ii, ii]) / dy
-    v_star[ii, ii] = v[ii, ii] + alpha_dt * (-duvdx - dv2dy - dpdy + nu * (d2vdx2 + d2vdy2))
+    u_star[ii, jj] = u[ii, jj] + alpha_dt * (-du2dx - duvdy - dpdx + nu * (d2udx2 + d2udy2))
+
+    dv2dy = ((v[ii, jj] + v[ii+1, jj])**2 - (v[ii-1, jj] + v[ii, jj])**2) * inv_4dy
+    duvdx = ((u[ii+1, jj] + u[ii, jj]) * (v[ii, jj+1] + v[ii, jj]) -
+             (u[ii+1, jj-1] + u[ii, jj-1]) * (v[ii, jj] + v[ii, jj-1])) * inv_4dx
+    d2vdx2 = (v[ii, jj+1] - 2*v[ii, jj] + v[ii, jj-1]) * inv_dx_sq
+    d2vdy2 = (v[ii+1, jj] - 2*v[ii, jj] + v[ii-1, jj]) * inv_dy_sq
+    dpdy = (p[ii+1, jj] - p[ii, jj]) / dy
+
+    v_star[ii, jj] = v[ii, jj] + alpha_dt * (-duvdx - dv2dy - dpdy + nu * (d2vdx2 + d2vdy2))
 
     return u_star, v_star
 
@@ -147,11 +159,12 @@ def solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter)
 
     for _ in range(max_iter):
         p_old = p_prime.copy()
-        rhs = ((u_star[ii, ii] - u_star[ii, ii-1]) * inv_dx +
-               (v_star[ii, ii] - v_star[ii-1, ii]) * inv_dy) * dt_rhs_factor
-        p_prime[ii, ii] = laplacian_factor * (
-            p_prime[ii, ii+1] + p_prime[ii, ii-1] +
-            p_prime[ii+1, ii] + p_prime[ii-1, ii] - dx**2 * rhs
+        rhs = ((u_star[ii, jj] - u_star[ii, jj-1]) * inv_dx +
+               (v_star[ii, jj] - v_star[ii-1, jj]) * inv_dy) * dt_rhs_factor
+
+        p_prime[ii, jj] = laplacian_factor * (
+            p_prime[ii, jj+1] + p_prime[ii, jj-1] +
+            p_prime[ii+1, jj] + p_prime[ii-1, jj] - dx**2 * rhs
         )
 
         # Neumann BC
@@ -177,16 +190,16 @@ def corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha):
     u = u_star.copy()
     v = v_star.copy()
 
-    u[ii, ii] = u_star[ii, ii] - alpha_dt_dx * (p_prime[ii, ii+1] - p_prime[ii, ii])
-    v[ii, ii] = v_star[ii, ii] - alpha_dt_dy * (p_prime[ii+1, ii] - p_prime[ii, ii])
-    p = p + alpha * p_prime
+    u[ii, jj] = u_star[ii, jj] - alpha_dt_dx * (p_prime[ii, jj+1] - p_prime[ii, jj])
+    v[ii, jj] = v_star[ii, jj] - alpha_dt_dy * (p_prime[ii+1, jj] - p_prime[ii, jj])
 
+    p = p + alpha * p_prime
     return u, v, p
 
 
 def capture_frames(gif_scenes, X, Y, u, v, p, res_u, res_v, res_p, step, iter, time_s):
     fig, ax = plt.subplots()
-    ax.quiver(X[::4,::4], Y[::4,::4], u[::4,::4], v[::4,::4])
+    ax.quiver(X[::4, ::4], Y[::4, ::4], u[::4, ::4], v[::4, ::4])
     ax.set_title(f"Velocity Vectors\nStep {step}, Iter {iter}, Time={time_s:.3f}s")
     gif_scenes['velocity_vectors'].append(get_frame(fig))
     plt.close(fig)
@@ -247,10 +260,11 @@ def curl(X, Y, u, v):
 
 
 def plot_final_results(X, Y, u, v, p, res_u, res_v, res_p):
+    n = X.shape[0]
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
-    axs[0,0].quiver(X[::3,::3], Y[::3,::3], u[::3,::3], v[::3,::3])
-    axs[0,0].set_title("Velocity Vectors & Streamlines")
+    axs[0,0].quiver(X[::3, ::3], Y[::3, ::3], u[::3, ::3], v[::3, ::3])
+    axs[0,0].set_title("Velocity Vectors")
 
     velMag = np.sqrt(u**2 + v**2)
     cs = axs[0,1].contourf(X, Y, velMag, 20)
@@ -266,8 +280,8 @@ def plot_final_results(X, Y, u, v, p, res_u, res_v, res_p):
     fig.colorbar(cs, ax=axs[1,0])
     axs[1,0].set_title("Vorticity")
 
-    axs[1,1].plot(u[n//2,:], Y[n//2,:], 'b-', label='Vertical')
-    axs[1,1].plot(u[:,n//2], X[:,n//2], 'r-', label='Horizontal')
+    axs[1,1].plot(u[n//2, :], Y[n//2, :], 'b-', label='Vertical')
+    axs[1,1].plot(u[:, n//2], X[:, n//2], 'r-', label='Horizontal')
     axs[1,1].legend()
     axs[1,1].set_title("Centerline Velocity")
 
