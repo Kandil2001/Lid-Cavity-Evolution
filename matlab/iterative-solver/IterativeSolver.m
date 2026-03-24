@@ -1,6 +1,6 @@
 % IterativeSolver.m
 %
-% SIMPLE 2D Lid-Driven Cavity Solver (Finite Volume, Staggered Grid)
+% Corrected 2D Lid-Driven Cavity Pressure-Correction Solver
 %
 % Author: Ahmed Kandil (kandil.ahmed.amr@gmail.com)
 % License: MIT (see LICENSE file in repository)
@@ -12,293 +12,428 @@
 %   - GIFs and summary plots are generated in the working directory
 %
 % Features:
-%   - Finite Volume discretization on a staggered grid
-%   - Modular functions for predictor, corrector, pressure Poisson step
-%   - GIF recording: each variable/scene gets its own GIF, with time step and SIMPLE iteration info in title
+%   - Modular predictor / pressure-correction / corrector structure
+%   - Separate GIF for each scene, saved with your original filenames
 %   - Residual plots and final results summary
+%   - Continuity residual added
 %
 % -------------------------------------------------------------------------
 
 function IterativeSolver()
+
 %% USER-ADJUSTABLE PARAMETERS
-Re = 100;                % Reynolds number (try 100, 400, 1000)
+Re = 100;                % Reynolds number
 L = 1.0;                 % Cavity length
-n = 51;                  % Grid size (n x n, e.g., 31/51/101)
-dt = 0.002;              % Time step
+n = 51;                  % Grid size (n x n)
+dt = 0.001;              % Time step
 total_time = 1.0;        % Total simulated time
-alpha_u = 0.7;           % Under-relaxation for velocity (0.5 - 0.8 typical)
-alpha_p = 0.3;           % Under-relaxation for pressure (0.2 - 0.5 typical)
+alpha_u = 0.7;           % Under-relaxation for velocity
+alpha_p = 0.3;           % Under-relaxation for pressure
 tol = 1e-6;              % SIMPLE inner iteration tolerance
 max_iter = 300;          % Max SIMPLE inner iterations per step
 record_gif = true;       % Record GIFs? true/false
+gif_stride = 1;          % Save every gif_stride time step
+poisson_tol = 1e-6;      % Pressure Poisson tolerance
+poisson_max = 500;       % Pressure Poisson max iterations
 
 %% INITIALIZATION
-clearvars -except Re L n dt total_time alpha_u alpha_p tol max_iter record_gif;
+clearvars -except Re L n dt total_time alpha_u alpha_p tol max_iter record_gif gif_stride poisson_tol poisson_max;
 clc; close all;
 
-nu = 1/Re;               % Kinematic viscosity
-dx = L/(n-1); dy = dx;   % Square cells
+nu = 1/Re;
+dx = L/(n-1);
+dy = dx;
 
-% Precompute frequently-used constants (for speed)
-inv_4dx = 1/(4*dx);  inv_4dy = 1/(4*dy);
-inv_dx_sq = 1/dx^2;  inv_dy_sq = 1/dy^2;
-alpha_dt = alpha_u * dt;
-alpha_dt_dx = alpha_u * dt / dx;
-alpha_dt_dy = alpha_u * dt / dy;
+x = linspace(0, L, n);
+y = linspace(0, L, n);
+[X, Y] = meshgrid(x, y);
 
 max_steps = ceil(total_time/dt);
-res_u_arr = zeros(1, max_steps);  % Residuals for plotting
-res_v_arr = zeros(1, max_steps);
-res_p_arr = zeros(1, max_steps);
 
-[X, Y] = meshgrid(0:dx:L, 0:dy:L);       % Grid
-u = zeros(n); v = zeros(n); p = zeros(n);% Solution variables
-u(end,:) = 1;                            % Lid moves right
+u = zeros(n, n);
+v = zeros(n, n);
+p = zeros(n, n);
 
-% GIF recording structure: each scene is a separate figure
+% Lid-driven cavity top boundary
+u(end, :) = 1.0;
+
+res_u_arr    = zeros(max_steps, 1);
+res_v_arr    = zeros(max_steps, 1);
+res_p_arr    = zeros(max_steps, 1);
+res_cont_arr = zeros(max_steps, 1);
+simple_iter_arr = zeros(max_steps, 1);
+
+% GIF names kept exactly as in your original code
+gif_files = struct();
 if record_gif
-    gif_scenes.velocity_vectors = struct('frames', [], 'filename', 'iterative_velocity_vectors.gif');
-    gif_scenes.velocity_contour = struct('frames', [], 'filename', 'iterative_velocity_contour.gif');
-    gif_scenes.pressure_contour = struct('frames', [], 'filename', 'iterative_pressure_contour.gif');
-    gif_scenes.residuals        = struct('frames', [], 'filename', 'iterative_residuals.gif');
-    gif_scenes.streamlines      = struct('frames', [], 'filename', 'iterative_streamlines.gif');
+    gif_files.velocity_vectors = 'iterative_velocity_vectors.gif';
+    gif_files.velocity_contour = 'iterative_velocity_contour.gif';
+    gif_files.pressure_contour = 'iterative_pressure_contour.gif';
+    gif_files.residuals        = 'iterative_residuals.gif';
+    gif_files.streamlines      = 'iterative_streamlines.gif';
+
+    delete_if_exists(gif_files.velocity_vectors);
+    delete_if_exists(gif_files.velocity_contour);
+    delete_if_exists(gif_files.pressure_contour);
+    delete_if_exists(gif_files.residuals);
+    delete_if_exists(gif_files.streamlines);
 end
 
 fprintf('Starting SIMPLE Lid Driven Cavity Simulation...\n');
 fprintf('Grid size: %dx%d, Re: %d\n', n, n, Re);
 fprintf('dt: %.4g, tol: %g, max_iter: %d\n', dt, tol, max_iter);
 tic;
-time = 0; step = 0;
+
+time = 0;
+step = 0;
 
 %% MAIN TIME STEPPING LOOP
-while time < total_time
+while time < total_time + 1e-14
     step = step + 1;
-    u_old = u; v_old = v; p_old = p;
 
     % SIMPLE Inner Iterations
     for iter = 1:max_iter
-        u_prev = u; v_prev = v; p_prev = p;
-        [u_star, v_star] = predictor_step(u, v, p, dx, dy, dt, nu, alpha_u);
-        p_prime = solve_pressure_poisson(u_star, v_star, dx, dy, dt, tol, max_iter);
-        [u, v, p] = corrector_step(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
+        u_prev = u;
+        v_prev = v;
+        p_prev = p;
 
-        % Boundary conditions (set after field update)
-        u(:,1) = 0; u(:,end) = 0; u(1,:) = 0; u(end,:) = 1; % Lid
-        v(:,1) = 0; v(:,end) = 0; v(1,:) = 0; v(end,:) = 0; % No-slip
-        p(1,:) = p(2,:);   p(end,:) = p(end-1,:);
-        p(:,1) = p(:,2);   p(:,end) = p(:,end-1);
+        % Predictor
+        [u_star, v_star] = predictor_step(u, v, p, dx, dy, dt, nu);
 
-        % SIMPLE residuals
-        res_u = max(max(abs(u - u_prev)));
-        res_v = max(max(abs(v - v_prev)));
-        res_p = max(max(abs(p - p_prev)));
-        if max([res_u, res_v, res_p]) < tol
+        % Pressure correction
+        p_prime = solve_pressure_poisson(u_star, v_star, dx, dy, dt, poisson_tol, poisson_max);
+
+        % Corrector
+        [u_corr, v_corr, p_corr] = corrector_step(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
+
+        % Velocity under-relaxation
+        u = alpha_u * u_corr + (1 - alpha_u) * u_prev;
+        v = alpha_u * v_corr + (1 - alpha_u) * v_prev;
+        p = p_corr;
+
+        % Boundary conditions
+        [u, v, p] = apply_boundary_conditions(u, v, p);
+
+        % Residuals
+        res_u = max(abs(u(:) - u_prev(:)));
+        res_v = max(abs(v(:) - v_prev(:)));
+        res_p = max(abs(p(:) - p_prev(:)));
+
+        div = continuity_field(u, v, dx, dy);
+        res_cont = max(abs(div(2:end-1, 2:end-1)), [], 'all');
+
+        if max([res_u, res_v, res_p, res_cont]) < tol
             break;
         end
     end
 
-    res_u_arr(step) = res_u; res_v_arr(step) = res_v; res_p_arr(step) = res_p;
+    res_u_arr(step) = res_u;
+    res_v_arr(step) = res_v;
+    res_p_arr(step) = res_p;
+    res_cont_arr(step) = res_cont;
+    simple_iter_arr(step) = iter;
 
-    % GIF CAPTURE: Each scene is a separate figure with iteration info
-    if record_gif
-        % Velocity vectors
-        h1 = figure('Visible','off');
-        quiver(X(1:4:end,1:4:end), Y(1:4:end,1:4:end), u(1:4:end,1:4:end), v(1:4:end,1:4:end), 2, 'k');
-        title(sprintf('Velocity Vectors\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
-        xlabel('X'); ylabel('Y'); axis equal tight; grid on;
-        gif_scenes.velocity_vectors.frames = [gif_scenes.velocity_vectors.frames, getframe(h1)];
-        close(h1);
-
-        % Velocity magnitude contour
-        h2 = figure('Visible','off');
-        velMag = sqrt(u.^2 + v.^2);
-        contourf(X, Y, velMag, 20, 'LineColor','none');
-        colorbar; axis equal tight;
-        title(sprintf('Velocity Magnitude\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
-        xlabel('X'); ylabel('Y');
-        gif_scenes.velocity_contour.frames = [gif_scenes.velocity_contour.frames, getframe(h2)];
-        close(h2);
-
-        % Pressure contour
-        h3 = figure('Visible','off');
-        contourf(X, Y, p, 20, 'LineColor','none');
-        colorbar; axis equal tight;
-        title(sprintf('Pressure Field\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
-        xlabel('X'); ylabel('Y');
-        gif_scenes.pressure_contour.frames = [gif_scenes.pressure_contour.frames, getframe(h3)];
-        close(h3);
-
-        % Streamlines
-        h4 = figure('Visible','off');
-        startx = linspace(0, L, 15); starty = linspace(0, L, 15);
-        [sx, sy] = meshgrid(startx, starty);
-        streamline(X, Y, u, v, sx, sy);
-        axis equal tight; grid on;
-        title(sprintf('Streamlines\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
-        xlabel('X'); ylabel('Y');
-        gif_scenes.streamlines.frames = [gif_scenes.streamlines.frames, getframe(h4)];
-        close(h4);
-
-        % Residual history
-        h5 = figure('Visible','off');
-        semilogy(1:step, res_u_arr(1:step), '-r', 1:step, res_v_arr(1:step), '-g', 1:step, res_p_arr(1:step), '-b');
-        xlabel('Time Step'); ylabel('Residual (log scale)'); grid on;
-        legend('u-res','v-res','p-res','Location','northeast');
-        title(sprintf('Convergence History\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
-        gif_scenes.residuals.frames = [gif_scenes.residuals.frames, getframe(h5)];
-        close(h5);
+    % GIF capture and write directly to disk
+    if record_gif && mod(step-1, gif_stride) == 0
+        write_all_gifs(X, Y, u, v, p, ...
+            res_u_arr(1:step), res_v_arr(1:step), res_p_arr(1:step), res_cont_arr(1:step), ...
+            step, iter, time, L, gif_files);
     end
 
     % Advance time
     time = time + dt;
-end
 
-%% CREATE GIFs FROM FRAMES
-if record_gif
-    fprintf('Creating GIF files...\n');
-    create_gifs(gif_scenes);
+    if mod(step, 20) == 0 || step == 1
+        fprintf('Step %4d / %4d | t = %.4f | SIMPLE iters = %3d | res = [%.3e %.3e %.3e %.3e]\n', ...
+            step, max_steps, min(time, total_time), iter, res_u, res_v, res_p, res_cont);
+    end
 end
 
 %% FINAL SUMMARY AND PLOTS
 elapsedTime = toc;
+
+res_u_arr    = res_u_arr(1:step);
+res_v_arr    = res_v_arr(1:step);
+res_p_arr    = res_p_arr(1:step);
+res_cont_arr = res_cont_arr(1:step);
+simple_iter_arr = simple_iter_arr(1:step);
+
 fprintf('\nSimulation complete.\n');
 fprintf('Elapsed real time: %.2f seconds (%.2f minutes).\n', elapsedTime, elapsedTime/60);
-fprintf('Total time steps: %d, Final time: %.4f s\n', step, time);
+fprintf('Total time steps: %d, Final time: %.4f s\n', step, min(time, total_time));
 fprintf('Average time per step: %.4f seconds\n', elapsedTime/step);
 
-plot_final_results(X, Y, u, v, p, res_u_arr(1:step), res_v_arr(1:step), res_p_arr(1:step));
+plot_final_results(X, Y, u, v, p, res_u_arr, res_v_arr, res_p_arr, res_cont_arr, Re);
+
 end
 
-function create_gifs(gif_scenes)
-    scenes = fieldnames(gif_scenes);
-    for i = 1:length(scenes)
-        scene_name = scenes{i};
-        scene_data = gif_scenes.(scene_name);
-        if ~isempty(scene_data.frames)
-            fprintf('Creating %s...\n', scene_data.filename);
-            for j = 1:length(scene_data.frames)
-                [A, map] = rgb2ind(scene_data.frames(j).cdata, 256);
-                if j == 1
-                    imwrite(A, map, scene_data.filename, 'gif', ...
-                           'LoopCount', Inf, 'DelayTime', 0.1);
-                else
-                    imwrite(A, map, scene_data.filename, 'gif', ...
-                           'WriteMode', 'append', 'DelayTime', 0.1);
-                end
-            end
-            fprintf('Saved: %s\n', scene_data.filename);
-        end
-    end
-end
-
-function [u_star, v_star] = predictor_step(u, v, p, dx, dy, dt, nu, alpha)
+% =========================================================================
+function [u_star, v_star] = predictor_step(u, v, p, dx, dy, dt, nu)
 n = size(u,1);
-u_star = u; v_star = v;
-inv_4dx = 1/(4*dx); inv_4dy = 1/(4*dy);
-inv_dx_sq = 1/dx^2; inv_dy_sq = 1/dy^2;
-alpha_dt = alpha * dt;
+
+u_star = u;
+v_star = v;
 
 for j = 2:n-1
     for i = 2:n-1
-        du2dx = ((u(j,i)+u(j,i+1))^2 - (u(j,i-1)+u(j,i))^2) * inv_4dx;
-        duvdy = ((v(j,i)+v(j,i+1))*(u(j,i)+u(j+1,i)) - ...
-                 (v(j-1,i)+v(j-1,i+1))*(u(j-1,i)+u(j,i))) * inv_4dy;
-        d2udx2 = (u(j,i+1)-2*u(j,i)+u(j,i-1)) * inv_dx_sq;
-        d2udy2 = (u(j+1,i)-2*u(j,i)+u(j-1,i)) * inv_dy_sq;
-        dpdx = (p(j,i+1) - p(j,i)) / dx;
-        u_star(j,i) = u(j,i) + alpha_dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
+        % u-momentum
+        du2dx = ((u(j,i) + u(j,i+1))^2 - (u(j,i-1) + u(j,i))^2) / (4*dx);
+
+        duvdy = ((v(j,i) + v(j,i+1))*(u(j,i) + u(j+1,i)) - ...
+                 (v(j-1,i) + v(j-1,i+1))*(u(j-1,i) + u(j,i))) / (4*dy);
+
+        d2udx2 = (u(j,i+1) - 2*u(j,i) + u(j,i-1)) / dx^2;
+        d2udy2 = (u(j+1,i) - 2*u(j,i) + u(j-1,i)) / dy^2;
+
+        dpdx = (p(j,i+1) - p(j,i-1)) / (2*dx);
+
+        u_star(j,i) = u(j,i) + dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
+
+        % v-momentum
+        dv2dy = ((v(j,i) + v(j+1,i))^2 - (v(j-1,i) + v(j,i))^2) / (4*dy);
+
+        duvdx = ((u(j+1,i) + u(j,i))*(v(j,i+1) + v(j,i)) - ...
+                 (u(j+1,i-1) + u(j,i-1))*(v(j,i) + v(j,i-1))) / (4*dx);
+
+        d2vdx2 = (v(j,i+1) - 2*v(j,i) + v(j,i-1)) / dx^2;
+        d2vdy2 = (v(j+1,i) - 2*v(j,i) + v(j-1,i)) / dy^2;
+
+        dpdy = (p(j+1,i) - p(j-1,i)) / (2*dy);
+
+        v_star(j,i) = v(j,i) + dt * (-duvdx - dv2dy - dpdy + nu*(d2vdx2 + d2vdy2));
     end
 end
-
-for j = 2:n-1
-    for i = 2:n-1
-        dv2dy = ((v(j,i)+v(j+1,i))^2 - (v(j-1,i)+v(j,i))^2) * inv_4dy;
-        duvdx = ((u(j+1,i)+u(j,i))*(v(j,i+1)+v(j,i)) - ...
-                 (u(j+1,i-1)+u(j,i-1))*(v(j,i)+v(j,i-1))) * inv_4dx;
-        d2vdx2 = (v(j,i+1)-2*v(j,i)+v(j,i-1)) * inv_dx_sq;
-        d2vdy2 = (v(j+1,i)-2*v(j,i)+v(j-1,i)) * inv_dy_sq;
-        dpdy = (p(j+1,i) - p(j,i)) / dy;
-        v_star(j,i) = v(j,i) + alpha_dt * (-duvdx - dv2dy - dpdy + nu*(d2vdx2 + d2vdy2));
-    end
-end
 end
 
+% =========================================================================
 function p_prime = solve_pressure_poisson(u_star, v_star, dx, dy, dt, tol, max_iter)
 n = size(u_star,1);
-p_prime = zeros(n);
-inv_dx = 1/dx; inv_dy = 1/dy;
-dt_rhs_factor = 1/dt;
-laplacian_factor = 0.25;
+p_prime = zeros(n, n);
+
+beta = 1.7; % SOR relaxation
+
 for iter = 1:max_iter
     p_old = p_prime;
+
     for j = 2:n-1
         for i = 2:n-1
-            rhs = ((u_star(j,i) - u_star(j,i-1))*inv_dx + (v_star(j,i) - v_star(j-1,i))*inv_dy) * dt_rhs_factor;
-            p_prime(j,i) = laplacian_factor * (p_prime(j,i+1) + p_prime(j,i-1) + ...
-                                               p_prime(j+1,i) + p_prime(j-1,i) - dx^2 * rhs);
+            rhs = ((u_star(j,i+1) - u_star(j,i-1)) / (2*dx) + ...
+                   (v_star(j+1,i) - v_star(j-1,i)) / (2*dy)) / dt;
+
+            p_new = ( ...
+                (p_prime(j,i+1) + p_prime(j,i-1))*dy^2 + ...
+                (p_prime(j+1,i) + p_prime(j-1,i))*dx^2 - ...
+                rhs*dx^2*dy^2 ) / (2*(dx^2 + dy^2));
+
+            p_prime(j,i) = (1 - beta)*p_prime(j,i) + beta*p_new;
         end
     end
-    p_prime(1,:) = p_prime(2,:);
+
+    % Neumann BCs
+    p_prime(1,:)   = p_prime(2,:);
     p_prime(end,:) = p_prime(end-1,:);
-    p_prime(:,1) = p_prime(:,2);
+    p_prime(:,1)   = p_prime(:,2);
     p_prime(:,end) = p_prime(:,end-1);
-    if max(max(abs(p_prime - p_old))) < tol
+
+    % Reference point
+    p_prime(2,2) = 0;
+
+    if max(abs(p_prime(:) - p_old(:))) < tol
         break;
     end
 end
 end
 
-function [u, v, p] = corrector_step(u_star, v_star, p, p_prime, dx, dy, dt, alpha)
+% =========================================================================
+function [u, v, p] = corrector_step(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p)
 n = size(p,1);
-u = u_star; v = v_star;
-alpha_dt_dx = alpha * dt / dx; alpha_dt_dy = alpha * dt / dy;
+
+u = u_star;
+v = v_star;
+
 for j = 2:n-1
     for i = 2:n-1
-        u(j,i) = u_star(j,i) - alpha_dt_dx * (p_prime(j,i+1) - p_prime(j,i));
-        v(j,i) = v_star(j,i) - alpha_dt_dy * (p_prime(j+1,i) - p_prime(j,i));
+        u(j,i) = u_star(j,i) - dt * (p_prime(j,i+1) - p_prime(j,i-1)) / (2*dx);
+        v(j,i) = v_star(j,i) - dt * (p_prime(j+1,i) - p_prime(j-1,i)) / (2*dy);
     end
 end
-p = p + alpha * p_prime;
+
+p = p + alpha_p * p_prime;
 end
 
-function plot_final_results(X, Y, u, v, p, res_u, res_v, res_p)
-figure('Name','Final Results - Lid Driven Cavity',...
+% =========================================================================
+function [u, v, p] = apply_boundary_conditions(u, v, p)
+% Velocity BCs
+u(:,1)   = 0;
+u(:,end) = 0;
+u(1,:)   = 0;
+u(end,:) = 1;
+
+v(:,1)   = 0;
+v(:,end) = 0;
+v(1,:)   = 0;
+v(end,:) = 0;
+
+% Pressure Neumann BCs
+p(1,:)   = p(2,:);
+p(end,:) = p(end-1,:);
+p(:,1)   = p(:,2);
+p(:,end) = p(:,end-1);
+
+% Pressure reference
+p(2,2) = 0;
+end
+
+% =========================================================================
+function div = continuity_field(u, v, dx, dy)
+n = size(u,1);
+div = zeros(n,n);
+
+for j = 2:n-1
+    for i = 2:n-1
+        div(j,i) = (u(j,i+1) - u(j,i-1)) / (2*dx) + ...
+                   (v(j+1,i) - v(j-1,i)) / (2*dy);
+    end
+end
+end
+
+% =========================================================================
+function write_all_gifs(X, Y, u, v, p, res_u, res_v, res_p, res_cont, step, iter, time, L, gif_files)
+
+% Velocity vectors
+h1 = figure('Visible','off', 'Color', 'w');
+quiver(X(1:4:end,1:4:end), Y(1:4:end,1:4:end), ...
+       u(1:4:end,1:4:end), v(1:4:end,1:4:end), 2, 'k');
+title(sprintf('Velocity Vectors\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
+xlabel('X'); ylabel('Y'); axis equal tight; grid on;
+write_gif_frame(h1, gif_files.velocity_vectors, step == 1);
+close(h1);
+
+% Velocity magnitude contour
+h2 = figure('Visible','off', 'Color', 'w');
+velMag = sqrt(u.^2 + v.^2);
+contourf(X, Y, velMag, 20, 'LineColor', 'none');
+colorbar; axis equal tight;
+title(sprintf('Velocity Magnitude\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
+xlabel('X'); ylabel('Y');
+write_gif_frame(h2, gif_files.velocity_contour, step == 1);
+close(h2);
+
+% Pressure contour
+h3 = figure('Visible','off', 'Color', 'w');
+contourf(X, Y, p, 20, 'LineColor', 'none');
+colorbar; axis equal tight;
+title(sprintf('Pressure Field\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
+xlabel('X'); ylabel('Y');
+write_gif_frame(h3, gif_files.pressure_contour, step == 1);
+close(h3);
+
+% Streamlines
+h4 = figure('Visible','off', 'Color', 'w');
+startx = linspace(0, L, 15);
+starty = linspace(0, L, 15);
+[sx, sy] = meshgrid(startx, starty);
+streamline(X, Y, u, v, sx, sy);
+axis equal tight; grid on;
+title(sprintf('Streamlines\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
+xlabel('X'); ylabel('Y');
+write_gif_frame(h4, gif_files.streamlines, step == 1);
+close(h4);
+
+% Residual history
+h5 = figure('Visible','off', 'Color', 'w');
+semilogy(1:step, res_u, '-r', ...
+         1:step, res_v, '-g', ...
+         1:step, res_p, '-b', ...
+         1:step, res_cont, '-k', 'LineWidth', 1.2);
+xlabel('Time Step'); ylabel('Residual (log scale)'); grid on;
+legend('u-res', 'v-res', 'p-res', 'cont-res', 'Location', 'northeast');
+title(sprintf('Convergence History\nStep %d, SIMPLE iter %d, Time = %.3f s', step, iter, time));
+write_gif_frame(h5, gif_files.residuals, step == 1);
+close(h5);
+
+end
+
+% =========================================================================
+function write_gif_frame(fig_handle, filename, is_first_frame)
+drawnow;
+frame = getframe(fig_handle);
+img = frame2im(frame);
+[A, map] = rgb2ind(img, 256);
+
+if is_first_frame
+    imwrite(A, map, filename, 'gif', 'LoopCount', Inf, 'DelayTime', 0.1);
+else
+    imwrite(A, map, filename, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
+end
+end
+
+% =========================================================================
+function delete_if_exists(filename)
+if exist(filename, 'file')
+    delete(filename);
+end
+end
+
+% =========================================================================
+function plot_final_results(X, Y, u, v, p, res_u, res_v, res_p, res_cont, Re)
+figure('Name','Final Results - Lid Driven Cavity', ...
        'Units','normalized','Position',[0.05 0.05 0.9 0.85], 'Color', 'w');
+
 subplot(2,3,1);
 quiver(X(1:3:end,1:3:end), Y(1:3:end,1:3:end), u(1:3:end,1:3:end), v(1:3:end,1:3:end), 1.5, 'k');
 hold on;
-startx = linspace(0, 1, 20); starty = linspace(0, 1, 20);
+startx = linspace(0, 1, 20);
+starty = linspace(0, 1, 20);
 [sx, sy] = meshgrid(startx, starty);
 streamline(X, Y, u, v, sx, sy);
 title('Velocity Vectors and Streamlines'); xlabel('X'); ylabel('Y'); axis equal tight; grid on;
+
 subplot(2,3,2);
 velMag = sqrt(u.^2 + v.^2);
-contourf(X, Y, velMag, 20, 'LineColor','none'); colorbar;
+contourf(X, Y, velMag, 20, 'LineColor', 'none'); colorbar;
 title('Velocity Magnitude'); xlabel('X'); ylabel('Y'); axis equal tight;
+
 subplot(2,3,3);
-contourf(X, Y, p, 20, 'LineColor','none'); colorbar;
+contourf(X, Y, p, 20, 'LineColor', 'none'); colorbar;
 title('Pressure Field'); xlabel('X'); ylabel('Y'); axis equal tight;
+
 subplot(2,3,4);
-vorticity = curl(X, Y, u, v);
-contourf(X, Y, vorticity, 20, 'LineColor','none'); colorbar;
+vorticity = compute_vorticity(u, v, X, Y);
+contourf(X, Y, vorticity, 20, 'LineColor', 'none'); colorbar;
 title('Vorticity Field'); xlabel('X'); ylabel('Y'); axis equal tight;
+
 subplot(2,3,5);
-plot(u(ceil(size(u,1)/2),:), Y(ceil(size(Y,1)/2),:), 'b-', 'LineWidth', 2);
-hold on; plot(u(:,ceil(size(u,2)/2)), X(:,ceil(size(X,2)/2)), 'r-', 'LineWidth', 2);
-title('Centerline Velocity Profiles'); xlabel('Velocity'); ylabel('Position');
-legend('Vertical Centerline', 'Horizontal Centerline'); grid on;
+mid = ceil(size(u,1)/2);
+plot(Y(:,mid), u(:,mid), 'b-', 'LineWidth', 2); hold on;
+plot(X(mid,:)', v(mid,:)', 'r-', 'LineWidth', 2);
+title('Centerline Velocity Profiles');
+xlabel('Position'); ylabel('Velocity');
+legend('u on vertical centerline', 'v on horizontal centerline', 'Location', 'best');
+grid on;
+
 subplot(2,3,6);
-semilogy(1:length(res_u), res_u, 'r-', 1:length(res_v), res_v, 'g-', 1:length(res_p), res_p, 'b-');
+semilogy(1:length(res_u), res_u, 'r-', ...
+         1:length(res_v), res_v, 'g-', ...
+         1:length(res_p), res_p, 'b-', ...
+         1:length(res_cont), res_cont, 'k-', 'LineWidth', 1.2);
 title('Convergence History'); xlabel('Time Step'); ylabel('Residual (log scale)');
-legend('u-residual','v-residual','p-residual','Location','northeast'); grid on;
+legend('u-residual','v-residual','p-residual','cont-residual','Location','northeast'); grid on;
+
 annotation('textbox', [0.02, 0.02, 0.3, 0.05], 'String', ...
-    sprintf('Re = %d, Grid = %dx%d', 100, size(u,1), size(u,1)), ...
+    sprintf('Re = %d, Grid = %dx%d', Re, size(u,1), size(u,1)), ...
     'FitBoxToText', 'on', 'BackgroundColor', 'white');
+
 saveas(gcf, 'final_results.png');
 end
 
-function vort = curl(X, Y, u, v)
-[dudy, dudx] = gradient(u, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
-[dvdy, dvdx] = gradient(v, Y(1,2)-Y(1,1), X(2,1)-X(1,1));
+% =========================================================================
+function vort = compute_vorticity(u, v, X, Y)
+dx = X(1,2) - X(1,1);
+dy = Y(2,1) - Y(1,1);
+
+[dudy, ~] = gradient(u, dy, dx);
+[~, dvdx] = gradient(v, dy, dx);
+
 vort = dvdx - dudy;
 end
