@@ -349,10 +349,6 @@ See: [LICENSE](../../LICENSE)
 
 **This solver provides a clean, modular, and physically consistent implementation of a staggered-grid pressure-correction method for the lid-driven cavity problem — ideal for learning, debugging, and presentation use.**
 
-```
-
----
-
 ## 🔥 Final note (important)
 
 This README is now:
@@ -369,4 +365,3 @@ If you want next level (for thesis/interview), I can:
 - add **grid convergence study section**
 
 That would make this repo **very strong academically** 💯
-```
