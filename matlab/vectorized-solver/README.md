@@ -3,14 +3,17 @@
     <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/raw/main/logos/matlab.png" width="70"/>
   </a>
 </p>
-<h1 align="center">🌀 SIMPLE2D Lid-Driven Cavity — MATLAB Vectorized Solver Branch</h1>
-<p align="center"><i>High-performance vectorized SIMPLE algorithm for unsteady incompressible CFD</i></p>
+
+<h1 align="center">🌀 SIMPLE2D Lid-Driven Cavity — MATLAB Vectorized Solver</h1>
+
+<p align="center"><i>High-performance true staggered-grid SIMPLE-style pressure-correction solver for unsteady incompressible CFD</i></p>
+
 <p align="center">
   <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"/>
   </a>
   <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/releases">
-    <img src="https://img.shields.io/badge/Version-0.1.0-green.svg" alt="Version"/>
+    <img src="https://img.shields.io/badge/Version-0.2.0-green.svg" alt="Version"/>
   </a>
   <a href="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/main/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"/>
@@ -25,12 +28,14 @@
 ## Table of Contents
 
 - [About This Solver](#about-this-solver)
+- [Grid Arrangement (Staggered Grid)](#grid-arrangement-staggered-grid)
 - [Key Features](#key-features)
 - [Why Vectorized?](#why-vectorized)
 - [Usage Instructions](#usage-instructions)
-- [Key Code Snippets](#key-code-snippets)
+- [Numerical Workflow](#numerical-workflow)
 - [Simulation Outputs](#simulation-outputs)
 - [Performance & Convergence](#performance--convergence)
+- [Numerical Notes](#numerical-notes)
 - [Directory Placement](#directory-placement)
 - [Contributing](#contributing)
 - [License](#license)
@@ -41,293 +46,331 @@
 
 ## About This Solver
 
-This branch contains a **fully vectorized MATLAB implementation** of the SIMPLE algorithm for the lid-driven cavity problem.  
-It is designed for direct benchmarking against the iterative (loop-based) version, using **identical structure, boundary conditions, and outputs** for fair comparison and maximum MATLAB performance.
+This branch contains a **vectorized MATLAB implementation** of a **true staggered-grid SIMPLE-style pressure-correction solver** for the 2D lid-driven cavity problem.
+
+It is designed for:
+
+- **high MATLAB performance**
+- **algorithm clarity**
+- **direct comparison with the iterative solver**
+- **clean modular structure**
+- **presentation-ready visualization outputs**
+
+This version preserves the same physical problem and output workflow as the iterative solver, while replacing most internal loop-based field updates with vectorized array operations.
 
 - **File:** `VectorizedSolver.m`
 - **Location:** `main/matlab/vectorized-solver/`
-- **Focus:** Vectorized speed, educational clarity, and modular structure.
+- **Focus:** Vectorized speed, staggered-grid consistency, modularity, and benchmarking
+
+---
+
+## Grid Arrangement (Staggered Grid)
+
+This solver uses a **true staggered (MAC) grid**.
+
+### Storage layout
+
+- Pressure is stored at **cell centers**
+- `u` velocity is stored at **vertical cell faces**
+- `v` velocity is stored at **horizontal cell faces**
+
+```matlab
+p = zeros(N, N);      % cell centers
+u = zeros(N, N+1);    % vertical faces
+v = zeros(N+1, N);    % horizontal faces
+````
+
+### Why this matters
+
+A staggered grid improves pressure-velocity coupling and avoids the checkerboard pressure issue commonly associated with collocated storage.
+
+It also matches the classical formulation found in CFD references such as:
+
+* Patankar
+* Ferziger & Perić
+* MAC / SIMPLE-based educational derivations
 
 ---
 
 ## Key Features
 
-- Finite volume discretization on a staggered grid
-- **Fully vectorized** operations for superior MATLAB performance
-- Modular function structure for maintainability and clarity
-- Real-time visualization and optional GIF export
-- Residual tracking, convergence monitoring, and performance reporting
-- Identical interface and outputs to the iterative solver for direct benchmarking
+* **True staggered-grid formulation**
+* **Vectorized array operations** for improved MATLAB performance
+* Modular solver structure:
+
+  * predictor step
+  * pressure Poisson solver
+  * corrector step
+  * boundary condition application
+  * residual evaluation
+  * GIF export
+* Continuity residual monitoring
+* Automatic GIF writing directly to disk
+* Final summary plot with:
+
+  * velocity vectors
+  * streamlines
+  * velocity magnitude
+  * pressure
+  * vorticity
+  * centerline profiles
+  * convergence history
+* Designed for direct benchmarking against the iterative MATLAB solver
 
 ---
 
 ## Why Vectorized?
 
-- **Maximum speed in MATLAB:** Exploits MATLAB’s optimization for array/matrix operations, drastically reducing runtime for large grids.
-- **Direct benchmarking:** Uses the same interface and output as the loop version, so you can compare speed and accuracy directly.
-- **Educational value:** Demonstrates how classic CFD algorithms can be efficiently mapped to MATLAB’s strengths.
+* **Faster execution in MATLAB:** vectorized operations are generally more efficient than explicit nested loops
+* **Cleaner bulk updates:** whole field regions are updated at once
+* **Benchmarking value:** useful for comparing performance against the iterative implementation
+* **Educational value:** shows how CFD operators can be expressed naturally with matrix slices
+* **Presentation value:** preserves the same output structure while improving runtime behavior
 
 ---
 
 ## Usage Instructions
 
-1. **Requirements:** MATLAB R2020a or newer.
-2. **Setup:**  
-   Place `VectorizedSolver.m` in `main/matlab/vectorized-solver/`.
-3. **Configure Parameters:**  
-   At the top of the file:
-   ```matlab
-   Re = 100;                % Reynolds number
-   n = 51;                  % Grid size
-   dt = 0.002;              % Time step
-   total_time = 1.0;        % Simulation time (s)
-   alpha_u = 0.7;           % Under-relaxation for velocity
-   alpha_p = 0.3;           % Under-relaxation for pressure
-   tol = 1e-6;              % SIMPLE inner iteration tolerance
-   max_iter = 300;          % Max SIMPLE iterations per time step
-   record_gif = true;       % Enable GIF recording
-    ```
-4. **Run the Script:**  
-   - In MATLAB, enter `VectorizedSolver()` in the Command Window or run the script file.
-   - The simulation will begin, displaying progress and performance metrics in the terminal.
-   - Animated figures and GIFs for each scene (velocity vectors, magnitude, pressure, streamlines, residuals) are generated automatically.
+### 1. Requirements
 
-5. **Check Results:**  
-   - After completion, find GIFs (e.g., `vectorized_velocity_vectors.gif`, `vectorized_pressure_contour.gif`, etc.) and a summary plot (`final_results.png`) in your working directory.
-   - The summary plot includes velocity vectors, streamlines, velocity magnitude, pressure field, vorticity, centerline velocity profiles, and convergence history.
+* MATLAB **R2020a or newer**
+
+### 2. Setup
+
+Place the file here:
+
+```text
+main/matlab/vectorized-solver/VectorizedSolver.m
+```
+
+### 3. Configure Parameters
+
+At the top of the file:
+
+```matlab
+Re = 100;                % Reynolds number
+L = 1.0;                 % Cavity length
+N = 51;                  % Number of pressure cells in each direction
+dt = 5e-4;               % Time step
+total_time = 1.0;        % Total simulated time
+
+alpha_u = 0.7;           % Under-relaxation for velocity
+alpha_p = 0.3;           % Under-relaxation for pressure
+
+tol = 1e-6;              % Outer SIMPLE tolerance
+max_iter = 200;          % Max SIMPLE iterations per time step
+
+poisson_tol = 1e-6;      % Pressure Poisson tolerance
+poisson_max = 800;       % Pressure Poisson max iterations
+
+record_gif = true;       % Record GIFs? true/false
+gif_stride = 1;          % Save every gif_stride step
+```
+
+### 4. Run the Solver
+
+```matlab
+VectorizedSolver()
+```
+
+### 5. Generated Outputs
+
+The solver saves the following automatically in the working directory:
+
+* `vectorized_velocity_vectors.gif`
+* `vectorized_velocity_contour.gif`
+* `vectorized_pressure_contour.gif`
+* `vectorized_streamlines.gif`
+* `vectorized_residuals.gif`
+* `final_results_vectorized.png`
+
+These files are ready to use in reports, presentations, and GitHub documentation.
 
 ---
 
-## Key Code Snippets
+## Numerical Workflow
 
-Below are essential excerpts from `VectorizedSolver.m`, demonstrating the modular and transparent structure of this solver.
+Each time step follows the same staggered-grid pressure-correction logic as the iterative version:
 
-### 1. User-Adjustable Simulation Parameters
+1. **Predictor Step**
 
-```matlab
-% Set physical and numerical parameters
-Re = 100;                % Reynolds number
-n = 51;                  % Grid size
-dt = 0.002;              % Time step
-total_time = 1.0;        % Simulation time
-alpha_u = 0.7;           % Under-relaxation (velocity)
-alpha_p = 0.3;           % Under-relaxation (pressure)
-tol = 1e-6;              % Convergence tolerance
-max_iter = 300;          % Max SIMPLE iterations per time step
-record_gif = true;       % Enable GIF creation
-```
+   * Solve the momentum equations for intermediate face velocities
 
-### 2. Main Time-Stepping and SIMPLE Iteration Loop
+2. **Pressure Poisson Equation**
 
-```matlab
-while time < total_time
-    step = step + 1;
-    for iter = 1:max_iter
-        u_prev = u; v_prev = v; p_prev = p;
-        [u_star, v_star] = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha_u);
-        p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter);
-        [u, v, p] = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha_p);
-        % Boundary conditions
-        u(:,1) = 0; u(:,end) = 0; u(1,:) = 0; u(end,:) = 1;
-        v(:,1) = 0; v(:,end) = 0; v(1,:) = 0; v(end,:) = 0;
-        p(1,:) = p(2,:); p(end,:) = p(end-1,:);
-        p(:,1) = p(:,2); p(:,end) = p(:,end-1);
-        % Residuals/convergence
-        res_u = max(max(abs(u - u_prev)));
-        res_v = max(max(abs(v - v_prev)));
-        res_p = max(max(abs(p - p_prev)));
-        if max([res_u, res_v, res_p]) < tol
-            break;
-        end
-    end
-    % Visualization, GIF capture, etc.
-    time = time + dt;
-end
-```
+   * Solve for pressure correction using the divergence of predicted velocities
 
-### 3. Vectorized Predictor Step
+3. **Corrector Step**
 
-```matlab
-function [u_star, v_star] = predictor_step_vectorized(u, v, p, dx, dy, dt, nu, alpha)
-n = size(u,1);
-ii = 2:n-1; jj = 2:n-1;
-% u-momentum: vectorized update
-du2dx = ((u(jj,ii) + u(jj,ii+1)).^2 - (u(jj,ii-1) + u(jj,ii)).^2) / (4*dx);
-duvdy = ((v(jj,ii) + v(jj,ii+1)) .* (u(jj,ii) + u(jj+1,ii)) ...
-        - (v(jj-1,ii) + v(jj-1,ii+1)) .* (u(jj-1,ii) + u(jj,ii))) / (4*dy);
-d2udx2 = (u(jj,ii+1) - 2*u(jj,ii) + u(jj,ii-1)) / dx^2;
-d2udy2 = (u(jj+1,ii) - 2*u(jj,ii) + u(jj-1,ii)) / dy^2;
-dpdx = (p(jj,ii+1) - p(jj,ii)) / dx;
-u_star = u;
-u_star(jj,ii) = u(jj,ii) + alpha * dt * (-du2dx - duvdy - dpdx + nu*(d2udx2 + d2udy2));
-% v-momentum: similar vectorized update
-% ...
-end
-```
+   * Correct the face velocities using pressure correction
+   * Update the pressure field
 
-### 4. Vectorized Pressure Poisson Solver
+4. **Under-Relaxation**
 
-```matlab
-function p_prime = solve_pressure_poisson_vectorized(u_star, v_star, dx, dy, dt, tol, max_iter)
-n = size(u_star,1);
-ii = 2:n-1; jj = 2:n-1;
-p_prime = zeros(n);
-for iter = 1:max_iter
-    p_old = p_prime;
-    rhs = ((u_star(jj,ii) - u_star(jj,ii-1))/dx + (v_star(jj,ii) - v_star(jj-1,ii))/dy) / dt;
-    p_prime(jj,ii) = 0.25 * (p_prime(jj,ii+1) + p_prime(jj,ii-1) ...
-                            + p_prime(jj+1,ii) + p_prime(jj-1,ii) - dx^2 * rhs);
-    % Neumann BCs
-    p_prime(1,:) = p_prime(2,:);
-    p_prime(end,:) = p_prime(end-1,:);
-    p_prime(:,1) = p_prime(:,2);
-    p_prime(:,end) = p_prime(:,end-1);
-    if max(max(abs(p_prime - p_old))) < tol
-        break;
-    end
-end
-end
-```
+   * Stabilize iterative convergence
 
-### 5. Vectorized Corrector Step
+5. **Boundary Conditions**
 
-```matlab
-function [u, v, p] = corrector_step_vectorized(u_star, v_star, p, p_prime, dx, dy, dt, alpha)
-n = size(p,1);
-ii = 2:n-1; jj = 2:n-1;
-u = u_star; v = v_star;
-u(jj,ii) = u_star(jj,ii) - alpha * dt / dx * (p_prime(jj,ii+1) - p_prime(jj,ii));
-v(jj,ii) = v_star(jj,ii) - alpha * dt / dy * (p_prime(jj+1,ii) - p_prime(jj,ii));
-p = p + alpha * p_prime;
-end
-```
+   * Enforce moving lid and no-slip wall behavior
 
-### 6. GIF Creation and Post-Processing
+6. **Residual Evaluation**
 
-```matlab
-function create_gifs(gif_scenes)
-    scenes = fieldnames(gif_scenes);
-    for i = 1:length(scenes)
-        scene_name = scenes{i};
-        scene_data = gif_scenes.(scene_name);
-        if ~isempty(scene_data.frames)
-            fprintf('Creating %s...\n', scene_data.filename);
-            for j = 1:length(scene_data.frames)
-                [A, map] = rgb2ind(scene_data.frames(j).cdata, 256);
-                if j == 1
-                    imwrite(A, map, scene_data.filename, 'gif', ...
-                           'LoopCount', Inf, 'DelayTime', 0.1);
-                else
-                    imwrite(A, map, scene_data.filename, 'gif', ...
-                           'WriteMode', 'append', 'DelayTime', 0.1);
-                end
-            end
-            fprintf('Saved: %s\n', scene_data.filename);
-        end
-    end
-end
-```
+   * `u` residual
+   * `v` residual
+   * pressure residual
+   * continuity residual
 
 ---
 
 ## Simulation Outputs
 
 ### 🌀 Velocity Vectors — Flow Field Animation
+
 <p align="center">
-  <img src="https://github.com/Kandil2001/Lid-Cavity-Evolution/blob/74db6e4ea255eb2cf6d775a5f5dce320457a839f/assets/matlab/vectorized_velocity_vectors.gif" alt="Velocity Vectors GIF"/>
+  <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_vectors.gif" alt="Velocity Vectors GIF"/>
 </p>
 
 ### ⚡ Velocity Magnitude — Speed Contours
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_velocity_contour.gif" alt="Velocity Magnitude GIF"/>
 </p>
 
 ### 🌊 Streamlines — Flow Paths
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_streamlines.gif" alt="Streamlines GIF"/>
 </p>
 
 ### 📊 Pressure Distribution
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_pressure_contour.gif" alt="Pressure GIF"/>
 </p>
 
-_GIF/image files are saved in the script directory. Filenames are customizable in the code._
-
----
-
-## Performance and Convergence
-
-**This is for 51x51 grid size**
-| Metric                | Typical Value                  |
-|-----------------------|-------------------------------|
-| Elapsed Time          | ~1266,38 seconds (~21,11 minutes)|
-| Avg. Time per Step    | ~2,5328 seconds                |
-
-**This is for 151x151 grid size**
-| Metric                | Typical Value                  |
-|-----------------------|--------------------------------|
-| Elapsed Time          | ~3732,37 seconds (~62,21 minutes) |
-| Avg. Time per Step    | ~7,4647 seconds                |
-
 ### 📉 Residuals — Convergence History
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kandil2001/Lid-Cavity-Evolution/main/assets/matlab/vectorized_residuals.gif" alt="Vectorized Residuals GIF"/>
 </p>
+
+*GIF and image files are written directly to disk using fixed filenames for easy reuse in presentations and reports.*
+
+---
+
+## Performance & Convergence
+
+Performance depends strongly on:
+
+* pressure grid size `N`
+* Reynolds number
+* time step `dt`
+* under-relaxation factors
+* Poisson iteration count
+* GIF recording frequency
+
+### Recommended starting values
+
+```matlab
+Re = 100;
+N = 51;
+dt = 5e-4;
+alpha_u = 0.5;
+alpha_p = 0.2;
+```
+
+These are good starting values for stable early testing. After confirming stable behavior, parameters can be increased gradually.
+
+### Example reporting template
+
+| Metric               | Value         |
+| -------------------- | ------------- |
+| Pressure grid size   | 51 × 51       |
+| Reynolds number      | 100           |
+| Time step            | 5e-4          |
+| Total simulated time | 1.0 s         |
+| Elapsed time         | user measured |
+| Avg. time per step   | user measured |
+
+---
+
+## Numerical Notes
+
+This solver is intended primarily for:
+
+* education
+* CFD algorithm understanding
+* debugging
+* validation exercises
+* iterative vs vectorized benchmarking
+* presentation-quality visualization
+
+It is:
+
+* **not** intended as an industrial CFD solver
+* **well suited** as a transparent academic MATLAB implementation of a staggered-grid pressure-correction cavity-flow solver
 
 ---
 
 ## Directory Placement
 
-This solver is part of the MATLAB branch:
-```
+```text
 main/
 ├── matlab/
-│ ├── iterative-solver/
-│ │ ├── IterativeSolver.m
-│ │ └── README.md
-│ ├── vectorized-solver/
-│ │ ├── VectorizedSolver.m
-│ │ └── README.md
-│ └── README.md
+│   ├── iterative-solver/
+│   │   ├── IterativeSolver.m
+│   │   └── README.md
+│   ├── vectorized-solver/
+│   │   ├── VectorizedSolver.m
+│   │   └── README.md
+│   └── README.md
 ├── python/
-│ ├── ...
 ├── assets/
 └── ...
 ```
+
 See [main README](../../README.md) for project-wide context.
 
 ---
 
 ## Contributing
 
-Contributions, suggestions, and improvements are encouraged!  
-Refer to [CONTRIBUTING.md](../../CONTRIBUTING.md).
+Contributions, suggestions, and improvements are welcome.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ---
 
 ## License
 
-Released under the MIT License.  
+Released under the MIT License.
 See [LICENSE](../../LICENSE).
 
 ---
 
 ## References
 
-1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). J. Comput. Phys., 48(3), 387-411.
-2. Patankar, S. V. (1980). _Numerical Heat Transfer and Fluid Flow_.
-3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). _Computational Methods for Fluid Dynamics_.
+1. Ghia, U., Ghia, K. N., & Shin, C. T. (1982). *Journal of Computational Physics*, 48(3), 387–411.
+2. Patankar, S. V. (1980). *Numerical Heat Transfer and Fluid Flow*.
+3. Ferziger, J. H., Perić, M., & Street, R. L. (2002). *Computational Methods for Fluid Dynamics*.
 
 ---
 
 ## Contact
 
-- [GitHub Issues](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
-- Email: **kandil.ahmed.amr@gmail.com**
-- [LinkedIn](https://www.linkedin.com/in/ahmed-kandil01)
+* [GitHub Issues](https://github.com/Kandil2001/Lid-Cavity-Evolution/issues)
+* Email: **[kandil.ahmed.amr@gmail.com](mailto:kandil.ahmed.amr@gmail.com)**
+* [LinkedIn](https://www.linkedin.com/in/ahmed-kandil01)
 
 ---
 
-**This branch provides the baseline for MATLAB implementations in the Lid Cavity Evolution suite.  
-For advanced solvers, validations, and industrial CFD, see the main project documentation.**
+**This solver provides a vectorized, modular, and physically consistent staggered-grid pressure-correction implementation for the lid-driven cavity problem in MATLAB, suitable for learning, benchmarking, debugging, and presentation use.**
+
+A few important improvements from your old README:
+- it now correctly matches the **true staggered-grid** solver
+- it uses `N` instead of the old `n`
+- it reflects **direct GIF writing to disk**
+- it removes the old code snippets that no longer matched the solver
+- it removes the risky hard-coded timing claims and replaces them with a cleaner template
+
+For the image URLs, I also normalized the first GIF link to the raw GitHub format so all of them match.
+```
